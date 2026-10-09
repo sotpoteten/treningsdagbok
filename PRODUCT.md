@@ -8,8 +8,10 @@ web
 
 ## Stack
 
-Vite + React + TypeScript i `web/`. Statisk side som leser JSON fra `data/`; ingen server.
-Kjøres lokalt (`npm run dev`). Publisering er ikke bestemt.
+Vite + React + TypeScript i `web/`. Statisk side som leser JSON fra `data/`, uten server.
+Siden har egne SVG-grafer med d3 og kart med MapLibre. Dataene konverteres med
+Python-skript i `scripts/`. Siden kjøres lokalt (`npm run dev`, port 5180). Koden ligger
+privat på GitHub (sotpoteten/treningsdagbok). Publisering er ikke bestemt.
 
 ## Users
 
@@ -20,11 +22,19 @@ Kjøres lokalt (`npm run dev`). Publisering er ikke bestemt.
 
 ## Product Purpose
 
-Siden gjør nesten sju års treningsdagbok (fra 1. nov. 2019) lesbar og søkbar. Dataene er
-eksportert fra Olympiatoppens dagbok (dagbok.olympiatoppen.no). Første versjon viser alle
-økter på en oversiktlig måte i en ukeskalender. Analyseverktøy kommer senere. Siden
-lykkes når Isak raskt kan svare på spørsmål som «hva gjorde jeg uka før NM i fjor?» og
-«hvordan så vinteren 2024 ut sammenlignet med 2025?».
+Siden gjør nesten sju års treningsdagbok (fra 1. nov. 2019) lesbar, søkbar og analyserbar.
+Dataene kommer fra Olympiatoppens dagbok (dagbok.olympiatoppen.no) og fra en full
+Garmin-eksport.
+- **Dagbok:** ukeskalender med søk og et øktpanel. Panelet viser blokker og notat, og
+  Garmin-data med kart, puls, tempo og runder.
+- **Analyse:** Oversikt mot forrige sesong, volum, sesongsammenligning, intensitet og
+  aktivitet, rekorder, og helse og belastning (hvilepuls, HRV, søvn og Garmins
+  treningsbelastning).
+
+Siden lykkes når Isak raskt kan svare på spørsmål som:
+- «hva gjorde jeg uka før NM i fjor?»
+- «hvordan så vinteren 2024 ut sammenlignet med 2025?»
+- «hvordan var HRV og søvn i ukene før jeg ble syk?»
 
 ## Positioning
 
@@ -35,10 +45,16 @@ historikken samlet, med både notater og tall.
 
 ## Operating Context
 
-- Det er en personlig dagbok som skal leses og blas i, ikke et verktøy for å registrere
-  økter. Nye data kommer ved ny eksport fra Olympiatoppen og `python scripts/konverter.py`.
-- Garmin-data (GPS-spor, HRV, hvilepuls, søvn) kommer senere fra en full Garmin-eksport.
-  HRV, søvn og hvilepuls finnes bare fra høsten 2023.
+- **Lese, ikke registrere:** Det er en personlig dagbok som skal leses og blas i, ikke et
+  verktøy for å registrere økter.
+- **Nye data fra Olympiatoppen:** Ny eksport, og så `python scripts/konverter.py`.
+- **Nye data fra Garmin:** Full Garmin-eksport, og så
+  `.venv\Scripts\python scripts/konverter_garmin.py`. Garmins API blokkerte innloggingen
+  i 2026, så eksporten er kilden.
+- **Treningsåret:** Isak regner det fra 1. november til 31. oktober. Alle
+  sesongsammenligninger følger det.
+- **Helsedata:** HRV, søvnscore og belastning finnes fra høsten 2023 (Forerunner 255).
+  Hvilepuls og søvnlengde går lenger tilbake.
 
 ## Capabilities and Constraints
 
@@ -51,6 +67,11 @@ historikken samlet, med både notater og tall.
 - All tekst på siden er norsk (bokmål).
 - Dagboknotatene kan vises. Det har Isak bekreftet. Kommentarer fra andre (trener)
   skal ikke presenteres som Isaks tekst.
+- GPS-sporene viser hvor Isak bor. De lagres bare lokalt og legges aldri i git.
+  Rådataene (e-post, fødselsdato) holdes også utenfor git.
+- Garmin-aktiviteter kobles til dagbokøkter ut fra dato, varighet og distanse (94 %
+  koblet). Dagboka er fasit for soner og varighet, og Garmin supplerer med puls, spor og
+  helsedata.
 
 ## Brand Commitments
 
@@ -59,10 +80,15 @@ sentralt**. Ingen av dem skal gjemmes bak den andre.
 
 ## Evidence on Hand
 
-- `data/okter.json` har 3 929 økter, `data/dager.json` 610 dagsrapporter,
+- **Dagboka:** `data/okter.json` har 3 929 økter, `data/dager.json` 610 dagsrapporter,
   `data/uker.json` 357 ukeskommentarer og `data/profil.json` pulssonene.
-- Kontrolltall per år står i `CLAUDE.md`.
-- Det finnes ingen bilder eller logo, og ingen Garmin-data ennå. Slikt skal ikke diktes opp.
+- **Garmin:**
+  - `data/garmin_aktiviteter.json` har 4 886 aktiviteter, hvorav 3 528 med GPS-spor.
+  - `data/garmin_helse.json` har hvilepuls for 2 259 dager, HRV for 1 109 netter, søvn for
+    1 246 netter og belastning for 1 163 dager.
+- **Kontrolltall:** per år står i `CLAUDE.md`.
+- **Ikke tilgjengelig:** Det finnes ingen bilder eller logo, og ingen dagbokdata før
+  nov. 2019. Excel-dagboka for 2017–2019 er ikke importert. Slikt skal ikke diktes opp.
 
 ## Product Principles
 
@@ -70,4 +96,6 @@ sentralt**. Ingen av dem skal gjemmes bak den andre.
 2. Ord og tall er likeverdige. En økt er både «42 min, 7,9 km, I1» og det Isak skrev om den.
 3. Oversikt først, detaljer ved ett klikk: uke → økt → blokker.
 4. Tallene må stemme med kontrolltallene i `CLAUDE.md` og følge reglene der.
-5. Strukturen skal tåle nye datakilder (Garmin) og analyseverktøy uten omskriving.
+5. Strukturen skal tåle nye datakilder og analyseverktøy uten omskriving. Garmin er lagt
+   til som et valgfritt lag, og siden virker også uten det.
+6. Personvern først: posisjonsdata og personopplysninger blir aldri med i git.

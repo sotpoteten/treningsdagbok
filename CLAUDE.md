@@ -1,8 +1,25 @@
 # Treningsdagbok – nettside
 
-Prosjektet skal bli en nettside som visualiserer Isaks treningsdata, eksportert fra
-treningsdagboka til Olympiatoppen (dagbok.olympiatoppen.no). Isak er orienteringsløper.
-Han skriver på norsk, så svar på norsk og bruk norske tekster på siden.
+En nettside som visualiserer Isaks treningsdata, eksportert fra treningsdagboka til
+Olympiatoppen (dagbok.olympiatoppen.no), supplert med en full Garmin-eksport. Isak er
+orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tekster på siden.
+
+- **Repo:** privat på github.com/sotpoteten/treningsdagbok. Commit direkte på `main`, og
+  bare når Isak ber om det. Felles regler står i `../CLAUDE.md`.
+- **Brukerdokumentasjon:** `README.md` beskriver oppstart, dataoppdatering og struktur.
+- **Design og produkt:** `DESIGN.md` er designsystemet, `PRODUCT.md` er produktfaktaene.
+
+## Status (okt. 2026)
+
+1. **Dagbok:** ukeskalender med søk, filter og øktpanel.
+2. **Analyse** med sesonger fra 1. nov. til 31. okt.: Oversikt, Volum, Sesonger,
+   Intensitet og aktivitet, Rekorder, og Helse og belastning.
+3. **Garmin:** Aktivitetene er koblet til øktene. Øktpanelet har kart, kurver og runder.
+   Hvilepuls, HRV, søvn og belastning brukes i analysen.
+4. **Mulig senere:**
+   - importere Excel-dagboka for 2017–2019
+   - publisere siden
+   - flere analyseverktøy
 
 ## Filer
 
@@ -17,6 +34,8 @@ Han skriver på norsk, så svar på norsk og bruk norske tekster på siden.
 | `data/dager.json` | Dagsrapporter: syk, skadet, reise, høyde, fridag, konkurranse, dagsnotat, sykdoms- og skadedetaljer. |
 | `data/uker.json` | Ukeskommentarer per ISO-uke. |
 | `data/profil.json` | Navn, idrett, klubb og pulssoner. Uten e-post og fødselsdato. |
+| `data/garmin_*.json`, `data/garmin_spor/` | Garmin-data, se seksjonen «Garmin-data» under. |
+| `scripts/konverter_garmin.py`, `scripts/garmin_kobling.py` | Garmin-eksport → `data/garmin_*`. Krever `.venv` (Python 3.12 med `fitdecode` og `tzdata`). |
 
 Ved ny eksport legger du filene i `data/raw/` med navnene over og kjører
 `python scripts/konverter.py`. Skriptet skriver ut advarsler hvis det dukker opp ukjente
@@ -193,7 +212,9 @@ en trener. Den ligger i `kommentarer_andre` og vises ikke uten videre som Isaks 
 Kommentarene (dagboknotatene) kan vises på nettsiden. Det har Isak bekreftet. Den rå
 eksporten (`data/raw/`) er likevel holdt utenfor git via `.gitignore`, blant annet
 fordi `userData.json` inneholder e-post og fødselsdato. De ryddige filene i `data/` har
-ikke med disse opplysningene.
+ikke med disse opplysningene. GPS-sporene (`data/garmin_spor/`, `web/public/garmin_spor/`)
+holdes også utenfor git, fordi de viser hvor Isak bor. `garmin_aktiviteter.json` har ingen
+koordinater.
 
 ## Garmin-data
 
@@ -255,23 +276,24 @@ Kjøres lokalt på **port 5180**. Porten er fast fordi 5173 brukes av en annen a
 cd web
 npm install        # første gang
 npm run dev        # http://localhost:5180 (kopierer data/*.json til public/data/ først)
-npm test           # vitest: summer mot kontrolltallene, ISO-uker, søk
+npm test           # vitest: kontrolltall, ISO-uker, sesonger, søk, formatering, helseserier
 npm run build      # typesjekk og bygg til web/dist/
 ```
 
 Node ligger i `C:\Program Files\nodejs`. Hvis skallet ikke finner `npm`, legg den mappa
-først i PATH.
+først i PATH. Python-testene for Garmin-koblingen kjøres med
+`.venv\Scripts\python -m unittest scripts/test_garmin_kobling.py`.
 
 | Mappe/fil | Innhold |
 |---|---|
 | `src/data/` | Typer, lasting og indekser (`last.ts`), ISO-uker (`uker.ts`), summer etter reglene over (`aggregat.ts`), søk og filter (`filter.ts`) og formatering (`format.ts`) |
 | `src/sider/Dagbok.tsx` | Ukeskalenderen: virtualisert liste med uker, nyeste først. `/okt/:id` åpner øktpanelet |
 | `src/sider/Analyse.tsx` | Ramme for analysesiden: undermeny, sesongvelger (`?sesong=2025-26`) og felles `Analysekontekst` |
-| `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (og aktivitet), Rekorder (og helse) |
-| `src/data/statistikk.ts` | Sesonger (1. nov.–31. okt.), kumulative kurver, glidende snitt, kvalitetsøkter (≥ 10 min i I3–I5), aktivitetsfordeling, rekorder og rekker, helse per sesong |
-| `src/komponenter/graf/` | Egne SVG-grafer (`Stolper`, `Linjer`) med d3-scale/d3-shape, verktøytips, tastatur (piltaster, Enter) og tabellvisning (`Grafkort`) |
-| `src/komponenter/` | Ukerad, Oktkort, Oktpanel, Hoydelag (årsnavigasjonen), Sok, Topplinje, Sonestolpe, Dagsmarkorer |
-| `src/stil/tokens.css` | Farger for lys og mørk modus. Sonefargene er validert for fargeblindhet |
+| `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (og aktivitet), Rekorder, Helse (hvilepuls, HRV, søvn, belastning, syke- og skadedager) |
+| `src/data/statistikk.ts` | Sesonger (1. nov.–31. okt.), kumulative kurver, glidende snitt (også med hull), dagserier, kvalitetsøkter (≥ 10 min i I3–I5), aktivitetsfordeling, rekorder og rekker, syke- og skadedager per sesong |
+| `src/komponenter/graf/` | Egne SVG-grafer (`Stolper`, `Linjer`, `Tidsserie`) med d3, verktøytips, tastatur (piltaster, Enter), berøring og tabellvisning (`Grafkort`) |
+| `src/komponenter/` | Ukerad, Oktkort, Oktpanel, Garminokt, Hoydelag (årsnavigasjonen), Sok, Topplinje, Sonestolpe, Dagsmarkorer, `kart/Kart.tsx` (MapLibre) |
+| `src/stil/` | `tokens.css` (farger for lys og mørk modus, sonefargene er validert for fargeblindhet), `app.css` (dagboka), `analyse.css` (analyse og grafer), `garmin.css` (kart, kurver, helse) |
 
 - **Ruter:** Hash-ruting (`#/`, `#/okt/<id>`, `#/analyse/...`). Søket ligger i URL-en
   (`?q=…&type=loping,konk`), så visninger kan lenkes. `#/?uke=2025-14` åpner dagboka på
@@ -282,8 +304,11 @@ først i PATH.
   sesong er blekk, og resten er dempet. Aktiviteter vises som små multipler i blekk.
   Kvalitetsøkter bruker I3-fargen, konkurranser kotebrunt, og syk og skadet stempelrødt
   (skadet skravert).
-- **Design:** Den visuelle retningen heter «Kartbladet». Retningskontrakten ligger i
-  `.impeccable/surfaces/` og produktfaktaene i `PRODUCT.md`.
+- **Design:** Den visuelle retningen heter «Kartbladet» og er beskrevet i `DESIGN.md`.
+  Retningskontrakten ligger i `.impeccable/surfaces/`, og produktfaktaene i `PRODUCT.md`.
+  Skjermbilder fra gjennomgangene havner i `.impeccable/review/` (gitignored). Nye
+  flater følger reglene i DESIGN.md: ingen radius, ingen skygger, flate farger, ingen ny
+  kategoripalett, og hver farge har én betydning.
 - **Garmin på siden:**
   - **Lasting:** `last.ts` laster `garmin_aktiviteter.json` og `garmin_helse.json` hvis
     de finnes, og bygger indeksene `garminPerOkt` og `helsePerDato`.

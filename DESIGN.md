@@ -197,6 +197,10 @@ Ingenting forsvinner. Et filter eller søk demper det som ikke treffer, i stedet
 - Barlow for grensesnittet, Barlow Condensed for tall og etiketter, Source Serif 4 for notater.
 - Filtrert dempes, fjernes aldri.
 - Lyst og mørkt tema med egne, validerte verdier.
+- Grafer i samme språk: firkantede stolper, blekklinjer, ingen ny kategoripalett. Valgt
+  sesong er rutenettblå, og alt annet står i blekk eller er dempet.
+- Kart med Kartverkets topografiske kart som bakgrunn, og sporet tegnet i blekk, som et
+  løp tegnet inn på kartbladet.
 
 ## Colors
 
