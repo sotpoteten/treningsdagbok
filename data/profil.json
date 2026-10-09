@@ -1,0 +1,30 @@
+{
+ "navn": "Isak Sören Jonsson",
+ "idrett": "Orientering",
+ "forbund": "Norges Orienteringsforbund",
+ "klubb": "Kjelsås IL, Nydalens SK",
+ "pulssoner": {
+  "I1": {
+   "Min": 126,
+   "Max": 150
+  },
+  "I2": {
+   "Min": 151,
+   "Max": 171
+  },
+  "I3": {
+   "Min": 172,
+   "Max": 182
+  },
+  "I4": {
+   "Min": 183,
+   "Max": 192
+  },
+  "I5": {
+   "Min": 193,
+   "Max": 210
+  },
+  "enhet": "slag/min",
+  "sist_oppdatert": "2026-01-29"
+ }
+}
