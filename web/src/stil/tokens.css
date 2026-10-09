@@ -1,0 +1,97 @@
+/* Kartbladet: kartpapir, blekk, blått rutenett, kotebrun og høydelag for sonene.
+   Sonefargene er validert med dataviz-validatoren (nabotrinn ΔE ≥ 15 normalt, ≥ 8 CVD). */
+:root {
+  color-scheme: light;
+  --papir: #fafaf5;
+  --papir-2: #f1f1ea;
+  --blekk: #1d1d1b;
+  --blekk-2: #4a4a45;
+  --blekk-3: #6b6b64;
+  --rute: #2f6fa8;
+  --rute-svak: #c9daea;
+  --rute-flate: #e8f0f7;
+  /* Mørkere enn kartets #B26A34, så 11 px etiketter holder 4,5:1 mot papiret. */
+  --kote: #9a5a2a;
+  --stempel: #b0362a;
+
+  --i1: #86bfa9;
+  --i2: #e9be45;
+  --i3: #d4732e;
+  --i4: #9b3c2a;
+  --i5: #4e1f2a;
+  /* Styrke tegnes skravert (se .seg-styrke), så den ikke kan forveksles med I5. */
+  --styrke: #6b6b64;
+
+  /* Ukevolum i årsnavigasjonen: én blå tone, lys → mørk, som dybdelag.
+     Holdes adskilt fra sonefargene, så samme farge aldri betyr to ting. */
+  --h0: #f1f1ea;
+  --h1: #dde8f2;
+  --h2: #bcd3e8;
+  --h3: #93b7d8;
+  --h4: #6496c2;
+  --h5: #3a74a8;
+  --h6: #1f4f7e;
+
+  --font-ui: 'Barlow', system-ui, sans-serif;
+  --font-tall: 'Barlow Condensed', 'Barlow', system-ui, sans-serif;
+  --font-tekst: 'Source Serif 4 Variable', Georgia, serif;
+
+  --strek: 1px solid var(--blekk);
+  --strek-rute: 1px solid var(--rute-svak);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --papir: #16181a;
+    --papir-2: #1e2124;
+    --blekk: #e9e7df;
+    --blekk-2: #c2c0b8;
+    --blekk-3: #9a9890;
+    --rute: #7fb0dc;
+    --rute-svak: #2a3a4a;
+    --rute-flate: #1b2733;
+    --kote: #d79a62;
+    --stempel: #ef7a6c;
+    --i1: #6fb59e;
+    --i2: #e9c34f;
+    --i3: #e46f2e;
+    --i4: #bf3350;
+    --i5: #a77bda;
+    --styrke: #a3a199;
+    --h0: #1e2124;
+    --h1: #1d2b38;
+    --h2: #24405a;
+    --h3: #2f5b80;
+    --h4: #3f78a6;
+    --h5: #5b97c8;
+    --h6: #8cbbe3;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --papir: #16181a;
+  --papir-2: #1e2124;
+  --blekk: #e9e7df;
+  --blekk-2: #c2c0b8;
+  --blekk-3: #9a9890;
+  --rute: #7fb0dc;
+  --rute-svak: #2a3a4a;
+  --rute-flate: #1b2733;
+  --kote: #d79a62;
+  --stempel: #ef7a6c;
+  --i1: #6fb59e;
+  --i2: #e9c34f;
+  --i3: #e46f2e;
+  --i4: #bf3350;
+  --i5: #a77bda;
+  --styrke: #a3a199;
+  --h0: #1e2124;
+  --h1: #1d2b38;
+  --h2: #24405a;
+  --h3: #2f5b80;
+  --h4: #3f78a6;
+  --h5: #5b97c8;
+  --h6: #8cbbe3;
+}

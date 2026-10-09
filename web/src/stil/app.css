@@ -1,0 +1,1085 @@
+/* Kartbladet. Alle linjer er 1 px hårstrek, fargene er flate, og ingen radius eller skygger. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--papir);
+  color: var(--blekk);
+  font: 400 15px/1.45 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  scrollbar-color: var(--rute-svak) transparent;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+::selection {
+  background: var(--rute);
+  color: var(--papir);
+}
+
+:focus-visible {
+  outline: 2px solid var(--rute);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+.ikon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.ikonknapp {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--blekk);
+  cursor: pointer;
+  flex: none;
+}
+.ikonknapp svg {
+  width: 18px;
+  height: 18px;
+}
+.ikonknapp:hover:not(:disabled) {
+  background: var(--rute-flate);
+}
+.ikonknapp:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.ikonknapp.liten {
+  width: 26px;
+  height: 26px;
+}
+
+.lenkeknapp {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: 500 13px var(--font-ui);
+  color: var(--rute);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.status {
+  margin: auto;
+  max-width: 48ch;
+  text-align: center;
+  display: grid;
+  gap: 8px;
+  color: var(--blekk-2);
+}
+.status h1 {
+  font: 600 22px var(--font-tall);
+  color: var(--blekk);
+}
+
+/* ── Topplinje ─────────────────────────────────────────── */
+
+.topplinje {
+  flex: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  min-height: 56px;
+  padding: 0 20px 0 24px;
+  border-bottom: var(--strek);
+}
+
+.merke {
+  font: 600 16px var(--font-ui);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.merke small {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--blekk-3);
+  margin-left: 8px;
+}
+
+.hovedmeny {
+  display: flex;
+  gap: 20px;
+  align-self: stretch;
+}
+.hovedmeny a {
+  display: flex;
+  align-items: center;
+  color: var(--blekk);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.hovedmeny a:hover {
+  color: var(--rute);
+}
+.hovedmeny a.active {
+  border-bottom-color: var(--rute);
+}
+
+.verktoy {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+/* ── Søk og filter ─────────────────────────────────────── */
+
+.sok {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 10px 0;
+}
+
+.sokefelt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 260px;
+  height: 34px;
+  padding: 0 4px 0 10px;
+  border: var(--strek);
+  background: var(--papir);
+  color: var(--blekk-3);
+}
+.sokefelt:focus-within {
+  outline: 2px solid var(--rute);
+  outline-offset: 1px;
+}
+.sokefelt input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--blekk);
+}
+.sokefelt input::placeholder {
+  color: var(--blekk-3);
+}
+.sokefelt input::-webkit-search-cancel-button {
+  display: none;
+}
+.tom-sok {
+  border: 0;
+  background: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  color: var(--blekk-3);
+}
+
+.typer {
+  display: flex;
+  gap: 4px;
+}
+.filterbrikke {
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--rute-svak);
+  background: transparent;
+  font: 500 13px var(--font-ui);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.filterbrikke:hover {
+  border-color: var(--rute);
+}
+.filterbrikke[aria-pressed='true'] {
+  background: var(--rute);
+  border-color: var(--rute);
+  color: var(--papir);
+}
+
+.treff {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font: 600 14px var(--font-tall);
+  color: var(--rute);
+  white-space: nowrap;
+}
+.treff span {
+  margin-right: 4px;
+}
+
+/* ── Dagbok: høydelag | kalender | panel ───────────────── */
+
+.dagbok {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 152px minmax(0, 1fr);
+}
+.dagbok.med-panel {
+  grid-template-columns: 152px minmax(0, 1fr) minmax(360px, 440px);
+}
+/* Smalere dagkolonner når panelet er åpent: litt mindre navn, så lange ord får plass. */
+.med-panel .okt-navn {
+  font-size: 13px;
+}
+.med-panel .dag {
+  padding-inline: 7px;
+}
+
+.kalender {
+  position: relative;
+  overflow-y: auto;
+  padding: 0 28px 0 40px;
+  /* Kartbladets rutenett, som et svakt UTM-nett under ukene. */
+  background-image: linear-gradient(var(--rute-flate) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rute-flate) 1px, transparent 1px);
+  background-size: 96px 96px;
+  background-attachment: local;
+}
+
+.kalender-innhold {
+  position: relative;
+  width: 100%;
+}
+
+.rad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.maned {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 0 0;
+  font: 600 17px var(--font-tall);
+  letter-spacing: 0.01em;
+  color: var(--blekk);
+}
+.maned::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--rute);
+}
+
+/* ── Ukerad ────────────────────────────────────────────── */
+
+.uke {
+  position: relative;
+  border: var(--strek);
+  background: var(--papir);
+}
+
+/* Koordinatmerke i kartbladets marg: år og uke, lest nedenfra og opp. */
+.koordinat {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 8px);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font: 600 11px var(--font-tall);
+  letter-spacing: 0.08em;
+  color: var(--rute);
+  white-space: nowrap;
+}
+.uke.uten-treff {
+  opacity: 0.5;
+}
+/* Uka er allerede dempet; ikke demp kortene en gang til. */
+.uke.uten-treff .oktkort.dempet {
+  opacity: 1;
+}
+
+.uke-hode {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  border-bottom: var(--strek);
+}
+.uke-hode h2 {
+  align-self: center;
+  padding: 10px 14px;
+  font: 600 21px/1.1 var(--font-tall);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.uke-spenn {
+  font: 400 14px var(--font-ui);
+  color: var(--blekk-3);
+  margin-left: 10px;
+}
+
+.uke-tall {
+  display: grid;
+  grid-template-columns: 78px 78px 60px 232px;
+}
+.celle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 4px 12px;
+  border-left: var(--strek-rute);
+}
+.celle b {
+  font: 600 20px/1.1 var(--font-tall);
+}
+.celle small {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--blekk-3);
+}
+.stolpecelle {
+  align-items: stretch;
+  gap: 5px;
+  padding: 4px 14px;
+}
+.stolpecelle .otek {
+  text-transform: none;
+  letter-spacing: 0;
+  font: 500 12px var(--font-tall);
+}
+
+.uke-dager {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.dag {
+  min-height: 132px;
+  padding: 8px 8px 10px;
+  border-right: var(--strek-rute);
+}
+.dag:last-child {
+  border-right: 0;
+}
+.dag.syk,
+.dag.skadet {
+  background: var(--papir-2);
+}
+
+.dag-hode {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  min-height: 18px;
+  margin-bottom: 6px;
+}
+.dag-dato {
+  font: 500 12px var(--font-tall);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rute);
+  padding: 0 3px;
+  margin-left: -3px;
+}
+.dag.idag .dag-dato {
+  background: var(--rute);
+  color: var(--papir);
+}
+.dag-mnd {
+  display: none;
+}
+
+.markorer {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.markor {
+  font: 500 11px/15px var(--font-tall);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--kote);
+  border: 1px solid currentColor;
+  padding: 0 4px;
+}
+.markor-konkurranse {
+  background: var(--kote);
+  border-color: var(--kote);
+  color: var(--papir);
+}
+.dag-notat {
+  margin: 6px 0 0;
+  font: 400 13px/1.4 var(--font-tekst);
+  color: var(--blekk-2);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+.dag-notat .ikon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  vertical-align: -1px;
+  color: var(--kote);
+}
+.dag-notat.helse {
+  margin: 0 0 6px;
+  color: var(--stempel);
+}
+.tom-spenn {
+  display: none;
+}
+
+.stempler {
+  display: flex;
+  gap: 6px;
+  margin: 2px 0 8px;
+}
+.stempel {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1.5px solid var(--stempel);
+  color: var(--stempel);
+  font: 600 13px var(--font-tall);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+}
+
+/* ── Øktkort ───────────────────────────────────────────── */
+
+.oktkort {
+  display: block;
+  padding: 5px 4px 8px;
+  margin: 0 -4px 2px;
+  border-top: var(--strek);
+  color: inherit;
+  text-decoration: none;
+}
+.oktkort:hover {
+  background: var(--rute-flate);
+}
+.oktkort.valgt {
+  background: var(--rute-flate);
+  outline: 2px solid var(--rute);
+  outline-offset: -1px;
+}
+.oktkort.dempet {
+  opacity: 0.25;
+}
+.okt-navn {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.okt-tall {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: 500 13px var(--font-tall);
+  color: var(--blekk-2);
+}
+.okt-tall .ikon {
+  width: 13px;
+  height: 13px;
+  color: var(--blekk-3);
+}
+.okt-tall .ikon:first-of-type {
+  margin-left: 2px;
+}
+
+/* ── Sonestolpe ────────────────────────────────────────── */
+
+.sonestolpe {
+  display: flex;
+  gap: 2px;
+  height: 10px;
+}
+.sonestolpe.tynn {
+  gap: 1px;
+  height: 4px;
+  margin-top: 6px;
+}
+.sonestolpe.tom {
+  height: 0;
+}
+.seg {
+  display: block;
+  min-width: 2px;
+}
+.seg-i1 { background: var(--i1); }
+.seg-i2 { background: var(--i2); }
+.seg-i3 { background: var(--i3); }
+.seg-i4 { background: var(--i4); }
+.seg-i5 { background: var(--i5); }
+.seg-styrke {
+  /* Skravert, så styrke aldri forveksles med I5 – heller ikke ved fargeblindhet. */
+  background: repeating-linear-gradient(135deg, var(--styrke) 0 2px, transparent 2px 4px);
+  box-shadow: inset 0 0 0 1px var(--styrke);
+}
+
+/* ── Ukeskommentar ─────────────────────────────────────── */
+
+.ukekommentar {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 10px 14px 12px;
+  border-top: var(--strek-rute);
+}
+.ukekommentar-tekst {
+  max-width: 75ch;
+  font: 400 16px/1.55 var(--font-tekst);
+  max-height: 3.1em;
+  overflow: hidden;
+}
+.ukekommentar.apen .ukekommentar-tekst {
+  max-height: none;
+}
+.ukekommentar-tekst p + p {
+  margin-top: 0.6em;
+}
+.ukekommentar .lenkeknapp {
+  flex: none;
+  margin-bottom: 3px;
+}
+
+/* ── Høydelag (årsnavigasjon) ──────────────────────────── */
+
+.hoydelag {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 12px 10px 10px;
+  border-right: var(--strek);
+  overflow-y: auto;
+}
+
+.hl-kart {
+  display: grid;
+  grid-template-rows: 16px repeat(53, 8px);
+  row-gap: 2px;
+  column-gap: 3px;
+}
+.hl-hjorne {
+  grid-row: 1;
+}
+.hl-ar {
+  grid-row: 1;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: 600 11px var(--font-tall);
+  cursor: pointer;
+}
+.hl-ar:hover {
+  color: var(--rute);
+}
+.hl-mnd {
+  grid-column: 1;
+  font: 500 9px/8px var(--font-tall);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--blekk-3);
+}
+.hl-uke {
+  border: 0;
+  padding: 0;
+  height: 8px;
+  cursor: pointer;
+  position: relative;
+}
+.hl-uke:hover {
+  outline: 1px solid var(--blekk);
+  z-index: 2;
+}
+.hl-uke.synlig {
+  outline: 1.5px solid var(--rute);
+  z-index: 1;
+}
+.hl-kart.filtrert .hl-uke:not(.treff) {
+  opacity: 0.2;
+}
+
+.lag-0 { background: var(--h0); }
+.lag-1 { background: var(--h1); }
+.lag-2 { background: var(--h2); }
+.lag-3 { background: var(--h3); }
+.lag-4 { background: var(--h4); }
+.lag-5 { background: var(--h5); }
+.lag-6 { background: var(--h6); }
+
+.hl-info {
+  min-height: 46px;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: var(--blekk-2);
+  border-top: var(--strek-rute);
+  padding-top: 8px;
+}
+.hl-info b {
+  font: 600 14px var(--font-tall);
+  color: var(--blekk);
+}
+.hl-sum {
+  font: 500 13px var(--font-tall);
+  color: var(--blekk);
+}
+.hl-hint {
+  font: 500 11px var(--font-tall);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blekk-3);
+}
+
+.hl-tegnforklaring {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 8px;
+  font: 500 11px var(--font-tall);
+  color: var(--blekk-2);
+}
+.hl-tegnforklaring li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.hl-tegnforklaring i {
+  width: 10px;
+  height: 10px;
+  flex: none;
+}
+
+.tegnforklaring-soner {
+  border-top: var(--strek-rute);
+  padding-top: 8px;
+}
+.tegnforklaring-soner ol {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font: 500 12px var(--font-tall);
+}
+.tegnforklaring-soner li {
+  display: grid;
+  grid-template-columns: 14px 34px 1fr;
+  align-items: center;
+  gap: 4px;
+}
+.tegnforklaring-soner i {
+  width: 14px;
+  height: 8px;
+}
+.tegnforklaring-soner li span {
+  color: var(--blekk-3);
+}
+
+/* ── Øktpanel ──────────────────────────────────────────── */
+
+.oktpanel {
+  overflow-y: auto;
+  padding: 12px 24px 40px;
+  border-left: var(--strek);
+  background: var(--papir);
+  outline: none;
+}
+
+.panel-topp {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 -8px;
+}
+.panel-pos {
+  flex: 1;
+  padding-left: 8px;
+  font: 500 13px var(--font-tall);
+  color: var(--blekk-3);
+}
+
+.oktpanel h2 {
+  margin: 14px 0 4px;
+  font: 600 30px/1.1 var(--font-tall);
+  text-wrap: balance;
+}
+.panel-meta {
+  color: var(--blekk-2);
+}
+.panel-markorer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.panel-markorer .stempler {
+  margin: 0;
+}
+
+.nokkeltall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 18px 0 0;
+  border-top: var(--strek);
+  border-left: var(--strek-rute);
+}
+.nokkeltall div {
+  padding: 8px 10px 9px;
+  border-right: var(--strek-rute);
+  border-bottom: var(--strek-rute);
+}
+.nokkeltall dt {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--blekk-3);
+}
+.nokkeltall dd {
+  margin: 2px 0 0;
+  font: 600 20px/1.2 var(--font-tall);
+}
+
+.skala {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.skala-strek {
+  display: inline-flex;
+  gap: 2px;
+}
+.skala-strek i {
+  width: 5px;
+  height: 11px;
+  background: var(--rute-svak);
+}
+.skala-strek i.fylt {
+  background: var(--blekk);
+}
+
+.panel-del {
+  margin-top: 26px;
+}
+.panel-del h3 {
+  font: 600 12px var(--font-tall);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rute);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--rute-svak);
+}
+.panel-del p + p {
+  margin-top: 0.6em;
+}
+.notat {
+  font: 400 17px/1.6 var(--font-tekst);
+  max-width: 65ch;
+}
+.panel-del.andre {
+  background: var(--papir-2);
+  padding: 12px 14px 14px;
+}
+.fotnote {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--blekk-3);
+}
+
+.sonetabell,
+.blokktabell,
+.arstabell {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.sonetabell {
+  margin-top: 10px;
+}
+.sonetabell th,
+.sonetabell td,
+.blokktabell th,
+.blokktabell td,
+.arstabell th,
+.arstabell td {
+  padding: 6px 6px;
+  border-bottom: var(--strek-rute);
+  text-align: right;
+  vertical-align: top;
+}
+.sonetabell th,
+.blokktabell td:first-child,
+.blokktabell th:first-child,
+.arstabell th:first-child {
+  text-align: left;
+}
+.blokktabell thead th,
+.arstabell thead th {
+  font: 500 11px var(--font-tall);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blekk-3);
+  border-bottom: var(--strek);
+}
+.sonetabell td,
+.blokktabell td,
+.arstabell td {
+  font: 500 15px var(--font-tall);
+}
+.sonetabell .puls {
+  color: var(--blekk-3);
+}
+.prikk {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+}
+.blokk-soner {
+  display: block;
+  font: 500 12px var(--font-tall);
+  color: var(--blekk-3);
+}
+.blokktabell .delsett td {
+  color: var(--blekk-2);
+}
+
+/* ── Analyse ───────────────────────────────────────────── */
+
+.analyse {
+  flex: 1;
+  overflow: auto;
+  padding: 32px 32px 48px;
+}
+.analyse h1 {
+  font: 600 32px var(--font-tall);
+}
+.ingress {
+  margin: 6px 0 24px;
+  color: var(--blekk-2);
+  max-width: 65ch;
+}
+.arstabell {
+  max-width: 1100px;
+  border-top: var(--strek);
+}
+
+/* ── Smalere skjermer ──────────────────────────────────── */
+
+@media (max-width: 1180px) {
+  .dagbok.med-panel {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
+  }
+  .dagbok.med-panel .hoydelag {
+    display: none;
+  }
+  .uke-tall {
+    grid-template-columns: 70px 70px 52px 180px;
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    font-size: 15px;
+  }
+  .topplinje {
+    padding: 8px 16px 0;
+    gap: 4px 20px;
+  }
+  .verktoy {
+    flex-basis: 100%;
+    order: 3;
+    justify-content: flex-start;
+  }
+  .sok {
+    width: 100%;
+    padding: 6px 0 10px;
+  }
+  .sokefelt {
+    width: 100%;
+  }
+  .typer {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Myk kant viser at brikkene fortsetter. */
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+    padding-right: 24px;
+  }
+  .hovedmeny a {
+    padding: 8px 0;
+  }
+
+  .dagbok,
+  .dagbok.med-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hoydelag {
+    display: none;
+  }
+  .kalender {
+    padding: 0 16px;
+  }
+
+  .uke-hode {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .uke-hode h2 {
+    padding: 10px 12px 8px;
+    white-space: normal;
+  }
+  .uke-tall {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: var(--strek-rute);
+  }
+  .celle:first-child {
+    border-left: 0;
+  }
+  .stolpecelle {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: var(--strek-rute);
+    padding: 8px 12px;
+  }
+
+  .uke-dager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dag {
+    display: grid;
+    grid-template-columns: 68px minmax(0, 1fr);
+    column-gap: 10px;
+    min-height: 0;
+    padding: 8px 12px;
+    border-right: 0;
+    border-bottom: var(--strek-rute);
+  }
+  .dag:last-child {
+    border-bottom: 0;
+  }
+  .dag-hode {
+    grid-column: 1;
+    grid-row: 1 / span 9;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+  }
+  .dag-mnd {
+    display: inline;
+  }
+  .koordinat {
+    display: none;
+  }
+  .dag.tom-fortsatt {
+    display: none;
+  }
+  .dag.tom {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 6px 12px;
+  }
+  .dag.tom .dag-hode {
+    flex-direction: row;
+  }
+  .dag.tom .dag-dato {
+    display: none;
+  }
+  .tom-spenn {
+    display: inline;
+    font: 500 12px var(--font-tall);
+    letter-spacing: 0.04em;
+    color: var(--blekk-3);
+  }
+  .dag-notat {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+  }
+  .dag > :not(.dag-hode) {
+    grid-column: 2;
+  }
+  .oktkort:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .ukekommentar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 12px 12px;
+  }
+
+  .oktpanel {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    border-left: 0;
+    padding: 8px 16px 40px;
+  }
+  .nokkeltall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .analyse {
+    padding: 20px 16px 40px;
+  }
+  .arstabell {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .oktkort,
+  .filterbrikke,
+  .hl-uke {
+    transition: background-color 120ms ease-out, opacity 160ms ease-out;
+  }
+}

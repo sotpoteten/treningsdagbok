@@ -1,3 +1,10 @@
 data/raw/
 __pycache__/
 .venv/
+web/node_modules/
+web/dist/
+web/public/data/
+.impeccable/mocks/
+.impeccable/review/
+.playwright-mcp/
+.impeccable/questions/

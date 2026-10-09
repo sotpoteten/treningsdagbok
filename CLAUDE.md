@@ -194,3 +194,34 @@ Kommentarene (dagboknotatene) kan vises på nettsiden. Det har Isak bekreftet. D
 eksporten (`data/raw/`) er likevel holdt utenfor git via `.gitignore`, blant annet
 fordi `userData.json` inneholder e-post og fødselsdato. De ryddige filene i `data/` har
 ikke med disse opplysningene.
+
+## Nettsiden (`web/`)
+
+Vite + React + TypeScript. Statisk side som leser JSON-filene i `data/`, ingen server.
+Kjøres lokalt på **port 5180**. Porten er fast fordi 5173 brukes av en annen app.
+
+```
+cd web
+npm install        # første gang
+npm run dev        # http://localhost:5180 (kopierer data/*.json til public/data/ først)
+npm test           # vitest: summer mot kontrolltallene, ISO-uker, søk
+npm run build      # typesjekk og bygg til web/dist/
+```
+
+Node ligger i `C:\Program Files\nodejs`. Hvis skallet ikke finner `npm`, legg den mappa
+først i PATH.
+
+| Mappe/fil | Innhold |
+|---|---|
+| `src/data/` | Typer, lasting og indekser (`last.ts`), ISO-uker (`uker.ts`), summer etter reglene over (`aggregat.ts`), søk og filter (`filter.ts`) og formatering (`format.ts`) |
+| `src/sider/Dagbok.tsx` | Ukeskalenderen: virtualisert liste med uker, nyeste først. `/okt/:id` åpner øktpanelet |
+| `src/sider/Analyse.tsx` | Plass til analyseverktøyene. Foreløpig årstotaler |
+| `src/komponenter/` | Ukerad, Oktkort, Oktpanel, Hoydelag (årsnavigasjonen), Sok, Topplinje, Sonestolpe, Dagsmarkorer |
+| `src/stil/tokens.css` | Farger for lys og mørk modus. Sonefargene er validert for fargeblindhet |
+
+- **Ruter:** Hash-ruting (`#/`, `#/okt/<id>`, `#/analyse`). Søket ligger i URL-en
+  (`?q=…&type=loping,konk`), så visninger kan lenkes.
+- **Design:** Den visuelle retningen heter «Kartbladet». Retningskontrakten ligger i
+  `.impeccable/surfaces/` og produktfaktaene i `PRODUCT.md`.
+- **Garmin:** `Okt` har et valgfritt felt `garmin_id` til Garmin-koblingen, som kommer
+  når den fullstendige eksporten er på plass.

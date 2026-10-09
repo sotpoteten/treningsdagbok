@@ -1,0 +1,711 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T12:16:27+00:00",
+  "title": "Design System: Treningsdagbok",
+  "extensions": {
+    "colorMeta": {
+      "papir": {
+        "role": "neutral",
+        "displayName": "Kartpapir",
+        "canonical": "#fafaf5",
+        "tonalRamp": [
+          "oklch(15% 0.007 106.5)",
+          "oklch(26% 0.007 106.5)",
+          "oklch(38% 0.007 106.5)",
+          "oklch(50% 0.007 106.5)",
+          "oklch(62% 0.007 106.5)",
+          "oklch(74% 0.007 106.5)",
+          "oklch(85% 0.007 106.5)",
+          "oklch(95% 0.007 106.5)"
+        ]
+      },
+      "papir-2": {
+        "role": "neutral",
+        "displayName": "Skyggepapir",
+        "canonical": "#f1f1ea",
+        "tonalRamp": [
+          "oklch(15% 0.009 106.6)",
+          "oklch(26% 0.009 106.6)",
+          "oklch(38% 0.009 106.6)",
+          "oklch(50% 0.009 106.6)",
+          "oklch(62% 0.009 106.6)",
+          "oklch(74% 0.009 106.6)",
+          "oklch(85% 0.009 106.6)",
+          "oklch(95% 0.009 106.6)"
+        ]
+      },
+      "blekk": {
+        "role": "neutral",
+        "displayName": "Blekk",
+        "canonical": "#1d1d1b",
+        "tonalRamp": [
+          "oklch(15% 0.004 106.7)",
+          "oklch(26% 0.004 106.7)",
+          "oklch(38% 0.004 106.7)",
+          "oklch(50% 0.004 106.7)",
+          "oklch(62% 0.004 106.7)",
+          "oklch(74% 0.004 106.7)",
+          "oklch(85% 0.004 106.7)",
+          "oklch(95% 0.004 106.7)"
+        ]
+      },
+      "blekk-2": {
+        "role": "neutral",
+        "displayName": "Blekk 2",
+        "canonical": "#4a4a45",
+        "tonalRamp": [
+          "oklch(15% 0.008 106.8)",
+          "oklch(26% 0.008 106.8)",
+          "oklch(38% 0.008 106.8)",
+          "oklch(50% 0.008 106.8)",
+          "oklch(62% 0.008 106.8)",
+          "oklch(74% 0.008 106.8)",
+          "oklch(85% 0.008 106.8)",
+          "oklch(95% 0.008 106.8)"
+        ]
+      },
+      "blekk-3": {
+        "role": "neutral",
+        "displayName": "Blekk 3",
+        "canonical": "#6b6b64",
+        "tonalRamp": [
+          "oklch(15% 0.011 106.8)",
+          "oklch(26% 0.011 106.8)",
+          "oklch(38% 0.011 106.8)",
+          "oklch(50% 0.011 106.8)",
+          "oklch(62% 0.011 106.8)",
+          "oklch(74% 0.011 106.8)",
+          "oklch(85% 0.011 106.8)",
+          "oklch(95% 0.011 106.8)"
+        ]
+      },
+      "rute": {
+        "role": "primary",
+        "displayName": "Rutenettblå",
+        "canonical": "#2f6fa8",
+        "tonalRamp": [
+          "oklch(15% 0.111 248.5)",
+          "oklch(26% 0.111 248.5)",
+          "oklch(38% 0.111 248.5)",
+          "oklch(50% 0.111 248.5)",
+          "oklch(62% 0.111 248.5)",
+          "oklch(74% 0.111 248.5)",
+          "oklch(85% 0.111 248.5)",
+          "oklch(95% 0.111 248.5)"
+        ]
+      },
+      "rute-svak": {
+        "role": "primary",
+        "displayName": "Svak rutenettblå",
+        "canonical": "#c9daea",
+        "tonalRamp": [
+          "oklch(15% 0.029 246.5)",
+          "oklch(26% 0.029 246.5)",
+          "oklch(38% 0.029 246.5)",
+          "oklch(50% 0.029 246.5)",
+          "oklch(62% 0.029 246.5)",
+          "oklch(74% 0.029 246.5)",
+          "oklch(85% 0.029 246.5)",
+          "oklch(95% 0.029 246.5)"
+        ]
+      },
+      "rute-flate": {
+        "role": "primary",
+        "displayName": "Rutenettflate",
+        "canonical": "#e8f0f7",
+        "tonalRamp": [
+          "oklch(15% 0.013 244.3)",
+          "oklch(26% 0.013 244.3)",
+          "oklch(38% 0.013 244.3)",
+          "oklch(50% 0.013 244.3)",
+          "oklch(62% 0.013 244.3)",
+          "oklch(74% 0.013 244.3)",
+          "oklch(85% 0.013 244.3)",
+          "oklch(95% 0.013 244.3)"
+        ]
+      },
+      "kote": {
+        "role": "secondary",
+        "displayName": "Kotebrun",
+        "canonical": "#9a5a2a",
+        "tonalRamp": [
+          "oklch(15% 0.105 54.8)",
+          "oklch(26% 0.105 54.8)",
+          "oklch(38% 0.105 54.8)",
+          "oklch(50% 0.105 54.8)",
+          "oklch(62% 0.105 54.8)",
+          "oklch(74% 0.105 54.8)",
+          "oklch(85% 0.105 54.8)",
+          "oklch(95% 0.105 54.8)"
+        ]
+      },
+      "stempel": {
+        "role": "tertiary",
+        "displayName": "Stempelrød",
+        "canonical": "#b0362a",
+        "tonalRamp": [
+          "oklch(15% 0.160 29.3)",
+          "oklch(26% 0.160 29.3)",
+          "oklch(38% 0.160 29.3)",
+          "oklch(50% 0.160 29.3)",
+          "oklch(62% 0.160 29.3)",
+          "oklch(74% 0.160 29.3)",
+          "oklch(85% 0.160 29.3)",
+          "oklch(95% 0.160 29.3)"
+        ]
+      },
+      "i1": {
+        "role": "data",
+        "displayName": "I1 Lys myr",
+        "canonical": "#86bfa9",
+        "tonalRamp": [
+          "oklch(15% 0.067 168.5)",
+          "oklch(26% 0.067 168.5)",
+          "oklch(38% 0.067 168.5)",
+          "oklch(50% 0.067 168.5)",
+          "oklch(62% 0.067 168.5)",
+          "oklch(74% 0.067 168.5)",
+          "oklch(85% 0.067 168.5)",
+          "oklch(95% 0.067 168.5)"
+        ]
+      },
+      "i2": {
+        "role": "data",
+        "displayName": "I2 Gulbrun lyng",
+        "canonical": "#e9be45",
+        "tonalRamp": [
+          "oklch(15% 0.143 88.8)",
+          "oklch(26% 0.143 88.8)",
+          "oklch(38% 0.143 88.8)",
+          "oklch(50% 0.143 88.8)",
+          "oklch(62% 0.143 88.8)",
+          "oklch(74% 0.143 88.8)",
+          "oklch(85% 0.143 88.8)",
+          "oklch(95% 0.143 88.8)"
+        ]
+      },
+      "i3": {
+        "role": "data",
+        "displayName": "I3 Oransje",
+        "canonical": "#d4732e",
+        "tonalRamp": [
+          "oklch(15% 0.145 52.1)",
+          "oklch(26% 0.145 52.1)",
+          "oklch(38% 0.145 52.1)",
+          "oklch(50% 0.145 52.1)",
+          "oklch(62% 0.145 52.1)",
+          "oklch(74% 0.145 52.1)",
+          "oklch(85% 0.145 52.1)",
+          "oklch(95% 0.145 52.1)"
+        ]
+      },
+      "i4": {
+        "role": "data",
+        "displayName": "I4 Rødbrun",
+        "canonical": "#9b3c2a",
+        "tonalRamp": [
+          "oklch(15% 0.131 32.7)",
+          "oklch(26% 0.131 32.7)",
+          "oklch(38% 0.131 32.7)",
+          "oklch(50% 0.131 32.7)",
+          "oklch(62% 0.131 32.7)",
+          "oklch(74% 0.131 32.7)",
+          "oklch(85% 0.131 32.7)",
+          "oklch(95% 0.131 32.7)"
+        ]
+      },
+      "i5": {
+        "role": "data",
+        "displayName": "I5 Mørk vinrød",
+        "canonical": "#4e1f2a",
+        "tonalRamp": [
+          "oklch(15% 0.072 7.5)",
+          "oklch(26% 0.072 7.5)",
+          "oklch(38% 0.072 7.5)",
+          "oklch(50% 0.072 7.5)",
+          "oklch(62% 0.072 7.5)",
+          "oklch(74% 0.072 7.5)",
+          "oklch(85% 0.072 7.5)",
+          "oklch(95% 0.072 7.5)"
+        ]
+      },
+      "styrke": {
+        "role": "data",
+        "displayName": "Styrke (skravert)",
+        "canonical": "#6b6b64",
+        "tonalRamp": [
+          "oklch(15% 0.011 106.8)",
+          "oklch(26% 0.011 106.8)",
+          "oklch(38% 0.011 106.8)",
+          "oklch(50% 0.011 106.8)",
+          "oklch(62% 0.011 106.8)",
+          "oklch(74% 0.011 106.8)",
+          "oklch(85% 0.011 106.8)",
+          "oklch(95% 0.011 106.8)"
+        ]
+      },
+      "h0": {
+        "role": "data",
+        "displayName": "Dybdelag 0",
+        "canonical": "#f1f1ea",
+        "tonalRamp": [
+          "#1f4f7e",
+          "#3a74a8",
+          "#6496c2",
+          "#93b7d8",
+          "#bcd3e8",
+          "#dde8f2",
+          "#f1f1ea",
+          "#fafaf5"
+        ]
+      },
+      "h1": {
+        "role": "data",
+        "displayName": "Dybdelag 1",
+        "canonical": "#dde8f2",
+        "tonalRamp": [
+          "#1f4f7e",
+          "#3a74a8",
+          "#6496c2",
+          "#93b7d8",
+          "#bcd3e8",
+          "#dde8f2",
+          "#f1f1ea",
+          "#fafaf5"
+        ]
+      },
+      "h2": {
+        "role": "data",
+        "displayName": "Dybdelag 2",
+        "canonical": "#bcd3e8",
+        "tonalRamp": [
+          "#1f4f7e",
+          "#3a74a8",
+          "#6496c2",
+          "#93b7d8",
+          "#bcd3e8",
+          "#dde8f2",
+          "#f1f1ea",
+          "#fafaf5"
+        ]
+      },
+      "h3": {
+        "role": "data",
+        "displayName": "Dybdelag 3",
+        "canonical": "#93b7d8",
+        "tonalRamp": [
+          "#1f4f7e",
+          "#3a74a8",
+          "#6496c2",
+          "#93b7d8",
+          "#bcd3e8",
+          "#dde8f2",
+          "#f1f1ea",
+          "#fafaf5"
+        ]
+      },
+      "h4": {
+        "role": "data",
+        "displayName": "Dybdelag 4",
+        "canonical": "#6496c2",
+        "tonalRamp": [
+          "#1f4f7e",
+          "#3a74a8",
+          "#6496c2",
+          "#93b7d8",
+          "#bcd3e8",
+          "#dde8f2",
+          "#f1f1ea",
+          "#fafaf5"
+        ]
+      },
+      "h5": {
+        "role": "data",
+        "displayName": "Dybdelag 5",
+        "canonical": "#3a74a8",
+        "tonalRamp": [
+          "#1f4f7e",
+          "#3a74a8",
+          "#6496c2",
+          "#93b7d8",
+          "#bcd3e8",
+          "#dde8f2",
+          "#f1f1ea",
+          "#fafaf5"
+        ]
+      },
+      "h6": {
+        "role": "data",
+        "displayName": "Dybdelag 6",
+        "canonical": "#1f4f7e",
+        "tonalRamp": [
+          "#1f4f7e",
+          "#3a74a8",
+          "#6496c2",
+          "#93b7d8",
+          "#bcd3e8",
+          "#dde8f2",
+          "#f1f1ea",
+          "#fafaf5"
+        ]
+      },
+      "papir-mork": {
+        "role": "neutral",
+        "displayName": "Kartpapir (mørkt tema)",
+        "canonical": "#16181a"
+      },
+      "papir-2-mork": {
+        "role": "neutral",
+        "displayName": "Skyggepapir (mørkt tema)",
+        "canonical": "#1e2124"
+      },
+      "blekk-mork": {
+        "role": "neutral",
+        "displayName": "Blekk (mørkt tema)",
+        "canonical": "#e9e7df"
+      },
+      "blekk-2-mork": {
+        "role": "neutral",
+        "displayName": "Blekk 2 (mørkt tema)",
+        "canonical": "#c2c0b8"
+      },
+      "blekk-3-mork": {
+        "role": "neutral",
+        "displayName": "Blekk 3 (mørkt tema)",
+        "canonical": "#9a9890"
+      },
+      "rute-mork": {
+        "role": "primary",
+        "displayName": "Rutenettblå (mørkt tema)",
+        "canonical": "#7fb0dc"
+      },
+      "rute-svak-mork": {
+        "role": "primary",
+        "displayName": "Svak rutenettblå (mørkt tema)",
+        "canonical": "#2a3a4a"
+      },
+      "rute-flate-mork": {
+        "role": "primary",
+        "displayName": "Rutenettflate (mørkt tema)",
+        "canonical": "#1b2733"
+      },
+      "kote-mork": {
+        "role": "secondary",
+        "displayName": "Kotebrun (mørkt tema)",
+        "canonical": "#d79a62"
+      },
+      "stempel-mork": {
+        "role": "tertiary",
+        "displayName": "Stempelrød (mørkt tema)",
+        "canonical": "#ef7a6c"
+      },
+      "i1-mork": {
+        "role": "data",
+        "displayName": "I1 Lys myr (mørkt tema)",
+        "canonical": "#6fb59e"
+      },
+      "i2-mork": {
+        "role": "data",
+        "displayName": "I2 Gulbrun lyng (mørkt tema)",
+        "canonical": "#e9c34f"
+      },
+      "i3-mork": {
+        "role": "data",
+        "displayName": "I3 Oransje (mørkt tema)",
+        "canonical": "#e46f2e"
+      },
+      "i4-mork": {
+        "role": "data",
+        "displayName": "I4 Rødbrun (mørkt tema)",
+        "canonical": "#bf3350"
+      },
+      "i5-mork": {
+        "role": "data",
+        "displayName": "I5 Mørk vinrød (mørkt tema)",
+        "canonical": "#a77bda"
+      },
+      "styrke-mork": {
+        "role": "data",
+        "displayName": "Styrke (skravert) (mørkt tema)",
+        "canonical": "#a3a199"
+      },
+      "h1-mork": {
+        "role": "data",
+        "displayName": "Dybdelag 1 (mørkt tema)",
+        "canonical": "#1d2b38"
+      },
+      "h2-mork": {
+        "role": "data",
+        "displayName": "Dybdelag 2 (mørkt tema)",
+        "canonical": "#24405a"
+      },
+      "h3-mork": {
+        "role": "data",
+        "displayName": "Dybdelag 3 (mørkt tema)",
+        "canonical": "#2f5b80"
+      },
+      "h4-mork": {
+        "role": "data",
+        "displayName": "Dybdelag 4 (mørkt tema)",
+        "canonical": "#3f78a6"
+      },
+      "h5-mork": {
+        "role": "data",
+        "displayName": "Dybdelag 5 (mørkt tema)",
+        "canonical": "#5b97c8"
+      },
+      "h6-mork": {
+        "role": "data",
+        "displayName": "Dybdelag 6 (mørkt tema)",
+        "canonical": "#8cbbe3"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Øktnavnet øverst i øktpanelet."
+      },
+      "headline": {
+        "displayName": "Ukeoverskrift",
+        "purpose": "«Uke N» i ukehodet."
+      },
+      "title": {
+        "displayName": "Månedsskille",
+        "purpose": "Månedsnavn med blå hårstrek i kalenderen."
+      },
+      "numeral": {
+        "displayName": "Tabelltall",
+        "purpose": "Ukesummer og nøkkeltall i faste celler."
+      },
+      "body": {
+        "displayName": "Brødtekst",
+        "purpose": "Grunntekst i grensesnittet."
+      },
+      "body-strong": {
+        "displayName": "Øktnavn",
+        "purpose": "Navn på øktkort, maks to linjer."
+      },
+      "note": {
+        "displayName": "Notat",
+        "purpose": "Hele dagboknotatet i panelet, maks 65ch."
+      },
+      "note-week": {
+        "displayName": "Ukeskommentar",
+        "purpose": "Ukeskommentar under ukeraden, maks 75ch."
+      },
+      "note-day": {
+        "displayName": "Dagsnotat",
+        "purpose": "Kort dagsnotat i dagcellen, maks fire linjer."
+      },
+      "label": {
+        "displayName": "Etikett",
+        "purpose": "Dagdato, markører, tabellhoder, panelseksjoner, koordinatmerker. Versaler."
+      },
+      "caption": {
+        "displayName": "Enhet",
+        "purpose": "Enhet under tall i tallceller. Versaler."
+      }
+    },
+    "shadows": [],
+    "strokes": [
+      {
+        "name": "strek",
+        "value": "1px solid var(--blekk)",
+        "purpose": "Ytre struktur: ukeramme, topplinje, panelkant, strek over øktkort."
+      },
+      {
+        "name": "strek-rute",
+        "value": "1px solid var(--rute-svak)",
+        "purpose": "Underdeling inne i en flate: dagkolonner, tallceller, tabellrader."
+      },
+      {
+        "name": "fokus",
+        "value": "outline: 2px solid var(--rute); outline-offset: 2px",
+        "purpose": "Fokusring for alle elementer."
+      },
+      {
+        "name": "skravur-styrke",
+        "value": "repeating-linear-gradient(135deg, var(--styrke) 0 2px, transparent 2px 4px); box-shadow: inset 0 0 0 1px var(--styrke)",
+        "purpose": "Styrke i sonestolper. Insett-kanten er en 1 px strek, ikke en skygge."
+      },
+      {
+        "name": "rutenett",
+        "value": "linear-gradient(var(--rute-flate) 1px, transparent 1px), linear-gradient(90deg, var(--rute-flate) 1px, transparent 1px); background-size: 96px 96px",
+        "purpose": "Svakt UTM-nett under kalenderen."
+      }
+    ],
+    "motion": [
+      {
+        "name": "bakgrunn",
+        "value": "background-color 120ms ease-out",
+        "purpose": "Hover på øktkort, filterbrikker og høydelagsceller."
+      },
+      {
+        "name": "demping",
+        "value": "opacity 160ms ease-out",
+        "purpose": "Demping ved filter og søk."
+      },
+      {
+        "name": "redusert-bevegelse",
+        "value": "@media (prefers-reduced-motion: no-preference)",
+        "purpose": "Overganger finnes bare når brukeren ikke har bedt om redusert bevegelse."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "panel-smal",
+        "value": "1180px",
+        "purpose": "Med panel åpent: skjul høydelagsstripen, smalere tallceller."
+      },
+      {
+        "name": "mobil",
+        "value": "720px",
+        "purpose": "Én kolonne, dager som rader, panel over hele skjermen, 16 px sidemarg."
+      }
+    ],
+    "layout": {
+      "topplinje": "56px",
+      "hoydelag": "152px",
+      "panel": "minmax(360px, 440px)",
+      "kalendermarg": "0 28px 0 40px",
+      "rutenett": "96px",
+      "ukeceller": "78px 78px 60px 232px",
+      "dagHoyde": "132px",
+      "ukeavstand": "20px"
+    }
+  },
+  "components": [
+    {
+      "name": "Filterbrikke",
+      "kind": "chip",
+      "refersTo": "filterbrikke",
+      "description": "Typefilter i topplinjen. Aktiv er fylt rutenettblå.",
+      "html": "<div class=\"ds-typer\"><button class=\"ds-filterbrikke\" aria-pressed=\"true\">Alle</button><button class=\"ds-filterbrikke\" aria-pressed=\"false\">Løping</button><button class=\"ds-filterbrikke\" aria-pressed=\"false\">O-teknikk</button></div>",
+      "css": ".ds-typer{display:flex;gap:4px}.ds-filterbrikke{height:30px;padding:0 10px;border:1px solid var(--rute-svak,#c9daea);background:transparent;color:var(--blekk,#1d1d1b);font:500 13px 'Barlow',system-ui,sans-serif;border-radius:0;cursor:pointer;transition:background-color 120ms ease-out}.ds-filterbrikke:hover{border-color:var(--rute,#2f6fa8)}.ds-filterbrikke:focus-visible{outline:2px solid var(--rute,#2f6fa8);outline-offset:2px}.ds-filterbrikke[aria-pressed='true']{background:var(--rute,#2f6fa8);border-color:var(--rute,#2f6fa8);color:var(--papir,#fafaf5)}"
+    },
+    {
+      "name": "Søkefelt",
+      "kind": "input",
+      "refersTo": "sokefelt",
+      "description": "Søk i notater og øktnavn. Blekkstrek, blå fokusring rundt hele feltet.",
+      "html": "<label class=\"ds-sokefelt\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg><input type=\"search\" placeholder=\"Søk i notater og økter\"></label>",
+      "css": ".ds-sokefelt{display:flex;align-items:center;gap:6px;width:260px;height:34px;padding:0 4px 0 10px;border:1px solid var(--blekk,#1d1d1b);background:var(--papir,#fafaf5);color:var(--blekk-3,#6b6b64);border-radius:0}.ds-sokefelt:focus-within{outline:2px solid var(--rute,#2f6fa8);outline-offset:1px}.ds-sokefelt input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:400 15px 'Barlow',system-ui,sans-serif;color:var(--blekk,#1d1d1b)}.ds-sokefelt input::placeholder{color:var(--blekk-3,#6b6b64)}"
+    },
+    {
+      "name": "Hovedmeny",
+      "kind": "nav",
+      "refersTo": "hovedmeny",
+      "description": "Topplinje med merke og Dagbok/Analyse. Aktiv har 2 px blå understrek på topplinjens blekkstrek.",
+      "html": "<nav class=\"ds-topplinje\"><span class=\"ds-merke\">Treningsdagbok<small>Isak Jonsson</small></span><span class=\"ds-meny\"><a href=\"#\" class=\"ds-aktiv\">Dagbok</a><a href=\"#\">Analyse</a></span></nav>",
+      "css": ".ds-topplinje{display:flex;align-items:center;gap:28px;min-height:56px;padding:0 20px 0 24px;border-bottom:1px solid var(--blekk,#1d1d1b);background:var(--papir,#fafaf5);color:var(--blekk,#1d1d1b);font-family:'Barlow',system-ui,sans-serif}.ds-merke{font-weight:600;font-size:16px;letter-spacing:.01em}.ds-merke small{font-weight:400;font-size:12px;color:var(--blekk-3,#6b6b64);margin-left:8px}.ds-meny{display:flex;gap:20px;align-self:stretch}.ds-meny a{display:flex;align-items:center;color:inherit;text-decoration:none;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px}.ds-meny a:hover{color:var(--rute,#2f6fa8)}.ds-meny a:focus-visible{outline:2px solid var(--rute,#2f6fa8);outline-offset:2px}.ds-meny a.ds-aktiv{border-bottom-color:var(--rute,#2f6fa8)}"
+    },
+    {
+      "name": "Øktkort",
+      "kind": "card",
+      "refersTo": "oktkort",
+      "description": "En økt i dagkolonnen: blekkstrek over, navn, tid · km, tynn sonestolpe. Valgt får blå ring.",
+      "html": "<div class=\"ds-dag\"><a href=\"#\" class=\"ds-oktkort\"><span class=\"ds-navn\">Langtur i terreng</span><span class=\"ds-tall\">1:45 · 18,2 km</span><span class=\"ds-stolpe\"><i style=\"flex:90;background:var(--i1,#86bfa9)\"></i><i style=\"flex:10;background:var(--i3,#d4732e)\"></i></span></a><a href=\"#\" class=\"ds-oktkort ds-valgt\"><span class=\"ds-navn\">Styrke</span><span class=\"ds-tall\">0:40</span><span class=\"ds-stolpe\"><i class=\"ds-styrke\" style=\"flex:1\"></i></span></a></div>",
+      "css": ".ds-dag{width:150px;padding:8px;background:var(--papir,#fafaf5);color:var(--blekk,#1d1d1b);font-family:'Barlow',system-ui,sans-serif}.ds-oktkort{display:block;padding:5px 4px 8px;margin:0 -4px 2px;border-top:1px solid var(--blekk,#1d1d1b);color:inherit;text-decoration:none;transition:background-color 120ms ease-out}.ds-oktkort:hover{background:var(--rute-flate,#e8f0f7)}.ds-oktkort:focus-visible{outline:2px solid var(--rute,#2f6fa8);outline-offset:2px}.ds-oktkort.ds-valgt{background:var(--rute-flate,#e8f0f7);outline:2px solid var(--rute,#2f6fa8);outline-offset:-1px}.ds-navn{display:block;font-weight:600;font-size:14px;line-height:1.3}.ds-tall{display:block;font:500 13px 'Barlow Condensed','Barlow',sans-serif;color:var(--blekk-2,#4a4a45);font-variant-numeric:tabular-nums}.ds-stolpe{display:flex;gap:1px;height:4px;margin-top:6px}.ds-stolpe i{display:block;min-width:2px}.ds-styrke{background:repeating-linear-gradient(135deg,var(--styrke,#6b6b64) 0 2px,transparent 2px 4px);box-shadow:inset 0 0 0 1px var(--styrke,#6b6b64)}"
+    },
+    {
+      "name": "Ukehode med tallceller",
+      "kind": "custom",
+      "refersTo": "tallcelle",
+      "description": "Uke og datoer til venstre, faste celler for timer, km og økter, og sonestolpe med skravert styrke.",
+      "html": "<header class=\"ds-ukehode\"><h2>Uke 40<span>29. sep.–5. okt.</span></h2><div class=\"ds-celler\"><span class=\"ds-celle\"><b>11,2</b><small>timer</small></span><span class=\"ds-celle\"><b>96,4</b><small>km</small></span><span class=\"ds-celle\"><b>11</b><small>økter</small></span><span class=\"ds-celle ds-stolpecelle\"><span class=\"ds-sonestolpe\"><i style=\"flex:78;background:var(--i1,#86bfa9)\"></i><i style=\"flex:4;background:var(--i2,#e9be45)\"></i><i style=\"flex:9;background:var(--i3,#d4732e)\"></i><i style=\"flex:4;background:var(--i4,#9b3c2a)\"></i><i style=\"flex:1;background:var(--i5,#4e1f2a)\"></i><i class=\"ds-styrke\" style=\"flex:4\"></i></span></span></div></header>",
+      "css": ".ds-ukehode{display:grid;grid-template-columns:minmax(0,1fr) auto;border:1px solid var(--blekk,#1d1d1b);background:var(--papir,#fafaf5);color:var(--blekk,#1d1d1b)}.ds-ukehode h2{margin:0;align-self:center;padding:10px 14px;font:600 21px/1.1 'Barlow Condensed','Barlow',sans-serif}.ds-ukehode h2 span{font:400 14px 'Barlow',system-ui,sans-serif;color:var(--blekk-3,#6b6b64);margin-left:10px}.ds-celler{display:grid;grid-template-columns:78px 78px 60px 232px}.ds-celle{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:4px 12px;border-left:1px solid var(--rute-svak,#c9daea)}.ds-celle b{font:600 20px/1.1 'Barlow Condensed','Barlow',sans-serif;font-variant-numeric:tabular-nums}.ds-celle small{font:400 10px 'Barlow',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:var(--blekk-3,#6b6b64)}.ds-stolpecelle{align-items:stretch;padding:4px 14px}.ds-sonestolpe{display:flex;gap:2px;height:10px}.ds-sonestolpe i{display:block;min-width:2px}.ds-styrke{background:repeating-linear-gradient(135deg,var(--styrke,#6b6b64) 0 2px,transparent 2px 4px);box-shadow:inset 0 0 0 1px var(--styrke,#6b6b64)}"
+    },
+    {
+      "name": "Dagsmarkører og stempel",
+      "kind": "chip",
+      "refersTo": "markor",
+      "description": "Kotebrune markører for reise, høyde, fri og konkurranse (fylt); skrått rødt stempel for syk og skadet.",
+      "html": "<div class=\"ds-dagmerker\"><span class=\"ds-markor ds-konk\">Konk.</span><span class=\"ds-markor\">Reise</span><span class=\"ds-markor\">Høyde</span><span class=\"ds-stempel\">Syk</span></div>",
+      "css": ".ds-dagmerker{display:flex;align-items:center;gap:6px;padding:8px;background:var(--papir,#fafaf5)}.ds-markor{font:500 11px/15px 'Barlow Condensed','Barlow',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--kote,#9a5a2a);border:1px solid currentColor;padding:0 4px}.ds-markor.ds-konk{background:var(--kote,#9a5a2a);border-color:var(--kote,#9a5a2a);color:var(--papir,#fafaf5)}.ds-stempel{display:inline-block;margin-left:8px;padding:1px 7px;border:1.5px solid var(--stempel,#b0362a);color:var(--stempel,#b0362a);font:600 13px 'Barlow Condensed','Barlow',sans-serif;letter-spacing:.14em;text-transform:uppercase;transform:rotate(-4deg)}"
+    },
+    {
+      "name": "Høydelagsstripe",
+      "kind": "custom",
+      "refersTo": "hoydelag",
+      "description": "Årsnavigasjon: én celle per uke i blå dybderampe etter timer; blå ramme rundt synlig utsnitt.",
+      "html": "<div class=\"ds-hl\"><button class=\"ds-l2\"></button><button class=\"ds-l4\"></button><button class=\"ds-l5 ds-synlig\"></button><button class=\"ds-l6 ds-synlig\"></button><button class=\"ds-l3\"></button><button class=\"ds-l1\"></button><button class=\"ds-l0\"></button><button class=\"ds-l4\"></button></div>",
+      "css": ".ds-hl{display:grid;grid-template-rows:repeat(8,8px);row-gap:2px;width:22px;padding:8px;background:var(--papir,#fafaf5)}.ds-hl button{border:0;padding:0;height:8px;position:relative;cursor:pointer;transition:background-color 120ms ease-out}.ds-hl button:hover{outline:1px solid var(--blekk,#1d1d1b);z-index:2}.ds-hl button:focus-visible{outline:2px solid var(--rute,#2f6fa8);outline-offset:2px;z-index:3}.ds-hl .ds-synlig{outline:1.5px solid var(--rute,#2f6fa8);z-index:1}.ds-l0{background:var(--h0,#f1f1ea)}.ds-l1{background:var(--h1,#dde8f2)}.ds-l2{background:var(--h2,#bcd3e8)}.ds-l3{background:var(--h3,#93b7d8)}.ds-l4{background:var(--h4,#6496c2)}.ds-l5{background:var(--h5,#3a74a8)}.ds-l6{background:var(--h6,#1f4f7e)}"
+    },
+    {
+      "name": "Lenkeknapp",
+      "kind": "button",
+      "refersTo": "lenkeknapp",
+      "description": "Tekstknapp i rutenettblå med understrek, for «Vis mer» på ukeskommentarer.",
+      "html": "<button class=\"ds-lenkeknapp\">Vis mer</button>",
+      "css": ".ds-lenkeknapp{border:0;background:none;padding:0;font:500 13px 'Barlow',system-ui,sans-serif;color:var(--rute,#2f6fa8);text-decoration:underline;text-underline-offset:3px;cursor:pointer}.ds-lenkeknapp:hover{text-decoration-thickness:2px}.ds-lenkeknapp:focus-visible{outline:2px solid var(--rute,#2f6fa8);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Kartbladet",
+    "overview": "Treningsdagboka leses som et N50 topografisk kartblad. Uker er ruter i et rutenett, volum er høydelag, og dagsmarkørene står i kotebrunt som stedsnavn på kartet. Papiret er lyst og varmt, blekket nesten svart, og et blått rutenett med 1 px hårstreker holder alt på plass. Ukesummene står i faste tabellceller, slik at tallene alltid er på samme sted fra uke til uke.\n\nFlatene er flate og umodulerte: ingen radius, ingen skygger, ingen fargeoverganger. Dybde og hierarki kommer fra strekens tykkelse og farge (blekk for struktur, svak rutenettblå for underdeling), fra papirtonen og fra typografien. Siden er tett, men rolig. Notatene i serif og tallene i smal sans står likeverdig side om side; ingen av dem gjemmes bak den andre.\n\nIngenting forsvinner. Et filter eller søk demper det som ikke treffer, i stedet for å fjerne det, så kartbladet beholder formen. Syk og skadet stemples skrått over dagen som et stempel på papir.",
+    "keyCharacteristics": [
+      "Kartpapir, blekk og blått rutenett med 1 px hårstreker.",
+      "Sonene I1–I5 som flate høydelag fra lys grønn via gult og oransje til mørk rødbrun.",
+      "Styrke er skravert, aldri en egen flatfarge.",
+      "Ukevolum i årsnavigasjonen er én blå tone, holdt adskilt fra sonefargene.",
+      "Barlow for grensesnittet, Barlow Condensed for tall og etiketter, Source Serif 4 for notater.",
+      "Filtrert dempes, fjernes aldri.",
+      "Lyst og mørkt tema med egne, validerte verdier."
+    ],
+    "rules": [
+      {
+        "name": "The One Meaning Rule",
+        "body": "En farge betyr én ting. Sonefargene brukes bare for intensitet, blått bare for samhandling og ukevolum (som én egen tone), kotebrunt bare for dagsmarkører, rødt bare for syk og skadet.",
+        "section": "colors"
+      },
+      {
+        "name": "The Hatched Strength Rule",
+        "body": "Styrke er alltid skravert (135°, 2 px strek, 2 px luft) med 1 px kant i styrkefargen, aldri en flat farge. Da kan den aldri forveksles med I5, heller ikke ved fargesvakhet.",
+        "section": "colors"
+      },
+      {
+        "name": "The Separate Ramp Rule",
+        "body": "Ukevolum tegnes med den blå h0–h6-rampen, aldri med sonefargene, så en uke med mye trening aldri leses som en uke med hard trening.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Isaks egen tekst står i serif, alt annet i Barlow. Kommentarer fra andre står også i serif, men på skyggepapir under egen overskrift, så de aldri leses som Isaks tekst.",
+        "section": "typography"
+      },
+      {
+        "name": "The Fixed Cell Rule",
+        "body": "Tall som sammenlignes over tid står i faste celler med tabulære sifre, høyrejustert, med enheten under. Kolonnebreddene endres ikke fra uke til uke.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "Strukturlinjer er 1 px. Bare tilstand får tykkere strek: 2 px fokus- og valgtring, 2 px understrek på aktiv meny, 1,5 px stempel og utsnittsramme.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Flat Fill Rule",
+        "body": "Fargeflater er umodulerte. Gradientsyntaks brukes bare som tegneteknikk (rutenettet, skravuren, den myke kanten på brikkeraden på mobil), aldri som fargeovergang på en flate.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** bruk 1 px hårstreker: blekk for ytre struktur, svak rutenettblå for underdeling.",
+      "**Do** bruk sonefargene I1–I5 bare for intensitet, med de validerte verdiene for hvert tema.",
+      "**Do** tegn styrke som 135° skravur med 1 px kant.",
+      "**Do** bruk den blå h0–h6-rampen for volum, aldri sonefargene.",
+      "**Do** demp det et filter eller søk ikke treffer (0,25 for kort, 0,5 for uker, 0,2 for høydelagsceller) i stedet for å fjerne det.",
+      "**Do** sett tall i Barlow Condensed med tabulære sifre i faste celler, og notater i Source Serif 4.",
+      "**Do** hold kotebrun på #9a5a2a i lyst tema, så små etiketter holder 4,5:1.",
+      "**Do** gi hver ny farge en mørk variant i både `prefers-color-scheme`-blokken og `[data-theme='dark']`."
+    ],
+    "donts": [
+      "**Don't** bruk avrundede hjørner, skygger eller fargeoverganger på flater.",
+      "**Don't** bruk sonefargene som pynt, kategorifarger eller sportsetiketter.",
+      "**Don't** gi styrke en egen flat farge.",
+      "**Don't** fjern uker, dager eller økter fra kalenderen når et filter er aktivt.",
+      "**Don't** vis en kommentar fra trener eller andre som Isaks tekst.",
+      "**Don't** bruk rutenettblått for noe annet enn samhandling, rutenett og volum."
+    ]
+  }
+}
