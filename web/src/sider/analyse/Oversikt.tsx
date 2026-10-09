@@ -8,6 +8,7 @@ import {
   helsePerSesong,
   okterISesong,
   perSesong,
+  snitt,
   tilSammeDato,
   type Sesong,
 } from '../../data/statistikk'
@@ -17,7 +18,7 @@ import type { Analysekontekst } from '../Analyse'
 
 interface Rad {
   navn: string
-  na: number
+  na: number | null
   forrige: number | null
   vis: (v: number) => string
   /** Tellinger (dager, økter) vises som differanse; prosent gir lite mening på små tall. */
@@ -37,8 +38,21 @@ function nokkeltall(k: Analysekontekst, s: Sesong) {
     if (r.skadet) skadet++
     if (r.konkurranse) konk++
   }
-  return { sum, kvalitet: okter.filter(erKvalitet).length, syk, skadet, konk }
+  // Snitt av Garmin-målinger i samme periode (null uten data)
+  const helse = [...k.dagbok.helsePerDato.values()].filter((d) => d.dato >= s.fra && d.dato <= til)
+  return {
+    sum,
+    kvalitet: okter.filter(erKvalitet).length,
+    syk,
+    skadet,
+    konk,
+    hvilepuls: snitt(helse.map((d) => d.hvilepuls)),
+    hrv: snitt(helse.map((d) => d.hrv_natt)),
+    sovn: snitt(helse.map((d) => d.sovn_min)),
+  }
 }
+
+const desimal = (v: number) => v.toLocaleString('nb-NO', { maximumFractionDigits: 1 })
 
 export function Oversikt({ k }: { k: Analysekontekst }) {
   const na = useMemo(() => nokkeltall(k, k.valgt), [k])
@@ -56,6 +70,13 @@ export function Oversikt({ k }: { k: Analysekontekst }) {
     { navn: 'Styrke', na: na.sum.styrke, forrige: for_?.sum.styrke ?? null, vis: timer },
     { navn: 'Syke dager', na: na.syk, forrige: for_?.syk ?? null, vis: tall, telling: true },
     { navn: 'Skadedager', na: na.skadet, forrige: for_?.skadet ?? null, vis: tall, telling: true },
+    ...(na.hvilepuls != null || na.hrv != null || na.sovn != null
+      ? [
+          { navn: 'Hvilepuls, snitt', na: na.hvilepuls, forrige: for_?.hvilepuls ?? null, vis: desimal, telling: true },
+          { navn: 'HRV om natta, snitt', na: na.hrv, forrige: for_?.hrv ?? null, vis: desimal, telling: true },
+          { navn: 'Søvn per natt, snitt', na: na.sovn, forrige: for_?.sovn ?? null, vis: timer, telling: true },
+        ]
+      : []),
   ]
 
   return (
@@ -79,20 +100,20 @@ export function Oversikt({ k }: { k: Analysekontekst }) {
           </thead>
           <tbody>
             {rader.map((r) => {
-              const e = r.forrige != null ? endring(r.na, r.forrige) : null
-              const d = r.forrige != null ? r.na - r.forrige : null
+              const e = r.forrige != null && r.na != null ? endring(r.na, r.forrige) : null
+              const d = r.forrige != null && r.na != null ? r.na - r.forrige : null
               const tegn = (v: number) => (v > 0 ? '+' : v < 0 ? '−' : '±')
               const endringTekst = r.telling
                 ? d == null
                   ? '–'
-                  : `${tegn(d)}${tall(Math.abs(d))}`
+                  : `${tegn(d)}${r.vis(Math.abs(d))}`
                 : e == null
                   ? '–'
                   : `${tegn(e)}${Math.abs(Math.round(e))} %`
               return (
                 <tr key={r.navn}>
                   <th scope="row">{r.navn}</th>
-                  <td className="stor">{r.vis(r.na)}</td>
+                  <td className="stor">{r.na != null ? r.vis(r.na) : '–'}</td>
                   {k.forrige && <td>{r.forrige != null ? r.vis(r.forrige) : '–'}</td>}
                   {k.forrige && <td className="endring">{endringTekst}</td>}
                 </tr>

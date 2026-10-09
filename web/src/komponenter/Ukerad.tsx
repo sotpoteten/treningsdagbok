@@ -13,9 +13,11 @@ interface Props {
   treff: ((o: Okt) => boolean) | null
   valgtId: string | null
   idag: string
+  /** Økter med GPS-spor fra Garmin. */
+  medSpor: Set<string>
 }
 
-export const Ukerad = memo(function Ukerad({ uke, treff, valgtId, idag }: Props) {
+export const Ukerad = memo(function Ukerad({ uke, treff, valgtId, idag, medSpor }: Props) {
   const sum = summer(uke.okter)
   const tomme = tommeRekker(uke.dager)
   const harTreff = !treff || uke.okter.some(treff)
@@ -50,7 +52,7 @@ export const Ukerad = memo(function Ukerad({ uke, treff, valgtId, idag }: Props)
       </header>
       <div className="uke-dager">
         {uke.dager.map((d, i) => (
-          <Dagcelle key={d.dato} dag={d} ukedag={i} tom={tomme[i]} treff={treff} valgtId={valgtId} idag={idag} />
+          <Dagcelle key={d.dato} dag={d} ukedag={i} tom={tomme[i]} treff={treff} valgtId={valgtId} idag={idag} medSpor={medSpor} />
         ))}
       </div>
       {uke.kommentarer.length > 0 && <Ukekommentar kommentarer={uke.kommentarer.map((k) => k.tekst)} />}
@@ -91,9 +93,10 @@ interface DagProps {
   treff: Props['treff']
   valgtId: string | null
   idag: string
+  medSpor: Set<string>
 }
 
-function Dagcelle({ dag, ukedag, tom, treff, valgtId, idag }: DagProps) {
+function Dagcelle({ dag, ukedag, tom, treff, valgtId, idag, medSpor }: DagProps) {
   const r = dag.rapport
   const klasser = ['dag', r?.syk && 'syk', r?.skadet && 'skadet', dag.dato === idag && 'idag', tom && 'tom', tom && !tom.start && 'tom-fortsatt']
     .filter(Boolean)
@@ -117,7 +120,7 @@ function Dagcelle({ dag, ukedag, tom, treff, valgtId, idag }: DagProps) {
         </p>
       )}
       {dag.okter.map((o) => (
-        <Oktkort key={o.id} okt={o} dempet={!!treff && !treff(o)} valgt={o.id === valgtId} />
+        <Oktkort key={o.id} okt={o} dempet={!!treff && !treff(o)} valgt={o.id === valgtId} spor={medSpor.has(o.id)} />
       ))}
       {r?.notat && (
         <p className="dag-notat" title={r.notat}>

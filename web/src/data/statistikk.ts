@@ -254,3 +254,54 @@ export function endring(na: number, forrige: number): number | null {
   return forrige ? ((na - forrige) / forrige) * 100 : null
 }
 
+
+// ── Helse (Garmin) ──────────────────────────────────────
+
+/** Dager mellom to ISO-datoer (b − a). */
+export function dagerMellom(a: string, b: string): number {
+  return (utc(b) - utc(a)) / DAG_MS
+}
+
+/** Én verdi per dag fra `fra` til `til` (begge med), null der det mangler. */
+export function dagserie<T>(perDato: Map<string, T>, fra: string, til: string, verdi: (t: T) => number | null | undefined) {
+  const n = dagerMellom(fra, til) + 1
+  const datoer: string[] = []
+  const verdier: (number | null)[] = []
+  for (let i = 0; i < n; i++) {
+    const d = fraUtc(utc(fra) + i * DAG_MS)
+    datoer.push(d)
+    const t = perDato.get(d)
+    const v = t ? verdi(t) : null
+    verdier.push(v ?? null)
+  }
+  return { datoer, verdier }
+}
+
+/** Glidende snitt over n dager som hopper over hull; null når vinduet er tomt. */
+export function glidendeSnittMedHull(verdier: (number | null)[], n: number): (number | null)[] {
+  const ut: (number | null)[] = []
+  let sum = 0
+  let antall = 0
+  for (let i = 0; i < verdier.length; i++) {
+    const v = verdier[i]
+    if (v != null) {
+      sum += v
+      antall++
+    }
+    if (i >= n) {
+      const gammel = verdier[i - n]
+      if (gammel != null) {
+        sum -= gammel
+        antall--
+      }
+    }
+    ut.push(antall ? sum / antall : null)
+  }
+  return ut
+}
+
+/** Snitt av verdiene som finnes, eller null. */
+export function snitt(verdier: (number | null | undefined)[]): number | null {
+  const v = verdier.filter((x): x is number => x != null)
+  return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null
+}

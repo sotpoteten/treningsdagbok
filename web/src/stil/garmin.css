@@ -1,0 +1,223 @@
+/* Garmin-data: kart, tidsserier og øktdelen i panelet. Samme kartbladspråk som resten. */
+
+/* ── Tidsserier ────────────────────────────────────────── */
+
+.tidsserie {
+  margin-top: 4px;
+}
+/* Seriefargen settes som color; linjer får bare strek, punkter bare fyll. */
+.ts-puls,
+.ts-tempo,
+.ts-hoved,
+.ts-snitt {
+  color: var(--blekk);
+}
+.ts-volum {
+  color: var(--h5);
+}
+.ts-valgt {
+  color: var(--rute);
+}
+.ts-linje {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.ts-linje.ts-snitt {
+  stroke-width: 2.5;
+}
+.ts-punkter circle {
+  fill: currentColor;
+  stroke: none;
+}
+.ts-punkter.ts-hoved {
+  color: var(--blekk-3);
+}
+.graf-punkt.ts-aktiv {
+  fill: currentColor;
+  stroke: var(--papir);
+  stroke-width: 2;
+}
+/* Baseline-bånd: en svak, flat tone av blekket. */
+.ts-band {
+  fill: var(--blekk);
+  fill-opacity: 0.08;
+}
+.ts-markor.m-syk {
+  fill: var(--stempel);
+  opacity: 0.35;
+}
+.ts-markor.m-skadet {
+  fill: url(#skravur-skadet);
+  opacity: 0.5;
+}
+
+.kurvetittel {
+  margin: 16px 0 0;
+  font: 600 12px var(--font-tall);
+  color: var(--blekk-2);
+}
+
+/* ── Garmin i øktpanelet ───────────────────────────────── */
+
+.garmin-valg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.garmin-valg button {
+  padding: 4px 8px;
+  border: 1px solid var(--rute-svak);
+  background: transparent;
+  font: 500 13px var(--font-ui);
+  cursor: pointer;
+}
+.garmin-valg button b {
+  font: 600 13px var(--font-tall);
+}
+.garmin-valg button[aria-pressed='true'] {
+  background: var(--rute);
+  border-color: var(--rute);
+  color: var(--papir);
+}
+
+.nokkeltall dd small {
+  font: 500 12px var(--font-tall);
+  color: var(--blekk-3);
+}
+
+.kartramme {
+  position: relative;
+  margin-top: 14px;
+  border: var(--strek);
+}
+.kartvalg {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.kartvalg .segment,
+.kartvalg .ikonknapp {
+  background: var(--papir);
+  border: 1px solid var(--blekk);
+}
+.kartvalg .ikonknapp {
+  width: 30px;
+  height: 30px;
+}
+.kart {
+  height: 300px;
+  width: 100%;
+}
+.kart-laster {
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  color: var(--blekk-3);
+  background: var(--papir-2);
+}
+.kartramme.stor {
+  position: fixed;
+  inset: 16px;
+  z-index: 50;
+  margin: 0;
+  background: var(--papir);
+}
+.kartramme.stor .kart {
+  height: 100%;
+}
+.maplibregl-ctrl-attrib {
+  font: 400 11px var(--font-ui);
+}
+/* MapLibres attribusjon i kartbladets språk: rette hjørner, papir og 1 px blekk. */
+.kart .maplibregl-ctrl-attrib.maplibregl-compact,
+.kart .maplibregl-ctrl-attrib-button {
+  border-radius: 0;
+  background-color: var(--papir);
+}
+.kart .maplibregl-ctrl-attrib.maplibregl-compact {
+  border: 1px solid var(--blekk);
+  margin: 0 8px 8px 0;
+  color: var(--blekk);
+}
+.kart .maplibregl-ctrl-attrib.maplibregl-compact a {
+  color: var(--blekk);
+}
+
+.runder {
+  margin-top: 16px;
+}
+.runder tbody tr:hover td {
+  background: var(--rute-flate);
+}
+
+@media (max-width: 720px) {
+  .kart {
+    height: 240px;
+  }
+  .kartramme.stor {
+    inset: 0;
+  }
+}
+
+/* ── Helsesiden ────────────────────────────────────────── */
+
+.ts-dempet {
+  color: var(--blekk-3);
+}
+.ts-linje.ts-dempet {
+  stroke-width: 2;
+}
+.graf-tegnforklaring i.prikk-hoved {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blekk-3);
+}
+/* Nøklene for syk og skadet i tidsseriene får samme styrke som strekene i grafen. */
+.helse-nokler .graf-tegnforklaring i.fyll-syk {
+  opacity: 0.35;
+}
+.helse-nokler .graf-tegnforklaring i.fyll-skadet {
+  opacity: 0.5;
+}
+.graf-tegnforklaring i.band-nokkel {
+  background: var(--blekk);
+  opacity: 0.12;
+}
+
+/* Søvnfaser: nøytral blekkskala, mørkest for dyp søvn. Våken er skravert. */
+.fyll-dyp {
+  background: var(--blekk);
+  fill: var(--blekk);
+}
+.fyll-rem {
+  background: var(--blekk-3);
+  fill: var(--blekk-3);
+}
+.fyll-lett {
+  background: var(--sovn-lett);
+  fill: var(--sovn-lett);
+}
+.fyll-vaken {
+  background: repeating-linear-gradient(135deg, var(--blekk-3) 0 2px, transparent 2px 4px);
+  box-shadow: inset 0 0 0 1px var(--blekk-3);
+}
+svg .fyll-vaken {
+  fill: url(#skravur-vaken);
+  stroke: var(--blekk-3);
+  stroke-width: 1;
+}
+.dempet-tall {
+  color: var(--blekk-3);
+}
+
+.runder tr.hvile td {
+  color: var(--blekk-3);
+}

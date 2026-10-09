@@ -43,12 +43,13 @@ function xEtiketter(punkter: Stolpepunkt[], etikett: Props['xEtikett'], xPos: (i
 }
 
 /** Skravur (135°, 2 px strek, 2 px luft) for styrke og skadet, som i resten av designet. */
-function Skravur() {
+export function Skravur() {
   return (
     <defs>
       {[
         ['skravur-styrke', 'var(--styrke)'],
         ['skravur-skadet', 'var(--stempel)'],
+        ['skravur-vaken', 'var(--blekk-3)'],
       ].map(([id, farge]) => (
         <pattern key={id} id={id} width={4} height={4} patternUnits="userSpaceOnUse" patternTransform="rotate(135)">
           <rect width={2} height={4} style={{ fill: farge }} />

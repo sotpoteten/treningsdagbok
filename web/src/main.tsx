@@ -10,6 +10,7 @@ import { App } from './App'
 import './stil/tokens.css'
 import './stil/app.css'
 import './stil/analyse.css'
+import './stil/garmin.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

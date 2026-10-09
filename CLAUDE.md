@@ -195,6 +195,57 @@ eksporten (`data/raw/`) er likevel holdt utenfor git via `.gitignore`, blant ann
 fordi `userData.json` inneholder e-post og fødselsdato. De ryddige filene i `data/` har
 ikke med disse opplysningene.
 
+## Garmin-data
+
+Kilden er Garmins fullstendige GDPR-eksport. Mappa `DI_CONNECT/` fra eksporten
+kopieres til `data/raw/garmin/` (794 MB, holdt utenfor git). Ved ny eksport erstattes
+mappa, og så kjøres:
+
+```
+.venv\Scripts\python scripts/konverter_garmin.py     # krever fitdecode og tzdata i .venv
+```
+
+Første kjøring dekoder rundt 5 900 FIT-filer parallelt og tar omtrent en time. Resultatet
+bufres i `data/raw/garmin/fit_indeks.json`, så senere kjøringer bare tar nye filer.
+API-skriptene (`garmin_login.py`, `hent_garmin.py`) virket ikke i 2026 fordi Garmin
+blokkerte innloggingen. De er beholdt, men eksporten er kilden.
+
+| Fil | Innhold | Git |
+|---|---|---|
+| `data/garmin_aktiviteter.json` | Én post per Garmin-aktivitet fra 1.11.2019: tid, type, varighet, distanse, puls, høydemeter, kadens, Training Effect, belastning, `har_spor` og `okt_id` (koblet dagbokøkt). Ingen koordinater. | ja |
+| `data/garmin_helse.json` | Én post per dag: `hvilepuls`, `hrv_natt`, `hrv_ukesnitt`, `hrv_baseline_lav/hoy`, `hrv_status`, søvn (`sovn_min`, `dyp_min`, `lett_min`, `rem_min`, `vaken_min`, `sovnscore`, `respirasjon`, `sovn_start/slutt`) og belastning (`belastning_akutt`, `belastning_kronisk`, `acwr`). | ja |
+| `data/garmin_spor/<garmin_id>.json` | GPS-spor, puls, fart, høyde og distanse, tynnet til hvert 5. sekund (kolonnevis), samt runder. Avslører hvor Isak bor. | **nei** |
+
+**Kilder og enheter i eksporten**
+
+- **Aktiviteter:** `summarizedActivities`. Varighet er i ms, distanse og høyde i cm.
+  `startTimeLocal` er lokal tid uttrykt som ms.
+- **FIT-filer:** `UploadedFiles_*.zip`.
+  - Type `activity` gir spor. Den kobles til aktiviteten via `session.start_time` =
+    `startTimeGmt` (±2 s).
+  - Type 68 er `hrv_status_summary`, med HRV fra høsten 2023.
+- **Hvilepuls:** `UDSFile` (`restingHeartRate`).
+- **Søvn:** `sleepData`. Søvnscore og REM finnes fra ca. 2023.
+- **HRV med baseline fra sept. 2025:** `healthStatusData`. Brukes bare der FIT mangler.
+- **Belastning:** `MetricsAcuteTrainingLoad`, der `calendarDate` er i ms. Finnes fra aug. 2023.
+
+**Resultat (eksport fra 9.10.2026):**
+- **Aktiviteter:** 4 886 Garmin-aktiviteter fra 1.11.2019, hvorav 3 528 med GPS-spor
+  (132 MB lokalt).
+- **Kobling:** 94 % av dagbokøktene har Garmin-data, og minst 92 % hvert år. Øktene som
+  mangler, er mest styrke og noen mølleøkter.
+- **Helsedata:** hvilepuls for 2 259 dager, HRV for 1 109 netter (fra 6.9.2023), søvn
+  for 1 246 netter og belastning for 1 163 dager.
+- `hvilepuls` er Garmins `restingHeartRate` (UDS). Helsestatusens «HR» er snittpuls om
+  natta og brukes ikke.
+
+**Kobling til dagboka** (`scripts/garmin_kobling.py`, testet i `scripts/test_garmin_kobling.py`):
+- En økt kobles til 1–3 påfølgende Garmin-aktiviteter samme dag, siden oppvarming og
+  hoveddel ofte er tatt opp hver for seg.
+- Varigheten må stemme innen maks(5 min, 15 %), og løpedistansen innen maks(1,5 km, 20 %).
+- Parene med minst avvik velges først.
+- `okter.json` endres ikke. Koblingen ligger som `okt_id` i `garmin_aktiviteter.json`.
+
 ## Nettsiden (`web/`)
 
 Vite + React + TypeScript. Statisk side som leser JSON-filene i `data/`, ingen server.
@@ -233,5 +284,13 @@ først i PATH.
   (skadet skravert).
 - **Design:** Den visuelle retningen heter «Kartbladet». Retningskontrakten ligger i
   `.impeccable/surfaces/` og produktfaktaene i `PRODUCT.md`.
-- **Garmin:** `Okt` har et valgfritt felt `garmin_id` til Garmin-koblingen, som kommer
-  når den fullstendige eksporten er på plass.
+- **Garmin på siden:**
+  - **Lasting:** `last.ts` laster `garmin_aktiviteter.json` og `garmin_helse.json` hvis
+    de finnes, og bygger indeksene `garminPerOkt` og `helsePerDato`.
+  - **Øktpanelet:** Det viser Garmin-delen (`Garminokt.tsx`) med nøkkeltall, kart, puls-
+    og tempokurve og runder.
+  - **Kartet:** `komponenter/kart/Kart.tsx` bruker MapLibre, lastes dynamisk og har
+    Kartverket topo og OSM.
+  - **Helsesiden:** `#/analyse/helse` viser hvilepuls, HRV, søvn og belastning.
+  - **Sporfilene:** `npm run data` kopierer dem til `web/public/garmin_spor/`
+    (gitignored).

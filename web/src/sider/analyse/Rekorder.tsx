@@ -122,7 +122,6 @@ export function Rekorder({ k }: { k: Analysekontekst }) {
           />
         </div>
       </section>
-      <Helse k={k} />
     </>
   )
 }
@@ -166,7 +165,8 @@ function Toppliste({ tittel, rader, nummerert = true, bred = false }: { tittel: 
   )
 }
 
-function Helse({ k }: { k: Analysekontekst }) {
+/** Syke- og skadedager per sesong. Vises på helsesiden. */
+export function SykeOgSkade({ k }: { k: Analysekontekst }) {
   const helse = useMemo(() => helsePerSesong(k.dagbok.dagerPerDato.values()), [k.dagbok])
   const punkter = k.sesonger.map((s) => ({ s, h: helse.get(s.navn) ?? { syk: 0, skadet: 0 } }))
   const serier = [

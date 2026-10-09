@@ -1,12 +1,14 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { summer, summerEtter } from './aggregat'
 import { byggDagbok } from './last'
 import {
   aktivitetsfordeling,
+  dagserie,
   erKvalitet,
   glidendeSnitt,
+  glidendeSnittMedHull,
   helsePerSesong,
   kumulativ,
   lagSesong,
@@ -17,6 +19,7 @@ import {
   sesong,
   sesongDag,
   sesonger,
+  snitt,
   tilSammeDato,
   ukepunkter,
 } from './statistikk'
@@ -117,5 +120,33 @@ describe('rekker og helse', () => {
     const skadet = [...h.values()].reduce((a, x) => a + x.skadet, 0)
     expect(syk).toBe(66)
     expect(skadet).toBe(83)
+  })
+})
+
+describe('helseserier', () => {
+  it('dagserie fyller hull med null', () => {
+    const m = new Map([
+      ['2025-01-01', 50],
+      ['2025-01-03', 48],
+    ])
+    const s = dagserie(m, '2025-01-01', '2025-01-04', (v) => v)
+    expect(s.datoer).toEqual(['2025-01-01', '2025-01-02', '2025-01-03', '2025-01-04'])
+    expect(s.verdier).toEqual([50, null, 48, null])
+  })
+
+  it('glidende snitt hopper over hull', () => {
+    expect(glidendeSnittMedHull([10, null, 20, null, null, null], 3)).toEqual([10, 10, 15, 20, 20, null])
+  })
+
+  it('snitt ignorerer manglende verdier', () => {
+    expect(snitt([1, null, 3, undefined])).toBe(2)
+    expect(snitt([null])).toBeNull()
+  })
+
+  it('Garmin-helse er lastet og har HRV og hvilepuls 9.10.2026', () => {
+    const fil = resolve(__dirname, '../../../data/garmin_helse.json')
+    if (!existsSync(fil)) return // filen lages av scripts/konverter_garmin.py
+    const h = new Map((JSON.parse(readFileSync(fil, 'utf-8')) as { dato: string }[]).map((d) => [d.dato, d]))
+    expect(h.get('2026-10-09')).toMatchObject({ hrv_natt: 69 })
   })
 })

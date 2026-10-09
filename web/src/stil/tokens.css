@@ -21,6 +21,8 @@
   --i5: #4e1f2a;
   /* Styrke tegnes skravert (se .seg-styrke), så den ikke kan forveksles med I5. */
   --styrke: #6b6b64;
+  /* Lett søvn: nøytral, lysere trinn i blekkskalaen (dyp = blekk, REM = blekk-3). */
+  --sovn-lett: #c9c9c0;
 
   /* Ukevolum i årsnavigasjonen: én blå tone, lys → mørk, som dybdelag.
      Holdes adskilt fra sonefargene, så samme farge aldri betyr to ting. */
@@ -59,6 +61,7 @@
     --i4: #bf3350;
     --i5: #a77bda;
     --styrke: #a3a199;
+    --sovn-lett: #4a4a46;
     --h0: #1e2124;
     --h1: #1d2b38;
     --h2: #24405a;
@@ -87,6 +90,7 @@
   --i4: #bf3350;
   --i5: #a77bda;
   --styrke: #a3a199;
+  --sovn-lett: #4a4a46;
   --h0: #1e2124;
   --h1: #1d2b38;
   --h2: #24405a;

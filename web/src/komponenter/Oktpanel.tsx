@@ -1,10 +1,11 @@
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { tempo as fart } from '../data/aggregat'
-import { dato, km, tempo, varighetLang } from '../data/format'
+import { dato, km, tempo, timer, varighetLang } from '../data/format'
 import type { Dagbok } from '../data/last'
 import { SONER, type Okt } from '../data/typer'
 import { Dagsmarkorer, Stempler } from './Dagsmarkorer'
+import { Garminokt } from './Garminokt'
 import { Sonestolpe } from './Sonestolpe'
 
 interface Props {
@@ -20,6 +21,9 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
   const forrige = i > 0 ? dagbok.okter[i - 1] : null
   const neste = i < dagbok.okter.length - 1 ? dagbok.okter[i + 1] : null
   const rapport = dagbok.dagerPerDato.get(okt.dato) ?? null
+  const garmin = dagbok.garminPerOkt.get(okt.id)
+  const natt = dagbok.helsePerDato.get(okt.dato)
+  const harNatt = !!(natt && (natt.sovn_min || natt.hrv_natt || natt.hvilepuls))
 
   useEffect(() => {
     function tast(e: KeyboardEvent) {
@@ -164,6 +168,8 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
         </table>
       </section>
 
+      {garmin && garmin.length > 0 && <Garminokt aktiviteter={garmin} />}
+
       {okt.kommentarer_andre.length > 0 && (
         <section className="panel-del andre">
           <h3>Kommentar fra trener/andre</h3>
@@ -173,17 +179,44 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
         </section>
       )}
 
-      {rapport && (rapport.notat || rapport.sykdom || rapport.skade) && (
+      {((rapport && (rapport.notat || rapport.sykdom || rapport.skade)) || harNatt) && (
         <section className="panel-del">
           <h3>Dagen</h3>
-          {rapport.notat && <p className="notat">{rapport.notat}</p>}
-          {rapport.sykdom && (
+          {harNatt && natt && (
+            <dl className="nokkeltall natt">
+              <div>
+                <dt>Søvn</dt>
+                <dd>
+                  {natt.sovn_min ? `${timer(natt.sovn_min)} t` : '–'}
+                  {natt.sovnscore != null && <small> score {natt.sovnscore}</small>}
+                </dd>
+              </div>
+              <div>
+                <dt>HRV natt</dt>
+                <dd>
+                  {natt.hrv_natt ?? '–'}
+                  {natt.hrv_baseline_lav != null && natt.hrv_baseline_hoy != null && (
+                    <small>
+                      {' '}
+                      normal {natt.hrv_baseline_lav}–{natt.hrv_baseline_hoy}
+                    </small>
+                  )}
+                </dd>
+              </div>
+              <div>
+                <dt>Hvilepuls</dt>
+                <dd>{natt.hvilepuls ?? '–'}</dd>
+              </div>
+            </dl>
+          )}
+          {rapport?.notat && <p className="notat">{rapport.notat}</p>}
+          {rapport?.sykdom && (
             <p>
               <b>Sykdom:</b> {rapport.sykdom.symptomer.join(', ')}
               {rapport.sykdom.kommentar && <> – {rapport.sykdom.kommentar}</>}
             </p>
           )}
-          {rapport.skade?.map((s, n) => (
+          {rapport?.skade?.map((s, n) => (
             <p key={n}>
               <b>Skade:</b> {[s.type, s.kroppsdel].filter(Boolean).join(', ')}
               {s.kommentar && <> – {s.kommentar}</>}

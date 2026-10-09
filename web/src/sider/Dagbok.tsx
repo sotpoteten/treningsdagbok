@@ -49,6 +49,7 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
   }, [dagbok])
 
   const valgt = id ? (dagbok.oktPerId.get(id) ?? null) : null
+  const medSpor = useMemo(() => new Set(dagbok.garmin.filter((a) => a.har_spor && a.okt_id).map((a) => a.okt_id!)), [dagbok])
   const idag = isoDato(new Date())
 
   const flate = useRef<HTMLDivElement>(null)
@@ -146,7 +147,7 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
                   {r.type === 'mnd' ? (
                     <h2 className="maned">{r.tittel}</h2>
                   ) : (
-                    <Ukerad uke={r.uke} treff={treff} valgtId={valgt?.id ?? null} idag={idag} />
+                    <Ukerad uke={r.uke} treff={treff} valgtId={valgt?.id ?? null} idag={idag} medSpor={medSpor} />
                   )}
                 </div>
               )

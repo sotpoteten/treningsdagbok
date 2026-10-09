@@ -18,6 +18,7 @@ colors:
   i4: "#9b3c2a"
   i5: "#4e1f2a"
   styrke: "#6b6b64"
+  sovn-lett: "#c9c9c0"
   h0: "#f1f1ea"
   h1: "#dde8f2"
   h2: "#bcd3e8"
@@ -41,6 +42,7 @@ colors:
   i4-mork: "#bf3350"
   i5-mork: "#a77bda"
   styrke-mork: "#a3a199"
+  sovn-lett-mork: "#4a4a46"
   h1-mork: "#1d2b38"
   h2-mork: "#24405a"
   h3-mork: "#2f5b80"
@@ -347,6 +349,38 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
   Enter åpner uka. På berøringsskjerm viser første trykk verktøytipset, og andre trykk åpner.
 - **Endring mot i fjor:** Tellinger (dager, økter) vises som differanse, for eksempel «+13».
   Timer og km vises i prosent.
+
+### Kart og øktkurver (Garmin)
+- **Kartet:**
+  - MapLibre med rasterfliser: Kartverket topo som standard, OSM som alternativ.
+  - Kartet ligger i en 1 px blekkramme.
+  - Kontrollene (Topo/OSM og utvid) er firkantede på papir med 1 px blekkant. Det
+    gjelder også MapLibres attribusjon, uten runde hjørner.
+- **Sporet og merkene:**
+  - Sporet tegnes 3 px i blekk på en 6 px papirkant, så det leses på alle kartfarger.
+  - Startpunktet er papir med blekkant, sluttpunktet er fylt blekk.
+  - Hover-merket er rutenettblått, fordi det er samhandling. Ingen andre farger brukes
+    på kartet.
+- **Tidsserier (`Tidsserie`):**
+  - Én serie i blekk, med enheten i tittelen («Puls (slag/min)», «Tempo (min/km)»).
+  - Tette serier (1 punkt per 5 s eller per dag) tegnes 1,5 px. Det er et uttalt unntak
+    fra linjeregelen på 2–2,5 px. Snittlinjer er 2,5 px.
+  - Kurvene glattes med median over 3 punkter. Verdier utenfor aksen blir hull, aldri
+    loddrette vegger.
+  - Tempoaksen er snudd, så raskere er høyere.
+- **Bånd og merker:**
+  - Normalområder (HRV-baseline, ACWR 0,8–1,3) er et flatt bånd i blekk med 8 % opasitet.
+  - Syke og skadde dager markeres med en 2 px loddrett strek i stempelrødt (skadet
+    skravert). De står også i tegnforklaringen.
+- **Søvnfaser:** De følger en nøytral lyshetsskala:
+  - dyp = blekk
+  - REM = `blekk-3`
+  - lett = `sovn-lett`
+  - våken = skravert `blekk-3`
+
+  Identiteten bæres av lyshet, tegnforklaring og tabell, ikke av farge (One Meaning).
+- **Rundetabellen:** Pauser og rolige drag (≤ 100 m, eller mer enn 40 % tregere enn
+  midtrunden) dempes til `blekk-3`, så dragene kan leses rett nedover.
 
 ## Do's and Don'ts
 

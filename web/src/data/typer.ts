@@ -87,3 +87,67 @@ export interface Profil {
   klubb: string
   pulssoner: Record<Sone, { Min: number; Max: number }> & { enhet: string; sist_oppdatert: string }
 }
+
+// ── Garmin (fra scripts/konverter_garmin.py) ───────────
+
+export interface GarminAktivitet {
+  garmin_id: number
+  navn: string | null
+  start_lokal: string // ÅÅÅÅ-MM-DDTtt:mm:ss
+  type: string
+  varighet_min: number
+  distanse_km: number
+  snittpuls: number | null
+  makspuls: number | null
+  hoydemeter: number | null
+  kadens: number | null
+  aerob_te: number | null
+  anaerob_te: number | null
+  belastning: number | null
+  har_spor: boolean
+  okt_id: string | null
+}
+
+export interface GarminDag {
+  dato: string
+  hvilepuls?: number
+  hrv_natt?: number
+  hrv_ukesnitt?: number
+  hrv_baseline_lav?: number
+  hrv_baseline_hoy?: number
+  hrv_status?: string
+  sovn_start?: string
+  sovn_slutt?: string
+  sovn_min?: number
+  dyp_min?: number
+  lett_min?: number
+  rem_min?: number | null
+  vaken_min?: number
+  sovnscore?: number | null
+  respirasjon?: number | null
+  belastning_akutt?: number
+  belastning_kronisk?: number
+  acwr?: number | null
+}
+
+export interface Runde {
+  start_s: number
+  tid_s: number
+  dist_m: number | null
+  puls: number | null
+  makspuls: number | null
+  fart: number | null // m/s
+}
+
+export interface GarminSpor {
+  punkter: {
+    t: number[] // sekunder fra start
+    lat?: (number | null)[]
+    lon?: (number | null)[]
+    puls?: (number | null)[]
+    fart?: (number | null)[] // m/s
+    hoyde?: (number | null)[]
+    dist?: (number | null)[] // meter
+  }
+  runder: Runde[]
+}

@@ -8,3 +8,5 @@ web/public/data/
 .impeccable/review/
 .playwright-mcp/
 .impeccable/questions/
+data/garmin_spor/
+web/public/garmin_spor/
