@@ -83,6 +83,20 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
     [radPerUke, rader, synlige, v],
   )
 
+  // Lenke til en uke (?uke=2025-14), f.eks. fra analysesiden: rull dit én gang.
+  const onsketUke = params.get('uke')
+  const rulletTilUke = useRef<string | null>(null)
+  useEffect(() => {
+    if (onsketUke && rulletTilUke.current !== onsketUke && radPerUke.has(onsketUke)) {
+      // Vent til listen er tegnet og målt første gang.
+      const id = requestAnimationFrame(() => {
+        rulletTilUke.current = onsketUke
+        gaTilUke(onsketUke)
+      })
+      return () => cancelAnimationFrame(id)
+    }
+  }, [onsketUke, gaTilUke, radPerUke])
+
   // Direkte lenke til en økt: rull til uka én gang.
   const rulletTil = useRef<string | null>(null)
   useEffect(() => {

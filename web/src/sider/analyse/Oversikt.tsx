@@ -1,0 +1,177 @@
+import { useMemo } from 'react'
+import { summerEtter } from '../../data/aggregat'
+import { dato, km, tall, timer } from '../../data/format'
+import {
+  datoISesong,
+  endring,
+  erKvalitet,
+  helsePerSesong,
+  okterISesong,
+  perSesong,
+  tilSammeDato,
+  type Sesong,
+} from '../../data/statistikk'
+import { SONER } from '../../data/typer'
+import { Sonestolpe } from '../../komponenter/Sonestolpe'
+import type { Analysekontekst } from '../Analyse'
+
+interface Rad {
+  navn: string
+  na: number
+  forrige: number | null
+  vis: (v: number) => string
+  /** Tellinger (dager, økter) vises som differanse; prosent gir lite mening på små tall. */
+  telling?: boolean
+}
+
+function nokkeltall(k: Analysekontekst, s: Sesong) {
+  const til = datoISesong(s, Math.min(k.sammenligningsdag, s.dager - 1))
+  const okter = k.dagbok.okter.filter((o) => o.dato >= s.fra && o.dato <= til)
+  const sum = tilSammeDato(k.dagbok.okter, s, k.sammenligningsdag)
+  let syk = 0
+  let skadet = 0
+  let konk = 0
+  for (const [d, r] of k.dagbok.dagerPerDato) {
+    if (d < s.fra || d > til) continue
+    if (r.syk) syk++
+    if (r.skadet) skadet++
+    if (r.konkurranse) konk++
+  }
+  return { sum, kvalitet: okter.filter(erKvalitet).length, syk, skadet, konk }
+}
+
+export function Oversikt({ k }: { k: Analysekontekst }) {
+  const na = useMemo(() => nokkeltall(k, k.valgt), [k])
+  const for_ = useMemo(() => (k.forrige ? nokkeltall(k, k.forrige) : null), [k])
+  const sluttDag = datoISesong(k.valgt, k.sammenligningsdag)
+  const helt = k.sammenligningsdag >= k.valgt.dager - 1
+
+  const rader: Rad[] = [
+    { navn: 'Timer', na: na.sum.minutter, forrige: for_?.sum.minutter ?? null, vis: timer },
+    { navn: 'Km løping', na: na.sum.km, forrige: for_?.sum.km ?? null, vis: km },
+    { navn: 'Økter', na: na.sum.okter, forrige: for_?.sum.okter ?? null, vis: tall, telling: true },
+    { navn: 'Kvalitetsøkter', na: na.kvalitet, forrige: for_?.kvalitet ?? null, vis: tall, telling: true },
+    { navn: 'Konkurransedager', na: na.konk, forrige: for_?.konk ?? null, vis: tall, telling: true },
+    { navn: 'O-teknikk', na: na.sum.otek, forrige: for_?.sum.otek ?? null, vis: timer },
+    { navn: 'Styrke', na: na.sum.styrke, forrige: for_?.sum.styrke ?? null, vis: timer },
+    { navn: 'Syke dager', na: na.syk, forrige: for_?.syk ?? null, vis: tall, telling: true },
+    { navn: 'Skadedager', na: na.skadet, forrige: for_?.skadet ?? null, vis: tall, telling: true },
+  ]
+
+  return (
+    <>
+      <section className="analyse-del">
+        <h1>Sesongen {k.valgt.navn}</h1>
+        <p className="ingress">
+          {helt
+            ? `Hele sesongen, 1. nov. ${k.valgt.fra.slice(0, 4)}–31. okt. ${k.valgt.til.slice(0, 4)}.`
+            : `Fra 1. november til og med ${dato(sluttDag, 'd. MMMM yyyy')}.`}{' '}
+          {k.forrige && `Sammenlignet med samme periode i ${k.forrige.navn}.`}
+        </p>
+        <table className="nokkeltabell">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">{k.valgt.navn}</th>
+              {k.forrige && <th scope="col">{k.forrige.navn}</th>}
+              {k.forrige && <th scope="col">Endring</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {rader.map((r) => {
+              const e = r.forrige != null ? endring(r.na, r.forrige) : null
+              const d = r.forrige != null ? r.na - r.forrige : null
+              const tegn = (v: number) => (v > 0 ? '+' : v < 0 ? '−' : '±')
+              const endringTekst = r.telling
+                ? d == null
+                  ? '–'
+                  : `${tegn(d)}${tall(Math.abs(d))}`
+                : e == null
+                  ? '–'
+                  : `${tegn(e)}${Math.abs(Math.round(e))} %`
+              return (
+                <tr key={r.navn}>
+                  <th scope="row">{r.navn}</th>
+                  <td className="stor">{r.vis(r.na)}</td>
+                  {k.forrige && <td>{r.forrige != null ? r.vis(r.forrige) : '–'}</td>}
+                  {k.forrige && <td className="endring">{endringTekst}</td>}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+        <p className="fotnote">
+          Kvalitetsøkt: minst 10 min i I3–I5. O-teknikk er en del av løpetiden og inngår allerede i timene.
+        </p>
+      </section>
+      <Sesongtabell k={k} />
+    </>
+  )
+}
+
+function Sesongtabell({ k }: { k: Analysekontekst }) {
+  const sum = useMemo(() => summerEtter(k.dagbok.okter, perSesong), [k.dagbok])
+  const helse = useMemo(() => helsePerSesong(k.dagbok.dagerPerDato.values()), [k.dagbok])
+  const rader = [...k.sesonger].reverse()
+  return (
+    <section className="analyse-del">
+      <h2>Alle sesonger</h2>
+      <div className="tabellrull">
+        <table className="arstabell">
+          <thead>
+            <tr>
+              <th scope="col">Sesong</th>
+              <th scope="col">Økter</th>
+              <th scope="col">Timer</th>
+              <th scope="col">Km</th>
+              <th scope="col" className="stolpekol">
+                Soner
+              </th>
+              {SONER.map((s) => (
+                <th key={s} scope="col">
+                  {s}
+                </th>
+              ))}
+              <th scope="col">Styrke</th>
+              <th scope="col">O-tek.</th>
+              <th scope="col">Kvalitet</th>
+              <th scope="col">Syk</th>
+              <th scope="col">Skadet</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rader.map((s) => {
+              const x = sum.get(s.navn)
+              if (!x) return null
+              const kvalitet = okterISesong(k.dagbok.okter, s).filter(erKvalitet).length
+              const h = helse.get(s.navn)
+              const pagaende = s.navn === k.sesonger[k.sesonger.length - 1].navn && k.sluttdato < s.til
+              return (
+                <tr key={s.navn} className={s.navn === k.valgt.navn ? 'valgt' : undefined}>
+                  <th scope="row">
+                    {s.navn}
+                    {pagaende && <span className="hint"> pågår</span>}
+                  </th>
+                  <td>{tall(x.okter)}</td>
+                  <td>{timer(x.minutter)}</td>
+                  <td>{km(x.km)}</td>
+                  <td className="stolpekol">
+                    <Sonestolpe sone={x.sone} styrke={x.styrke} />
+                  </td>
+                  {SONER.map((z) => (
+                    <td key={z}>{timer(x.sone[z])}</td>
+                  ))}
+                  <td>{timer(x.styrke)}</td>
+                  <td>{timer(x.otek)}</td>
+                  <td>{tall(kvalitet)}</td>
+                  <td>{h?.syk ?? 0}</td>
+                  <td>{h?.skadet ?? 0}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}

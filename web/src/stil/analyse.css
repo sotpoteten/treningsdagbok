@@ -1,0 +1,619 @@
+/* Analyse og grafer, i Kartbladets språk: hårstreker, flate farger, ingen radius. */
+
+.analyse {
+  padding: 0 32px 56px;
+  /* Hindrer at innholdet hopper sidelengs når rullefeltet kommer og går mellom fanene. */
+  scrollbar-gutter: stable;
+}
+.analyse > * {
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.analyse-hode {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  border-bottom: var(--strek);
+  margin-bottom: 28px;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--papir);
+}
+.undermeny {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  gap: 22px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.undermeny a {
+  padding: 14px 0 12px;
+  color: var(--blekk);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.undermeny a:hover {
+  color: var(--rute);
+}
+.undermeny a.active {
+  border-bottom-color: var(--rute);
+}
+.sesongvelger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  font-size: 13px;
+  color: var(--blekk-3);
+}
+.sesongvelger select {
+  height: 32px;
+  padding: 0 8px;
+  border: var(--strek);
+  border-radius: 0;
+  background: var(--papir);
+  color: var(--blekk);
+  font: 600 16px var(--font-tall);
+}
+
+.analyse-del {
+  margin-bottom: 40px;
+}
+.analyse h1 {
+  font: 600 30px/1.1 var(--font-tall);
+}
+.del-hode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.analyse-del > h2 {
+  font: 600 20px var(--font-tall);
+  margin-bottom: 10px;
+}
+.hint {
+  font: 500 12px var(--font-tall);
+  color: var(--blekk-3);
+}
+.tabellrull {
+  overflow-x: auto;
+}
+
+/* Nøkkeltall: faste celler, høyrejustert. */
+.nokkeltabell {
+  border-collapse: collapse;
+  min-width: min(100%, 560px);
+  border-top: var(--strek);
+}
+.nokkeltabell th,
+.nokkeltabell td {
+  padding: 7px 14px;
+  border-bottom: var(--strek-rute);
+  text-align: right;
+}
+.nokkeltabell tbody th {
+  text-align: left;
+  font-weight: 500;
+  padding-left: 0;
+}
+.nokkeltabell thead th {
+  font: 600 13px var(--font-tall);
+  letter-spacing: 0.02em;
+  color: var(--blekk-3);
+}
+.nokkeltabell td {
+  font: 500 16px var(--font-tall);
+  color: var(--blekk-2);
+}
+.nokkeltabell td.stor {
+  font: 600 22px var(--font-tall);
+  color: var(--blekk);
+}
+.endring {
+  color: var(--blekk-2);
+}
+
+.arstabell tr.valgt th,
+.arstabell tr.valgt td {
+  background: var(--rute-flate);
+}
+.arstabell .stolpekol {
+  width: 180px;
+  vertical-align: middle;
+}
+
+/* ── Grafkort ──────────────────────────────────────────── */
+
+.grafkort {
+  border: var(--strek);
+  background: var(--papir);
+  padding: 16px 18px 18px;
+  margin-bottom: 28px;
+}
+.grafkort-hode {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+.grafkort-hode h2 {
+  font: 600 20px/1.2 var(--font-tall);
+}
+.grafkort-forklaring {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--blekk-2);
+  max-width: 75ch;
+}
+.grafkort-valg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.grafkort-undertittel {
+  margin: 22px 0 6px;
+  font: 600 15px var(--font-tall);
+}
+.arstabell th a {
+  color: inherit;
+  text-decoration-color: var(--rute-svak);
+  text-underline-offset: 3px;
+}
+.arstabell th a:hover {
+  color: var(--rute);
+}
+.grafkort-tabell {
+  margin-top: 12px;
+  max-height: 440px;
+  overflow: auto;
+}
+
+.segment {
+  display: inline-flex;
+  border: 1px solid var(--rute-svak);
+}
+.segment button {
+  height: 28px;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  font: 500 13px var(--font-ui);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.segment button + button {
+  border-left: 1px solid var(--rute-svak);
+}
+.segment button:hover {
+  background: var(--rute-flate);
+}
+.segment button[aria-pressed='true'] {
+  background: var(--rute);
+  color: var(--papir);
+}
+
+/* ── SVG-grafer ────────────────────────────────────────── */
+
+.graf {
+  position: relative;
+  margin-top: 14px;
+}
+.graf svg {
+  display: block;
+  overflow: visible;
+}
+.akse-tekst {
+  fill: var(--blekk-3);
+  font: 500 11px var(--font-tall);
+}
+.akse-rute {
+  stroke: var(--rute-svak);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.akse-grunnlinje {
+  stroke: var(--blekk);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.treffflate {
+  fill: transparent;
+}
+.graf svg rect {
+  shape-rendering: crispEdges;
+}
+.stolpe-ramme {
+  fill: none;
+  stroke: var(--blekk);
+  stroke-width: 1;
+  pointer-events: none;
+}
+.graf svg:focus-visible {
+  outline: 2px solid var(--rute);
+  outline-offset: 4px;
+}
+
+svg .seg-i1 { fill: var(--i1); }
+svg .seg-i2 { fill: var(--i2); }
+svg .seg-i3 { fill: var(--i3); }
+svg .seg-i4 { fill: var(--i4); }
+svg .seg-i5 { fill: var(--i5); }
+svg .seg-styrke {
+  fill: url(#skravur-styrke);
+  stroke: var(--styrke);
+  stroke-width: 1;
+}
+.fyll-volum {
+  background: var(--h4);
+  fill: var(--h4);
+}
+.fyll-syk {
+  background: var(--stempel);
+  fill: var(--stempel);
+}
+.fyll-skadet {
+  background: repeating-linear-gradient(135deg, var(--stempel) 0 2px, transparent 2px 4px);
+  box-shadow: inset 0 0 0 1px var(--stempel);
+}
+svg .fyll-skadet {
+  fill: url(#skravur-skadet);
+  stroke: var(--stempel);
+  stroke-width: 1;
+}
+
+.markor-prikk.m-syk {
+  fill: var(--stempel);
+}
+.markor-prikk.m-skadet {
+  fill: url(#skravur-skadet);
+  stroke: var(--stempel);
+  stroke-width: 1;
+}
+.markor-prikk.m-konk {
+  fill: var(--kote);
+}
+
+.graf-linje {
+  fill: none;
+  stroke: var(--blekk);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.graf-serie {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .graf-serie {
+    transition: opacity 120ms ease-out;
+  }
+}
+.graf-serie.vekt-valgt {
+  stroke: var(--rute);
+  stroke-width: 2.5;
+}
+.graf-serie.vekt-forrige {
+  stroke: var(--blekk);
+  stroke-width: 2;
+}
+.graf-serie.vekt-bakgrunn {
+  stroke: var(--blekk-3);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+.graf-serie.fokus {
+  opacity: 1;
+  stroke-width: 2.5;
+}
+.graf-serie.dempet {
+  opacity: 0.12;
+}
+.graf-traadkors {
+  stroke: var(--blekk-3);
+  stroke-width: 1;
+}
+.graf-merke {
+  stroke: var(--blekk-2);
+  stroke-width: 1;
+}
+.merke-tekst {
+  fill: var(--blekk-2);
+}
+.graf-punkt {
+  stroke: var(--papir);
+  stroke-width: 2;
+}
+.graf-punkt.vekt-valgt { fill: var(--rute); }
+.graf-punkt.vekt-forrige { fill: var(--blekk); }
+.graf-punkt.vekt-bakgrunn { fill: var(--blekk-3); }
+.linje-etikett {
+  fill: var(--blekk);
+  font: 600 12px var(--font-tall);
+}
+
+.graf-tegnforklaring {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font: 500 12px var(--font-tall);
+  color: var(--blekk-2);
+}
+.graf-tegnforklaring li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.graf-tegnforklaring i,
+.graf-tips i {
+  width: 12px;
+  height: 8px;
+  flex: none;
+}
+.graf-tegnforklaring i.linjenokkel,
+.graf-tips i.linjenokkel {
+  height: 0;
+  width: 16px;
+  border-top: 2px solid var(--blekk);
+}
+.linjenokkel.vekt-valgt { border-top: 2.5px solid var(--rute) !important; }
+.linjenokkel.vekt-bakgrunn { border-top: 1px solid var(--blekk-3) !important; }
+.linjenokkel.snitt { border-top: 1.5px solid var(--blekk) !important; }
+
+.graf-tips {
+  position: absolute;
+  z-index: 5;
+  min-width: 170px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--papir);
+  border: var(--strek);
+  font-size: 12px;
+  pointer-events: none;
+}
+.graf-tips b {
+  font: 600 14px var(--font-tall);
+}
+.tips-tall {
+  font: 500 14px var(--font-tall);
+  margin-bottom: 2px;
+}
+.tips-rad {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--blekk-2);
+}
+.tips-rad.dempet {
+  color: var(--blekk-3);
+}
+.tips-rad.varsel {
+  color: var(--stempel);
+}
+.tips-verdi {
+  margin-left: auto;
+  padding-left: 10px;
+  font: 500 13px var(--font-tall);
+}
+
+/* ── Intensitet ────────────────────────────────────────── */
+
+.andelsliste {
+  margin-top: 12px;
+  border-top: var(--strek);
+}
+.andelsrad {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 64px 64px 110px;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 6px;
+  border-bottom: var(--strek-rute);
+}
+.andelsrad.valgt {
+  background: var(--rute-flate);
+}
+.andel-navn {
+  font: 600 15px var(--font-tall);
+}
+.andel-tall {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.andel-tall b {
+  font: 600 17px/1.1 var(--font-tall);
+}
+.andel-tall small {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blekk-3);
+}
+
+.multipler {
+  display: grid;
+  column-gap: 6px;
+  row-gap: 4px;
+  margin-top: 14px;
+  overflow-x: auto;
+}
+.multippel-kol {
+  font: 600 12px var(--font-tall);
+  color: var(--blekk-3);
+  text-align: center;
+  padding-bottom: 4px;
+  border-bottom: var(--strek);
+}
+.multippel-kol.valgt {
+  color: var(--rute);
+}
+.multippel-navn {
+  align-self: end;
+  padding-bottom: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
+.multippel-navn.del {
+  color: var(--blekk-2);
+}
+.multippel {
+  height: 84px;
+  padding-top: 16px; /* plass til verdien over den høyeste søylen */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: var(--strek);
+}
+.multippel i {
+  position: relative;
+  display: block;
+  width: min(28px, 60%);
+  background: var(--blekk-2);
+}
+.multippel.valgt i {
+  background: var(--rute);
+}
+.multippel-verdi {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font: 500 11px var(--font-tall);
+  font-style: normal;
+  color: var(--blekk-3);
+}
+
+/* ── Rekorder ──────────────────────────────────────────── */
+
+.topplister {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px 32px;
+}
+.toppliste h2 {
+  font: 600 17px var(--font-tall);
+  padding-bottom: 6px;
+  border-bottom: var(--strek);
+}
+.toppliste ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: topp;
+}
+.toppliste li {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  border-bottom: var(--strek-rute);
+  counter-increment: topp;
+}
+.toppliste.bred {
+  margin-bottom: 28px;
+}
+.toppliste.bred ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  column-gap: 32px;
+}
+.toppliste.unummerert li {
+  grid-template-columns: minmax(0, 1fr);
+}
+.toppliste.unummerert li::before {
+  content: none;
+}
+.toppliste li::before {
+  content: counter(topp);
+  padding-top: 7px;
+  font: 600 13px var(--font-tall);
+  color: var(--blekk-3);
+}
+.toppliste li > a,
+.toppliste li > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 12px;
+  padding: 6px 4px 6px 0;
+  color: inherit;
+  text-decoration: none;
+}
+.toppliste li > a:hover {
+  background: var(--rute-flate);
+}
+.topp-navn {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.topp-detalj {
+  grid-column: 1;
+  font-size: 12px;
+  color: var(--blekk-3);
+}
+.topp-verdi {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font: 600 17px var(--font-tall);
+}
+
+@media (max-width: 720px) {
+  .analyse {
+    padding: 0 16px 40px;
+  }
+  .analyse-hode {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .sesongvelger {
+    padding-bottom: 10px;
+  }
+  .grafkort {
+    padding: 12px 12px 14px;
+  }
+  .andelsrad {
+    grid-template-columns: 60px minmax(0, 1fr) 52px;
+    gap: 10px;
+  }
+  /* På mobil står andelen over terskel igjen; den er poenget med grafen. */
+  .andelsrad .andel-i1,
+  .andelsrad .andel-timer {
+    display: none;
+  }
+  .undermeny.mer-hoyre {
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+  .undermeny.mer-venstre {
+    mask-image: linear-gradient(90deg, transparent, #000 15%);
+  }
+  .undermeny.mer-venstre.mer-hoyre {
+    mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  }
+  .topplister {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -215,12 +215,22 @@ først i PATH.
 |---|---|
 | `src/data/` | Typer, lasting og indekser (`last.ts`), ISO-uker (`uker.ts`), summer etter reglene over (`aggregat.ts`), søk og filter (`filter.ts`) og formatering (`format.ts`) |
 | `src/sider/Dagbok.tsx` | Ukeskalenderen: virtualisert liste med uker, nyeste først. `/okt/:id` åpner øktpanelet |
-| `src/sider/Analyse.tsx` | Plass til analyseverktøyene. Foreløpig årstotaler |
+| `src/sider/Analyse.tsx` | Ramme for analysesiden: undermeny, sesongvelger (`?sesong=2025-26`) og felles `Analysekontekst` |
+| `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (og aktivitet), Rekorder (og helse) |
+| `src/data/statistikk.ts` | Sesonger (1. nov.–31. okt.), kumulative kurver, glidende snitt, kvalitetsøkter (≥ 10 min i I3–I5), aktivitetsfordeling, rekorder og rekker, helse per sesong |
+| `src/komponenter/graf/` | Egne SVG-grafer (`Stolper`, `Linjer`) med d3-scale/d3-shape, verktøytips, tastatur (piltaster, Enter) og tabellvisning (`Grafkort`) |
 | `src/komponenter/` | Ukerad, Oktkort, Oktpanel, Hoydelag (årsnavigasjonen), Sok, Topplinje, Sonestolpe, Dagsmarkorer |
 | `src/stil/tokens.css` | Farger for lys og mørk modus. Sonefargene er validert for fargeblindhet |
 
-- **Ruter:** Hash-ruting (`#/`, `#/okt/<id>`, `#/analyse`). Søket ligger i URL-en
-  (`?q=…&type=loping,konk`), så visninger kan lenkes.
+- **Ruter:** Hash-ruting (`#/`, `#/okt/<id>`, `#/analyse/...`). Søket ligger i URL-en
+  (`?q=…&type=loping,konk`), så visninger kan lenkes. `#/?uke=2025-14` åpner dagboka på
+  en bestemt uke. Analysegrafene bruker dette når du klikker på en uke.
+- **Treningsår:** Analysen regner sesonger fra 1. november til 31. oktober. «Samme dato»
+  betyr at inneværende sesong sammenlignes med sesongen før, fram til samme dag.
+- **Farger i grafer:** Det er ingen egen kategoripalett. Valgt sesong er blå, forrige
+  sesong er blekk, og resten er dempet. Aktiviteter vises som små multipler i blekk.
+  Kvalitetsøkter bruker I3-fargen, konkurranser kotebrunt, og syk og skadet stempelrødt
+  (skadet skravert).
 - **Design:** Den visuelle retningen heter «Kartbladet». Retningskontrakten ligger i
   `.impeccable/surfaces/` og produktfaktaene i `PRODUCT.md`.
 - **Garmin:** `Okt` har et valgfritt felt `garmin_id` til Garmin-koblingen, som kommer

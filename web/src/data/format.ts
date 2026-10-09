@@ -6,8 +6,10 @@ const heltall = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
 /** 380 → "6:20" (timer:minutter). */
 export function timer(min: number): string {
-  const t = Math.floor(min / 60)
-  return `${t}:${String(Math.round(min - t * 60)).padStart(2, '0')}`
+  // Rund av til hele minutter først, så 59,6 min blir «1:00» og ikke «0:60».
+  const totalt = Math.round(min)
+  const t = Math.floor(totalt / 60)
+  return `${t}:${String(totalt - t * 60).padStart(2, '0')}`
 }
 
 /** Varighet på et øktkort: 43 → "43′", 110 → "1:50". */

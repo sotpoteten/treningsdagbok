@@ -31,7 +31,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<Dagbok dagbok={dagbok} />} />
         <Route path="/okt/:id" element={<Dagbok dagbok={dagbok} />} />
-        <Route path="/analyse" element={<Analyse dagbok={dagbok} />} />
+        <Route path="/analyse/*" element={<Analyse dagbok={dagbok} />} />
       </Routes>
     </HashRouter>
   )

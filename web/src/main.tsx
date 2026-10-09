@@ -9,6 +9,7 @@ import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import './stil/tokens.css'
 import './stil/app.css'
+import './stil/analyse.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

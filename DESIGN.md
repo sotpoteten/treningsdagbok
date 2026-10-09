@@ -320,6 +320,34 @@ Topplinje med merke (600 16px), hovedmeny (Dagbok, Analyse) i 500 Barlow og verk
 ### Bevegelse
 Bare bakgrunn og opasitet animeres: 120 ms ease-out for bakgrunn og 160 ms ease-out for opasitet, på øktkort, filterbrikker og høydelagsceller, og bare når brukeren ikke har bedt om redusert bevegelse.
 
+### Diagrammer (analysesiden)
+Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som resten:
+- **Stolper:** rette og uten radius, maks 24 px brede, med 2 px papirmellomrom mellom
+  stablede segmenter. Styrke og skadet skraveres med SVG-mønstre (`#skravur-styrke`,
+  `#skravur-skadet`). Aktiv stolpe får en 1 px blekkramme i stedet for at de andre dempes.
+- **Linjer:** 2–2,5 px. Valgt sesong er rutenettblå, forrige sesong blekk og resten
+  `blekk-3` med 45 % opasitet. Navn står ved linjeenden, eller over endepunktet hvis en
+  annen linje krysser der. Navnene flyttes aldri bort fra linja si.
+- **Akser:** 1 px `rute-svak` for rutenett og 1 px blekk for grunnlinjen. Aksetekst står
+  i Barlow Condensed 11 px `blekk-3`, med enhet på y-aksen («t», «km»). Det brukes aldri
+  to y-akser.
+- **Merker over stolper:** 6 px kvadrater. Syk er fylt stempelrød, skadet er skravert
+  stempelrød og konkurranse er kotebrun.
+- **Ingen ny kategoripalett:**
+  - Aktiviteter vises som små multipler i `blekk-2`, og valgt sesong i rutenettblå.
+  - Kvalitetsøkter bruker I3.
+  - Løpe-km bruker volumtrinnet `h4`.
+- **Grafkort:**
+  - 1 px blekkramme med tittel, forklaring og segmentvalg.
+  - «Graf | Tabell» bytter til tabellvisning.
+  - Tegnforklaring vises ved to serier eller flere.
+- **Verktøytips:** papir med 1 px blekkramme, Barlow Condensed for tall og fargeprikker
+  ved siden av teksten. Teksten har aldri seriefargen.
+- **Tastatur:** Grafen kan fokuseres. Piltastene flytter aktiv stolpe eller trådkors, og
+  Enter åpner uka. På berøringsskjerm viser første trykk verktøytipset, og andre trykk åpner.
+- **Endring mot i fjor:** Tellinger (dager, økter) vises som differanse, for eksempel «+13».
+  Timer og km vises i prosent.
+
 ## Do's and Don'ts
 
 ### Do:

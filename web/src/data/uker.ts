@@ -12,6 +12,12 @@ export function ukeNokkel(ar: number, uke: number): string {
   return `${ar}-${String(uke).padStart(2, '0')}`
 }
 
+/** ISO-uke-nøkkelen for en dato, f.eks. «2026-40». */
+export function ukeForDato(iso: string): string {
+  const d = parseISO(iso)
+  return ukeNokkel(getISOWeekYear(d), getISOWeek(d))
+}
+
 export interface Ukedag {
   dato: string
   okter: Okt[]
