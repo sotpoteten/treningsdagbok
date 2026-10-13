@@ -4,8 +4,13 @@ En nettside som visualiserer Isaks treningsdata, eksportert fra treningsdagboka 
 Olympiatoppen (dagbok.olympiatoppen.no), supplert med en full Garmin-eksport. Isak er
 orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tekster på siden.
 
-- **Repo:** privat på github.com/sotpoteten/treningsdagbok. Commit direkte på `main`, og
-  bare når Isak ber om det. Felles regler står i `../CLAUDE.md`.
+- **Repo:** offentlig på github.com/sotpoteten/treningsdagbok (vist til i jobbsøknad).
+  Commit direkte på `main`, og bare når Isak ber om det. Felles regler står i
+  `../CLAUDE.md`. **Alt som committes, publiseres**, så se «Personvern» før nye filer
+  legges til.
+- **Demo:** sotpoteten.github.io/treningsdagbok. `.github/workflows/pages.yml` kjører
+  testene, bygger og publiserer ved hver push til `main`. Demoen har ikke GPS-spor, og
+  «Spør» virker bare lokalt.
 - **Brukerdokumentasjon:** `README.md` beskriver oppstart, dataoppdatering og struktur.
 - **Design og produkt:** `DESIGN.md` er designsystemet, `PRODUCT.md` er produktfaktaene.
 
@@ -211,12 +216,19 @@ en trener. Den ligger i `kommentarer_andre` og vises ikke uten videre som Isaks 
 
 ## Personvern
 
-Kommentarene (dagboknotatene) kan vises på nettsiden. Det har Isak bekreftet. Den rå
-eksporten (`data/raw/`) er likevel holdt utenfor git via `.gitignore`, blant annet
-fordi `userData.json` inneholder e-post og fødselsdato. De ryddige filene i `data/` har
-ikke med disse opplysningene. GPS-sporene (`data/garmin_spor/`, `web/public/garmin_spor/`)
-holdes også utenfor git, fordi de viser hvor Isak bor. `garmin_aktiviteter.json` har ingen
-koordinater.
+Repoet er offentlig. Isak har valgt at dagboknotatene, ukeskommentarene, dagsrapportene
+og helsedataene i `data/` skal ligge åpent.
+
+Dette skal aldri committes:
+- **Rådata** (`data/raw/`): `userData.json` inneholder e-post og fødselsdato, og
+  Garmin-eksporten inneholder mye mer.
+- **GPS-spor** (`data/garmin_spor/`, `web/public/garmin_spor/`): de viser hvor Isak bor.
+  `garmin_aktiviteter.json` har ingen koordinater.
+- **Nøkler og innstillinger** (`web/.env.local`).
+
+Alle tre er dekket av `.gitignore`. Nye datafiler og skjermbilder sjekkes for koordinater,
+e-post, fødselsdato og nøkler før de legges til. Skjermbilder med kart tas av
+konkurranser, ikke av turer som starter hjemme.
 
 ## Garmin-data
 

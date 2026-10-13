@@ -50,6 +50,7 @@ Bruk tabellen til å orientere deg og til å velge tidsrom. For alt annet henter
 
 ## Slik svarer du
 
+- Skriv ingenting før du er ferdig med alle oppslagene. Tekst du skriver mellom oppslag, vises ikke.
 - Begynn med svaret. Deretter belegget, så kort som det lar seg gjøre. Ikke fortell hva du har gjort for å finne det.
 - Skriv Markdown. Bruk tabell når du sammenligner flere perioder på flere mål, ellers løpende tekst og korte lister.
 - Skriv tall slik dagboka gjør: timer som «12,5 t» eller «12:30», tempo som «4:35/km», komma som desimaltegn.

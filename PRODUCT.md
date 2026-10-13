@@ -11,8 +11,9 @@ web
 Vite + React + TypeScript i `web/`. Statisk side som leser JSON fra `data/`, uten server.
 Unntaket er «Spør», en AI-assistent (Claude Agent SDK) som kjører i utviklingsserveren.
 Siden har egne SVG-grafer med d3 og kart med MapLibre. Dataene konverteres med
-Python-skript i `scripts/`. Siden kjøres lokalt (`npm run dev`, port 5180). Koden ligger
-privat på GitHub (sotpoteten/treningsdagbok). Publisering er ikke bestemt.
+Python-skript i `scripts/`. Siden kjøres lokalt (`npm run dev`, port 5180). Koden og
+dataene ligger offentlig på GitHub (sotpoteten/treningsdagbok), og en statisk utgave uten
+GPS-spor og assistent publiseres på GitHub Pages.
 
 ## Users
 

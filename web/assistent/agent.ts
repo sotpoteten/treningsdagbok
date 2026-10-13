@@ -12,6 +12,8 @@ import { dager, finnOkter, okt, perioder, ukekommentarer, Verktoyfeil } from './
 export type Hendelse =
   | { type: 'tekst'; delta: string }
   | { type: 'status'; tekst: string }
+  /** Teksten så langt var en mellommelding før et oppslag, ikke en del av svaret. */
+  | { type: 'forkast' }
   | { type: 'ferdig'; samtaleId: string }
   | { type: 'feil'; melding: string }
 
@@ -185,7 +187,12 @@ export async function* spor(
         yield { type: 'feil', melding: FEIL[m.error] ?? `Claude svarte med en feil (${m.error}).` }
         return
       }
-      for (const b of m.message.content)
+      const oppslag = m.message.content.filter((b) => b.type === 'tool_use')
+      if (oppslag.length && harTekst) {
+        harTekst = false
+        yield { type: 'forkast' }
+      }
+      for (const b of oppslag)
         if (b.type === 'tool_use') yield { type: 'status', tekst: status(b.name, b.input as Record<string, unknown>) }
     } else if (m.type === 'result') {
       if (m.subtype === 'success' && !m.is_error) yield { type: 'ferdig', samtaleId: m.session_id }

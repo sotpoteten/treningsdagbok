@@ -1,8 +1,35 @@
 # Treningsdagbok
 
-En nettside som gjør Isak Jonssons treningsdagbok lesbar, søkbar og analyserbar. Dataene
-kommer fra dagboka til Olympiatoppen (dagbok.olympiatoppen.no), fra 1. november 2019, og fra
-en full Garmin-eksport.
+[![Bygg og tester](https://github.com/sotpoteten/treningsdagbok/actions/workflows/pages.yml/badge.svg)](https://github.com/sotpoteten/treningsdagbok/actions/workflows/pages.yml)
+
+En nettside som gjør Isak Jonssons treningsdagbok lesbar, søkbar og analyserbar: sju år
+med orienteringstrening, rundt 3 900 økter. Dataene kommer fra dagboka til Olympiatoppen
+(dagbok.olympiatoppen.no), fra 1. november 2019, og fra en full Garmin-eksport.
+
+**Se den kjørende siden: [sotpoteten.github.io/treningsdagbok](https://sotpoteten.github.io/treningsdagbok/)**
+
+![Ukeskalenderen med en åpen økt: blokker, Garmin-nøkkeltall og GPS-spor på Kartverkets kart](docs/bilder/dagbok.png)
+
+![Analysesiden Volum: timer per uke fordelt på intensitetssoner, og km løping per uke](docs/bilder/analyse.png)
+
+## Teknikk
+
+- **Nettsiden:** Vite, React og TypeScript, uten UI-bibliotek. Grafene er egne
+  SVG-komponenter med d3, med tastaturstyring og tabellvisning. Kartet bruker MapLibre med
+  Kartverkets topografiske kart.
+- **Data:** Python-skript gjør eksportene om til ryddige JSON-filer. Garmin-skriptet
+  dekoder rundt 5 900 FIT-filer parallelt og kobler aktivitetene til dagbokøktene.
+- **Assistenten:** Claude Agent SDK med fem egne verktøy som regner tallene i kode, pluss
+  nettsøk etter kilder.
+- **Design:** Et eget designsystem, «Kartbladet», beskrevet i [`DESIGN.md`](DESIGN.md).
+  Sonefargene er validert for fargeblindhet.
+- **Tester:** vitest og Pythons unittest. Summene sjekkes mot kontrolltall fra dagboka.
+
+Prosjektet er utviklet sammen med Claude Code. [`CLAUDE.md`](CLAUDE.md),
+[`DESIGN.md`](DESIGN.md) og [`PRODUCT.md`](PRODUCT.md) er arbeidsdokumentene som styrer
+det arbeidet.
+
+## Innhold
 
 - **Dagbok:** Ukeskalender med alle økter og soner, km og notater. Den har ukesummer,
   ukeskommentarer og dagsmarkører (syk, skadet, reise, høydedøgn, konkurranse) og en
@@ -12,7 +39,6 @@ en full Garmin-eksport.
 - **Analyse:** Oversikt mot forrige sesong, volum over tid, sesongsammenligning,
   intensitet og aktivitet, rekorder, og helse og belastning (hvilepuls, HRV, søvn og
   Garmins treningsbelastning).
-
 - **Spør:** En AI-assistent som svarer på spørsmål om treningen. Den henter tallene fra
   dagboka og ser dem opp mot treningslære og forskning, med lenker til kilder, uker og
   økter. Den virker bare når siden kjøres lokalt.
@@ -39,6 +65,8 @@ npm run build      # typesjekk og bygg til web/dist/
 ```
 
 ## Spør (AI-assistenten)
+
+![«Spør»: et spørsmål om intensitetsfordeling, besvart med en tabell fra dagboka](docs/bilder/spor.png)
 
 Assistenten kjører i utviklingsserveren og starter sammen med `npm run dev`. Den bruker
 Claude gjennom innloggingen fra Claude Code, så du må være innlogget der. Spørsmålene
@@ -117,9 +145,16 @@ ISO-uker regnes riktig, og at koblingen mot Garmin håndterer flere aktiviteter 
 
 ## Personvern
 
-Repoet er privat. Rådataene (`data/raw/`) holdes utenfor git, fordi de inneholder blant
-annet e-post og fødselsdato. GPS-sporene holdes også utenfor, fordi de viser hvor Isak bor.
-Dagboknotatene ligger i `data/okter.json` og vises på siden, og det har Isak godkjent.
+Repoet er offentlig. Dagboknotatene, ukeskommentarene og helsedataene i `data/` ligger
+åpent, og det har Isak valgt selv. To ting holdes utenfor git:
+- **Rådataene** (`data/raw/`), fordi de inneholder blant annet e-post og fødselsdato.
+- **GPS-sporene** (`data/garmin_spor/`), fordi de viser hvor Isak bor. Den publiserte
+  siden har derfor ikke kart og kurver per økt. De vises når siden kjøres lokalt.
+
+## Lisens
+
+Koden er lisensiert under [MIT](LICENSE). Dataene i `data/` er personlige og omfattes
+ikke av lisensen.
 
 ## Dokumentasjon
 

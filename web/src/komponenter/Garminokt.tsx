@@ -158,7 +158,14 @@ export function Garminokt({ aktiviteter }: { aktiviteter: GarminAktivitet[] }) {
       </dl>
 
       {laster && <p className="fotnote">Laster spor …</p>}
-      {!laster && !spor && <p className="fotnote">GPS-spor og kurver er ikke tilgjengelige for denne økta.</p>}
+      {!laster && !spor && (
+        <p className="fotnote">
+          {a.har_spor
+            ? // Sporfilene ligger ikke i repoet, så den publiserte siden har dem ikke.
+              'GPS-sporet og kurvene vises bare i den lokale utgaven av siden.'
+            : 'GPS-spor og kurver er ikke tilgjengelige for denne økta.'}
+        </p>
+      )}
 
       {harKart && p && (
         <div className={stor ? 'kartramme stor' : 'kartramme'}>

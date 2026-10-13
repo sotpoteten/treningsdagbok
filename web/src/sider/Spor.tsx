@@ -22,6 +22,7 @@ interface Samtale {
 type Hendelse =
   | { type: 'tekst'; delta: string }
   | { type: 'status'; tekst: string }
+  | { type: 'forkast' }
   | { type: 'ferdig'; samtaleId: string }
   | { type: 'feil'; melding: string }
 
@@ -132,6 +133,7 @@ export function Spor() {
           const h = JSON.parse(del.slice(6)) as Hendelse
           if (h.type === 'tekst') oppdaterSiste((u) => ({ ...u, svar: u.svar + h.delta, status: undefined }))
           else if (h.type === 'status') oppdaterSiste((u) => ({ ...u, status: h.tekst }))
+          else if (h.type === 'forkast') oppdaterSiste((u) => ({ ...u, svar: '' }))
           else if (h.type === 'feil') oppdaterSiste((u) => ({ ...u, feil: h.melding, status: undefined }))
           else setSamtale((s) => ({ ...s, id: h.samtaleId }))
         }
@@ -207,6 +209,8 @@ export function Spor() {
               ) : (
                 <p className="spor-melding">
                   Assistenten finnes bare når siden kjøres lokalt med «npm run dev». Denne utgaven av siden er statisk.
+                  Lokalt svarer den med tabeller, kilder og lenker til uker og økter;{' '}
+                  <a href="https://github.com/sotpoteten/treningsdagbok#spør-ai-assistenten">README viser et eksempel</a>.
                 </p>
               )}
             </div>
