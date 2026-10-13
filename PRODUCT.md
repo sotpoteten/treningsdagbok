@@ -9,6 +9,7 @@ web
 ## Stack
 
 Vite + React + TypeScript i `web/`. Statisk side som leser JSON fra `data/`, uten server.
+Unntaket er «Spør», en AI-assistent (Claude Agent SDK) som kjører i utviklingsserveren.
 Siden har egne SVG-grafer med d3 og kart med MapLibre. Dataene konverteres med
 Python-skript i `scripts/`. Siden kjøres lokalt (`npm run dev`, port 5180). Koden ligger
 privat på GitHub (sotpoteten/treningsdagbok). Publisering er ikke bestemt.
@@ -30,11 +31,16 @@ Garmin-eksport.
 - **Analyse:** Oversikt mot forrige sesong, volum, sesongsammenligning, intensitet og
   aktivitet, rekorder, og helse og belastning (hvilepuls, HRV, søvn og Garmins
   treningsbelastning).
+- **Spør:** En AI-assistent som henter tall og notater fra dagboka og ser dem opp mot
+  treningslære og forskning på eliteutøvere. Svarene skiller mellom data, litteratur og
+  vurdering, og lenker til kilder, uker og økter. Den stiller ikke diagnoser og tar ikke
+  avgjørelser om treningsopplegget.
 
 Siden lykkes når Isak raskt kan svare på spørsmål som:
 - «hva gjorde jeg uka før NM i fjor?»
 - «hvordan så vinteren 2024 ut sammenlignet med 2025?»
 - «hvordan var HRV og søvn i ukene før jeg ble syk?»
+- «hvordan er intensitetsfordelingen min sammenlignet med det forskningen beskriver?»
 
 ## Positioning
 

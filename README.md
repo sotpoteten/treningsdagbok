@@ -13,7 +13,12 @@ en full Garmin-eksport.
   intensitet og aktivitet, rekorder, og helse og belastning (hvilepuls, HRV, søvn og
   Garmins treningsbelastning).
 
-Siden er statisk (Vite, React og TypeScript) og leser JSON-filer. Den trenger ingen server.
+- **Spør:** En AI-assistent som svarer på spørsmål om treningen. Den henter tallene fra
+  dagboka og ser dem opp mot treningslære og forskning, med lenker til kilder, uker og
+  økter. Den virker bare når siden kjøres lokalt.
+
+Siden er statisk (Vite, React og TypeScript) og leser JSON-filer. Bare «Spør» trenger
+utviklingsserveren.
 Treningsåret regnes fra 1. november til 31. oktober.
 
 ## Kom i gang
@@ -32,6 +37,21 @@ npm run dev        # http://localhost:5180
 npm test           # vitest: summer mot kontrolltall, sesonger, søk, helseserier
 npm run build      # typesjekk og bygg til web/dist/
 ```
+
+## Spør (AI-assistenten)
+
+Assistenten kjører i utviklingsserveren og starter sammen med `npm run dev`. Den bruker
+Claude gjennom innloggingen fra Claude Code, så du må være innlogget der. Spørsmålene
+teller mot bruksgrensene i Claude-abonnementet.
+
+- **Hva den kan:** lese summer per uke, måned, sesong og år, søke i øktene, lese enkeltøkter
+  med Garmin-runder, dager med helsedata og ukeskommentarene, og søke på nettet etter
+  kilder. Den kan ikke lese filer, kjøre kommandoer eller endre noe.
+- **Hva som sendes ut:** Spørsmålet og de tallene og notatene svaret trenger, sendes til
+  Anthropic. GPS-spor sendes aldri.
+- **Innstillinger** (valgfrie) i `web/.env.local`, som holdes utenfor git:
+  - `ASSISTENT_MODELL`: en annen modell enn `claude-opus-5-5`
+  - `ANTHROPIC_API_KEY`: bruk en API-nøkkel i stedet for abonnementet
 
 ## Oppdatere dataene
 
@@ -78,9 +98,10 @@ scripts/
   konverter_garmin.py Garmin-eksport → data/garmin_*.json og spor
   garmin_kobling.py   kobler Garmin-aktiviteter til dagbokøkter (+ test_garmin_kobling.py)
 web/                  nettsiden (Vite + React + TypeScript)
+  assistent/          «Spør»: Vite-tillegg, agent, systemprompt og dagbokverktøy
   src/data/           lasting, summer, sesonger, statistikk, søk
   src/komponenter/    kalender, øktpanel, grafer (graf/), kart (kart/)
-  src/sider/          Dagbok og Analyse (analyse/)
+  src/sider/          Dagbok, Analyse (analyse/) og Spør
   src/stil/           fargetokens og stiler
 ```
 

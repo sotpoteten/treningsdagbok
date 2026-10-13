@@ -3,6 +3,7 @@ import { HashRouter, Route, Routes } from 'react-router'
 import { lastDagbok, type Dagbok as DagbokData } from './data/last'
 import { Analyse } from './sider/Analyse'
 import { Dagbok } from './sider/Dagbok'
+import { Spor } from './sider/Spor'
 
 export function App() {
   const [dagbok, setDagbok] = useState<DagbokData | null>(null)
@@ -32,6 +33,7 @@ export function App() {
         <Route path="/" element={<Dagbok dagbok={dagbok} />} />
         <Route path="/okt/:id" element={<Dagbok dagbok={dagbok} />} />
         <Route path="/analyse/*" element={<Analyse dagbok={dagbok} />} />
+        <Route path="/spor" element={<Spor />} />
       </Routes>
     </HashRouter>
   )

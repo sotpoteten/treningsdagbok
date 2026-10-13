@@ -42,6 +42,7 @@ export function Topplinje({ children }: { children?: ReactNode }) {
           Dagbok
         </NavLink>
         <NavLink to="/analyse">Analyse</NavLink>
+        <NavLink to="/spor">Spør</NavLink>
       </nav>
       <div className="verktoy">{children}</div>
       <button type="button" className="ikonknapp" onClick={bytt} aria-label={morkNa ? 'Bytt til lyst kart' : 'Bytt til mørkt kart'}>

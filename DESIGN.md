@@ -386,6 +386,20 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
 - **Rundetabellen:** Pauser og rolige drag (≤ 100 m, eller mer enn 40 % tregere enn
   midtrunden) dempes til `blekk-3`, så dragene kan leses rett nedover.
 
+### Spør (samtalen med assistenten)
+- **To stemmer:** Isaks spørsmål står i Source Serif 4 (19 px), som notatene hans. Svaret
+  står i Barlow 16 px, fordi det ikke er Isaks tekst.
+- **Ingen bobler:** En utveksling er en rad i en spalte på 760 px, skilt fra den forrige
+  med en blekkstrek. Forslagene i tom tilstand er rader med hårstreker, ikke kort.
+- **Tabeller i svaret:** blekkstrek over og under, svake hårstreker mellom radene, tall i
+  Barlow Condensed og versaler i `blekk-3` i hodet.
+- **Lenker:** rutenettblå med 1 px understrek. Uker og økter åpnes i dagboka, kilder i ny
+  fane.
+- **Status:** én linje i etikettstil med et 6 px blått kvadrat som pulserer i opasitet
+  mens assistenten arbeider.
+- **Skrivefeltet:** fast nederst, 1 px blekkramme, serif, 2 px blå fokusring. Sendknappen
+  er fylt rutenettblå når det står noe i feltet, og blir en stoppknapp mens svaret skrives.
+
 ## Do's and Don'ts
 
 ### Do:

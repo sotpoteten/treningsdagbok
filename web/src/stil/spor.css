@@ -1,0 +1,294 @@
+/* ── Spør: samtale med dagboka ─────────────────────────────
+   Isaks spørsmål står i serif, som notatene hans. Svarene står i Barlow, som resten av
+   grensesnittet (The Two Voices Rule). Ingen bobler: hver utveksling er en rad med
+   blekkstrek over, som øktkortene. */
+
+.spor {
+  flex: 1;
+  overflow: auto;
+  padding: 0 32px 32px;
+  scrollbar-gutter: stable;
+}
+.spor-spalte {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+/* Tom tilstand */
+.spor-start {
+  padding-top: 56px;
+}
+.spor-start h1 {
+  font: 600 32px/1.1 var(--font-tall);
+}
+.spor-forslag {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: var(--strek);
+}
+.spor-forslag button {
+  display: block;
+  width: 100%;
+  padding: 12px 8px;
+  border: 0;
+  border-top: var(--strek);
+  background: none;
+  text-align: left;
+  font: 400 16px/1.5 var(--font-tekst);
+  color: var(--blekk);
+  cursor: pointer;
+}
+.spor-forslag li + li button {
+  border-top: var(--strek-rute);
+}
+.spor-forslag button:hover {
+  background: var(--rute-flate);
+}
+
+/* Samtalen */
+.spor-samtale {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.spor-samtale > li {
+  padding: 20px 0 36px;
+  border-top: var(--strek);
+}
+.spor-samtale > li:first-child {
+  border-top: 0;
+  padding-top: 32px;
+}
+.spor-sporsmal {
+  margin: 0 0 16px;
+  max-width: 65ch;
+  font: 400 19px/1.45 var(--font-tekst);
+  text-wrap: pretty;
+  white-space: pre-wrap;
+}
+
+.spor-svar {
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-wrap: break-word;
+}
+.spor-svar > * {
+  max-width: 70ch;
+}
+.spor-svar > :first-child {
+  margin-top: 0;
+}
+.spor-svar p,
+.spor-svar ul,
+.spor-svar ol {
+  margin: 0 0 12px;
+}
+.spor-svar ul,
+.spor-svar ol {
+  padding-left: 22px;
+}
+.spor-svar li {
+  margin-bottom: 4px;
+}
+.spor-svar li > p {
+  margin-bottom: 4px;
+}
+.spor-svar h1,
+.spor-svar h2,
+.spor-svar h3,
+.spor-svar h4 {
+  margin: 24px 0 8px;
+  font: 600 19px/1.2 var(--font-tall);
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+.spor-svar h4 {
+  font-size: 16px;
+}
+.spor-svar strong {
+  font-weight: 600;
+}
+.spor-svar a,
+.spor-melding a {
+  color: var(--rute);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.spor-svar a:hover {
+  background: var(--rute-flate);
+}
+.spor-svar blockquote {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  background: var(--papir-2);
+  font-family: var(--font-tekst);
+}
+.spor-svar blockquote > :last-child {
+  margin-bottom: 0;
+}
+.spor-svar code {
+  font: 500 0.95em var(--font-tall);
+}
+.spor-svar hr {
+  border: 0;
+  border-top: var(--strek-rute);
+  margin: 20px 0;
+}
+
+/* Tabeller i svaret: hårstreker og tall i smal sans, som tabellene i analysen. */
+.spor-svar .svartabell {
+  max-width: none;
+  margin: 4px 0 16px;
+  overflow-x: auto;
+}
+.spor-svar table {
+  border-collapse: collapse;
+  border-top: var(--strek);
+  border-bottom: var(--strek);
+  font: 500 15px/1.3 var(--font-tall);
+  font-variant-numeric: tabular-nums;
+}
+.spor-svar th,
+.spor-svar td {
+  padding: 6px 14px 6px 0;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: var(--strek-rute);
+}
+.spor-svar th:last-child,
+.spor-svar td:last-child {
+  padding-right: 0;
+}
+.spor-svar tr:last-child td {
+  border-bottom: 0;
+}
+.spor-svar th {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blekk-3);
+  border-bottom: var(--strek);
+  white-space: nowrap;
+}
+.spor-svar th[align='right'],
+.spor-svar td[align='right'] {
+  text-align: right;
+}
+.spor-svar th[style*='right'],
+.spor-svar td[style*='right'] {
+  padding-left: 14px;
+}
+
+/* Status og meldinger */
+.spor-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 0;
+  font: 500 12px var(--font-tall);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blekk-3);
+}
+.spor-puls {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  background: var(--rute);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .spor-puls {
+    animation: spor-puls 1.1s ease-out infinite alternate;
+  }
+}
+@keyframes spor-puls {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+.spor-melding {
+  margin: 8px 0 0;
+  max-width: 65ch;
+  color: var(--blekk-2);
+}
+.spor-start .spor-melding {
+  padding: 12px;
+  background: var(--papir-2);
+}
+.spor-melding.feil {
+  padding: 8px 12px;
+  background: var(--papir-2);
+  border: 1px solid var(--blekk);
+  color: var(--blekk);
+}
+
+/* Skrivefeltet */
+.spor-skriv {
+  flex: none;
+  padding: 12px 32px 14px;
+  border-top: var(--strek);
+  background: var(--papir);
+  /* Samme bredde som samtalen over, som har stabil rullefeltrenne. */
+  scrollbar-gutter: stable;
+  overflow: hidden;
+}
+.spor-felt {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 4px 4px 4px 12px;
+  border: var(--strek);
+  background: var(--papir);
+}
+.spor-felt:focus-within {
+  outline: 2px solid var(--rute);
+  outline-offset: 1px;
+}
+.spor-felt textarea {
+  flex: 1;
+  min-width: 0;
+  max-height: 200px;
+  padding: 6px 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  font: 400 17px/1.45 var(--font-tekst);
+  color: var(--blekk);
+  caret-color: var(--rute);
+}
+.spor-felt textarea::placeholder {
+  color: var(--blekk-3);
+}
+.spor-send:not(:disabled) {
+  background: var(--rute);
+  color: var(--papir);
+}
+.spor-send:hover:not(:disabled) {
+  background: var(--blekk);
+}
+.spor-merknad {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--blekk-3);
+}
+
+@media (max-width: 720px) {
+  .spor {
+    padding: 0 16px 24px;
+  }
+  .spor-skriv {
+    padding: 10px 16px 12px;
+  }
+  .spor-start {
+    padding-top: 28px;
+  }
+  .spor-sporsmal {
+    font-size: 18px;
+  }
+}

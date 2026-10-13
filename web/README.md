@@ -5,7 +5,7 @@ startes og dataene oppdateres, og [CLAUDE.md](../CLAUDE.md) for oppbyggingen.
 
 ```
 npm install
-npm run dev     # http://localhost:5180
+npm run dev     # http://localhost:5180, med assistenten bak «Spør»
 npm test
 npm run build
 ```

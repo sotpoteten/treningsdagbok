@@ -16,7 +16,9 @@ orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tek
    Intensitet og aktivitet, Rekorder, og Helse og belastning.
 3. **Garmin:** Aktivitetene er koblet til øktene. Øktpanelet har kart, kurver og runder.
    Hvilepuls, HRV, søvn og belastning brukes i analysen.
-4. **Mulig senere:**
+4. **Spør:** AI-assistent som svarer på spørsmål om dataene, med nettsøk etter kilder.
+   Bare lokalt.
+5. **Mulig senere:**
    - importere Excel-dagboka for 2017–2019
    - publisere siden
    - flere analyseverktøy
@@ -289,13 +291,15 @@ først i PATH. Python-testene for Garmin-koblingen kjøres med
 | `src/data/` | Typer, lasting og indekser (`last.ts`), ISO-uker (`uker.ts`), summer etter reglene over (`aggregat.ts`), søk og filter (`filter.ts`) og formatering (`format.ts`) |
 | `src/sider/Dagbok.tsx` | Ukeskalenderen: virtualisert liste med uker, nyeste først. `/okt/:id` åpner øktpanelet |
 | `src/sider/Analyse.tsx` | Ramme for analysesiden: undermeny, sesongvelger (`?sesong=2025-26`) og felles `Analysekontekst` |
+| `src/sider/Spor.tsx` | «Spør»: samtalen med assistenten, strømmet svar som Markdown, lagret i `localStorage` |
+| `assistent/` | Tjenersiden av «Spør», se «Assistenten» under |
 | `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (og aktivitet), Rekorder, Helse (hvilepuls, HRV, søvn, belastning, syke- og skadedager) |
 | `src/data/statistikk.ts` | Sesonger (1. nov.–31. okt.), kumulative kurver, glidende snitt (også med hull), dagserier, kvalitetsøkter (≥ 10 min i I3–I5), aktivitetsfordeling, rekorder og rekker, syke- og skadedager per sesong |
 | `src/komponenter/graf/` | Egne SVG-grafer (`Stolper`, `Linjer`, `Tidsserie`) med d3, verktøytips, tastatur (piltaster, Enter), berøring og tabellvisning (`Grafkort`) |
 | `src/komponenter/` | Ukerad, Oktkort, Oktpanel, Garminokt, Hoydelag (årsnavigasjonen), Sok, Topplinje, Sonestolpe, Dagsmarkorer, `kart/Kart.tsx` (MapLibre) |
-| `src/stil/` | `tokens.css` (farger for lys og mørk modus, sonefargene er validert for fargeblindhet), `app.css` (dagboka), `analyse.css` (analyse og grafer), `garmin.css` (kart, kurver, helse) |
+| `src/stil/` | `tokens.css` (farger for lys og mørk modus, sonefargene er validert for fargeblindhet), `app.css` (dagboka), `analyse.css` (analyse og grafer), `garmin.css` (kart, kurver, helse), `spor.css` (Spør) |
 
-- **Ruter:** Hash-ruting (`#/`, `#/okt/<id>`, `#/analyse/...`). Søket ligger i URL-en
+- **Ruter:** Hash-ruting (`#/`, `#/okt/<id>`, `#/analyse/...`, `#/spor`). Søket ligger i URL-en
   (`?q=…&type=loping,konk`), så visninger kan lenkes. `#/?uke=2025-14` åpner dagboka på
   en bestemt uke. Analysegrafene bruker dette når du klikker på en uke.
 - **Treningsår:** Analysen regner sesonger fra 1. november til 31. oktober. «Samme dato»
@@ -319,3 +323,29 @@ først i PATH. Python-testene for Garmin-koblingen kjøres med
   - **Helsesiden:** `#/analyse/helse` viser hvilepuls, HRV, søvn og belastning.
   - **Sporfilene:** `npm run data` kopierer dem til `web/public/garmin_spor/`
     (gitignored).
+
+## Assistenten («Spør», `web/assistent/`)
+
+En AI-assistent som svarer på spørsmål om dataene, sett opp mot treningslære og
+forskning. Den kjører i Vites utviklingsserver og finnes ikke i den bygde siden.
+
+| Fil | Innhold |
+|---|---|
+| `tillegg.ts` | Vite-tillegg: `POST /api/spor` (bare fra localhost), svar som Server-Sent Events. Laster agenten med `ssrLoadModule`, så endringer slår inn uten omstart. |
+| `agent.ts` | `query()` fra `@anthropic-ai/claude-agent-sdk`: verktøyene som MCP-tjener i samme prosess, statuslinjer og feilmeldinger. |
+| `prompt.ts` | Systemprompten: datareglene, sesongoversikt, krav til kilder og svarformat. |
+| `verktoy.ts` | Rene funksjoner over `Dagbok`: `perioder`, `finnOkter`, `okt`, `dager`, `ukekommentarer`. Testet i `verktoy.test.ts` mot kontrolltallene. |
+| `data.ts` | Leser `data/*.json` i Node med `byggDagbok`, og rundene fra sporfilene. |
+
+- **Modelltilgang:** Innloggingen fra Claude Code (`~/.claude/.credentials.json`), altså
+  Isaks abonnement. `ANTHROPIC_API_KEY` i `web/.env.local` tar over hvis den settes.
+  `ASSISTENT_MODELL` bytter modell (standard `claude-opus-5-5`).
+- **Avgrensning:** Agenten har bare dagbokverktøyene, `WebSearch` og `WebFetch`. Fil- og
+  skallverktøy er av, og verken Isaks Claude Code-oppsett eller kontoens koblinger lastes
+  (`settingSources: []`, `strictMcpConfig`, `disableClaudeAiConnectors`). Behold det.
+- **Personvern:** Spørsmål, tall og notater sendes til Anthropic. Koordinater sendes
+  aldri: `okt` leser bare `runder` fra sporfila, og en test passer på det.
+- **Nye verktøy** legges i `verktoy.ts` som rene funksjoner med tak på antall rader, og
+  registreres i `agent.ts`. Tall skal regnes med funksjonene i `src/data/`, ikke på nytt.
+- **Samtaler:** SDK-en lagrer dem under `~/.claude/projects/` for en fast arbeidsmappe i
+  temp. Siden husker siste samtale i `localStorage`.
