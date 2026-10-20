@@ -1,5 +1,5 @@
 // Lastes dynamisk (React.lazy), så MapLibre bare hentes når et øktpanel med GPS-spor åpnes.
-import { LngLatBounds, Map as Kartmotor, setWorkerUrl, type GeoJSONSource, type StyleSpecification } from 'maplibre-gl'
+import { LngLatBounds, Map as Kartmotor, setWorkerUrl, type GeoJSONSource, type RasterSourceSpecification, type StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 // MapLibre kjører fliser i en web worker. Vite bunter den, og vi peker MapLibre dit.
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
@@ -22,13 +22,13 @@ const KILDER: Record<Kartlag, { fliser: string[]; attribusjon: string; maks: num
   },
 }
 
-function stil(lag: Kartlag): StyleSpecification {
+function kilde(lag: Kartlag): RasterSourceSpecification {
   const k = KILDER[lag]
-  return {
-    version: 8,
-    sources: { bakgrunn: { type: 'raster', tiles: k.fliser, tileSize: 256, maxzoom: k.maks, attribution: k.attribusjon } },
-    layers: [{ id: 'bakgrunn', type: 'raster', source: 'bakgrunn' }],
-  }
+  return { type: 'raster', tiles: k.fliser, tileSize: 256, maxzoom: k.maks, attribution: k.attribusjon }
+}
+
+function stil(lag: Kartlag): StyleSpecification {
+  return { version: 8, sources: { bakgrunn: kilde(lag) }, layers: [{ id: 'bakgrunn', type: 'raster', source: 'bakgrunn' }] }
 }
 
 interface Props {
@@ -45,13 +45,15 @@ export default function Kart({ lat, lon, lag, aktiv, onAktiv }: Props) {
   const kart = useRef<Kartmotor | null>(null)
   const onAktivRef = useRef(onAktiv)
   onAktivRef.current = onAktiv
+  const lagRef = useRef(lag)
+  lagRef.current = lag
 
   // Punktene med posisjon, med indeksen i den fulle serien.
   const punkter = lat.flatMap((la, i) => (la != null && lon[i] != null ? [{ i, lng: lon[i] as number, lat: la }] : []))
 
   useEffect(() => {
     if (!beholder.current || !punkter.length) return
-    const m = new Kartmotor({ container: beholder.current, style: stil(lag), attributionControl: { compact: true }, cooperativeGestures: true })
+    const m = new Kartmotor({ container: beholder.current, style: stil(lagRef.current), attributionControl: { compact: true }, cooperativeGestures: true })
     kart.current = m
     const grenser = new LngLatBounds()
     for (const p of punkter) grenser.extend([p.lng, p.lat])
@@ -106,9 +108,23 @@ export default function Kart({ lat, lon, lag, aktiv, onAktiv }: Props) {
       m.remove()
       kart.current = null
     }
-    // Sporet og kartlaget bygger kartet på nytt; aktiv-merket oppdateres i egen effekt.
+    // Bare et nytt spor bygger kartet på nytt; kartlaget og aktiv-merket har egne effekter.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lat, lon, lag])
+  }, [lat, lon])
+
+  // Bytt bare bakgrunnsflisene, så sporet og utsnittet blir stående.
+  useEffect(() => {
+    const m = kart.current
+    if (!m || !m.getSource('bakgrunn')) return
+    const bytt = () => {
+      m.removeLayer('bakgrunn')
+      m.removeSource('bakgrunn')
+      m.addSource('bakgrunn', kilde(lag))
+      m.addLayer({ id: 'bakgrunn', type: 'raster', source: 'bakgrunn' }, m.getLayer('spor-kant') ? 'spor-kant' : undefined)
+    }
+    if (m.isStyleLoaded()) bytt()
+    else m.once('load', bytt)
+  }, [lag])
 
   useEffect(() => {
     const m = kart.current

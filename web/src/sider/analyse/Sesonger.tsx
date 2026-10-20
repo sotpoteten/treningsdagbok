@@ -56,7 +56,7 @@ export function Sesonger({ k }: { k: Analysekontekst }) {
             <tr key={s.id} className={s.vekt === 'valgt' ? 'valgt' : undefined}>
               <th scope="row">{s.navn}</th>
               <td>{vis(na)}</td>
-              <td className="endring">{e == null ? '–' : `${e > 0 ? '+' : e < 0 ? '−' : '±'}${Math.abs(Math.round(e))} %`}</td>
+              <td className="endring">{e == null ? '–' : `${Math.round(e) > 0 ? '+' : Math.round(e) < 0 ? '−' : '±'}${Math.abs(Math.round(e))} %`}</td>
               <td>{ferdig ? vis(s.verdier[s.verdier.length - 1]) : 'pågår'}</td>
             </tr>
           )

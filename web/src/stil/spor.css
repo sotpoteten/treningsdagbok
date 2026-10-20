@@ -172,6 +172,10 @@
   border-bottom: var(--strek);
   white-space: nowrap;
 }
+/* Modellen lager av og til tabeller med tom overskriftsrad; den gir bare en dobbel strek. */
+.spor-svar thead:not(:has(th:not(:empty))) {
+  display: none;
+}
 .spor-svar th[align='right'],
 .spor-svar td[align='right'] {
   text-align: right;

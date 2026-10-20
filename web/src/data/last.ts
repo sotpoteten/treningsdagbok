@@ -15,6 +15,13 @@ export interface Dagbok {
   garminPerOkt: Map<string, GarminAktivitet[]>
   helse: GarminDag[] // kronologisk
   helsePerDato: Map<string, GarminDag>
+  /** Garmin-id-ene som har en sporfil på siden; null hvis lista mangler. */
+  sporFinnes: Set<number> | null
+}
+
+/** Om aktiviteten har et GPS-spor som faktisk kan vises her. */
+export function harSpor(dagbok: Dagbok, a: GarminAktivitet): boolean {
+  return a.har_spor && (!dagbok.sporFinnes || dagbok.sporFinnes.has(a.garmin_id))
 }
 
 /** Valgfri fil: gir null hvis den mangler (Vite kan svare med index.html i stedet for 404). */
@@ -41,6 +48,7 @@ export function byggDagbok(
   profil: Profil,
   garmin: GarminAktivitet[] = [],
   helse: GarminDag[] = [],
+  sporFinnes: number[] | null = null,
 ): Dagbok {
   const okter = raOkter
     .filter((o) => o.dato >= DAGBOK_FRA)
@@ -78,17 +86,19 @@ export function byggDagbok(
     garminPerOkt,
     helse: helseSortert,
     helsePerDato: new Map(helseSortert.map((d) => [d.dato, d])),
+    sporFinnes: sporFinnes ? new Set(sporFinnes) : null,
   }
 }
 
 export async function lastDagbok(): Promise<Dagbok> {
-  const [okter, dager, uker, profil, garmin, helse] = await Promise.all([
+  const [okter, dager, uker, profil, garmin, helse, spor] = await Promise.all([
     hent<Okt[]>('okter.json'),
     hent<Dag[]>('dager.json'),
     hent<UkeRad[]>('uker.json'),
     hent<Profil>('profil.json'),
     hentValgfri<GarminAktivitet[]>('garmin_aktiviteter.json'),
     hentValgfri<GarminDag[]>('garmin_helse.json'),
+    hentValgfri<number[]>('garmin_spor.json'),
   ])
-  return byggDagbok(okter, dager, uker, profil, garmin ?? [], helse ?? [])
+  return byggDagbok(okter, dager, uker, profil, garmin ?? [], helse ?? [], spor)
 }

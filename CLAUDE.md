@@ -331,10 +331,12 @@ først i PATH. Python-testene for Garmin-koblingen kjøres med
   - **Øktpanelet:** Det viser Garmin-delen (`Garminokt.tsx`) med nøkkeltall, kart, puls-
     og tempokurve og runder.
   - **Kartet:** `komponenter/kart/Kart.tsx` bruker MapLibre, lastes dynamisk og har
-    Kartverket topo og OSM.
+    Kartverket topo og OSM. Kartverket dekker bare Norge, så spor utenfor Norge starter
+    på OSM (`kart/omrade.ts`). Å bytte lag bytter bare flisene, ikke sporet.
   - **Helsesiden:** `#/analyse/helse` viser hvilepuls, HRV, søvn og belastning.
   - **Sporfilene:** `npm run data` kopierer dem til `web/public/garmin_spor/`
-    (gitignored).
+    (gitignored) og skriver lista `public/data/garmin_spor.json`. Siden viser GPS-ikon og
+    kart bare for spor som står i lista, så demoen (tom liste) ber aldri om sporfiler.
 
 ## Assistenten («Spør», `web/assistent/`)
 

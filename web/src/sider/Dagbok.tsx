@@ -1,9 +1,9 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { erAktivt, lagTreff, lesFilter, type Filter } from '../data/filter'
 import { dato } from '../data/format'
-import type { Dagbok as DagbokData } from '../data/last'
+import { harSpor, type Dagbok as DagbokData } from '../data/last'
 import type { Okt } from '../data/typer'
 import { isoDato, type Uke } from '../data/uker'
 import { Hoydelag } from '../komponenter/Hoydelag'
@@ -49,7 +49,7 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
   }, [dagbok])
 
   const valgt = id ? (dagbok.oktPerId.get(id) ?? null) : null
-  const medSpor = useMemo(() => new Set(dagbok.garmin.filter((a) => a.har_spor && a.okt_id).map((a) => a.okt_id!)), [dagbok])
+  const medSpor = useMemo(() => new Set(dagbok.garmin.filter((a) => a.okt_id && harSpor(dagbok, a)).map((a) => a.okt_id!)), [dagbok])
   const idag = isoDato(new Date())
 
   const flate = useRef<HTMLDivElement>(null)
@@ -107,7 +107,16 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
     }
   }, [valgt, gaTilUke, ukePerDato])
 
-  function endreFilter(f: Filter) {
+  // Siste filter vi har bedt om. To raske endringer (skrive og så klikke en brikke) skal
+  // bygge på hverandre, selv om URL-en ikke er oppdatert mellom dem.
+  const sisteFilter = useRef(filter)
+  useLayoutEffect(() => {
+    sisteFilter.current = filter
+  }, [filter])
+
+  function endreFilter(endre: (f: Filter) => Filter) {
+    const f = endre(sisteFilter.current)
+    sisteFilter.current = f
     const p = new URLSearchParams()
     if (f.sok) p.set('q', f.sok)
     if (f.typer.size) p.set('type', [...f.typer].join(','))

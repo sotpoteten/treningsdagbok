@@ -5,16 +5,19 @@ import { tall } from '../data/format'
 interface Props {
   filter: Filter
   antallTreff: number | null
-  onEndre: (f: Filter) => void
+  /** Får en endring, ikke et ferdig filter, så raske endringer ikke overskriver hverandre. */
+  onEndre: (endre: (f: Filter) => Filter) => void
   onTreff: (retning: 1 | -1) => void
 }
 
 export function Sok({ filter, antallTreff, onEndre, onTreff }: Props) {
   function byttType(t: Filtertype) {
-    const typer = new Set(filter.typer)
-    if (typer.has(t)) typer.delete(t)
-    else typer.add(t)
-    onEndre({ ...filter, typer })
+    onEndre((f) => {
+      const typer = new Set(f.typer)
+      if (typer.has(t)) typer.delete(t)
+      else typer.add(t)
+      return { ...f, typer }
+    })
   }
 
   return (
@@ -26,13 +29,16 @@ export function Sok({ filter, antallTreff, onEndre, onTreff }: Props) {
           value={filter.sok}
           placeholder="Søk i økter og notater"
           aria-label="Søk i økter og notater"
-          onChange={(e) => onEndre({ ...filter, sok: e.target.value })}
+          onChange={(e) => {
+            const sok = e.target.value
+            onEndre((f) => ({ ...f, sok }))
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Enter') onTreff(e.shiftKey ? -1 : 1)
           }}
         />
         {filter.sok && (
-          <button type="button" className="tom-sok" onClick={() => onEndre({ ...filter, sok: '' })} aria-label="Tøm søket">
+          <button type="button" className="tom-sok" onClick={() => onEndre((f) => ({ ...f, sok: '' }))} aria-label="Tøm søket">
             <X className="ikon" />
           </button>
         )}

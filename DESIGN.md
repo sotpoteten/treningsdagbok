@@ -356,7 +356,8 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
 
 ### Kart og øktkurver (Garmin)
 - **Kartet:**
-  - MapLibre med rasterfliser: Kartverket topo som standard, OSM som alternativ.
+  - MapLibre med rasterfliser: Kartverket topo som standard i Norge, OSM som alternativ.
+    Utenfor Norge starter kartet på OSM, fordi Kartverkets kart er blankt der.
   - Kartet ligger i en 1 px blekkramme.
   - Kontrollene (Topo/OSM og utvid) er firkantede på papir med 1 px blekkant. Det
     gjelder også MapLibres attribusjon, uten runde hjørner.

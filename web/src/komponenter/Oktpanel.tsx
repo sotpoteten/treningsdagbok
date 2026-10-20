@@ -168,7 +168,7 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
         </table>
       </section>
 
-      {garmin && garmin.length > 0 && <Garminokt aktiviteter={garmin} />}
+      {garmin && garmin.length > 0 && <Garminokt aktiviteter={garmin} sporFinnes={dagbok.sporFinnes} />}
 
       {okt.kommentarer_andre.length > 0 && (
         <section className="panel-del andre">

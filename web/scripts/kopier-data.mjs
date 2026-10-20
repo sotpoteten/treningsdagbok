@@ -1,7 +1,7 @@
 // Kopierer de ryddige datafilene fra ../data/ til public/data/, så Vite kan servere dem.
 // Garmin-sporene (../data/garmin_spor/) synkroniseres til public/garmin_spor/: bare nye eller
 // endrede filer kopieres. Kjøres automatisk før `npm run dev` og `npm run build`.
-import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -32,4 +32,9 @@ if (existsSync(sporFra)) {
     }
   }
 }
+// Lista over sporfiler lar siden vite hvilke økter som har kart. Den publiserte siden
+// bygges uten sporene, og får en tom liste.
+const ider = existsSync(sporFra) ? readdirSync(sporFra).filter((f) => f.endsWith('.json')).map((f) => Number(f.slice(0, -5))) : []
+writeFileSync(resolve(til, 'garmin_spor.json'), JSON.stringify(ider))
+
 console.log(`Data kopiert til public/data/${kopiert ? `, ${kopiert} nye GPS-spor` : ''}`)

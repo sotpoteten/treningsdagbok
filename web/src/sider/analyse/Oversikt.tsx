@@ -109,7 +109,7 @@ export function Oversikt({ k }: { k: Analysekontekst }) {
                   : `${tegn(d)}${r.vis(Math.abs(d))}`
                 : e == null
                   ? '–'
-                  : `${tegn(e)}${Math.abs(Math.round(e))} %`
+                  : `${tegn(Math.round(e))}${Math.abs(Math.round(e))} %`
               return (
                 <tr key={r.navn}>
                   <th scope="row">{r.navn}</th>

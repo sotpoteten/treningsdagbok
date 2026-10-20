@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { km, tempo, varighetLang } from '../data/format'
 import type { GarminAktivitet, GarminSpor } from '../data/typer'
 import { Segment } from './graf/felles'
+import { iNorge, midtpunkt } from './kart/omrade'
 import { Tidsserie } from './graf/Tidsserie'
 import type { Kartlag } from './kart/Kart'
 
@@ -61,13 +62,20 @@ function median(v: (number | null)[], n: number): (number | null)[] {
   })
 }
 
-export function Garminokt({ aktiviteter }: { aktiviteter: GarminAktivitet[] }) {
+interface Props {
+  aktiviteter: GarminAktivitet[]
+  /** Sporfilene som finnes; null betyr at lista mangler, og da prøver vi alle. */
+  sporFinnes: Set<number> | null
+}
+
+export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   const [valgt, setValgt] = useState(0)
   const a = aktiviteter[Math.min(valgt, aktiviteter.length - 1)]
   const [spor, setSpor] = useState<GarminSpor | null>(null)
   const [laster, setLaster] = useState(false)
   const [aktiv, setAktiv] = useState<number | null>(null)
-  const [lag, setLag] = useState<Kartlag>('topo')
+  // Null til Isak velger selv: da avgjør sporet om det er Kartverket (Norge) eller OSM.
+  const [lagValg, setLagValg] = useState<Kartlag | null>(null)
   const [stor, setStor] = useState(false)
 
   useEffect(() => setValgt(0), [aktiviteter])
@@ -76,6 +84,12 @@ export function Garminokt({ aktiviteter }: { aktiviteter: GarminAktivitet[] }) {
     let avbrutt = false
     setSpor(null)
     setAktiv(null)
+    setLagValg(null)
+    // Sporfilene ligger ikke i repoet, så den publiserte siden har dem ikke.
+    if (!a.har_spor || (sporFinnes && !sporFinnes.has(a.garmin_id))) {
+      setLaster(false)
+      return
+    }
     setLaster(true)
     fetch(`${import.meta.env.BASE_URL}garmin_spor/${a.garmin_id}.json`)
       .then((r) => (r.ok ? r.json() : null))
@@ -89,7 +103,7 @@ export function Garminokt({ aktiviteter }: { aktiviteter: GarminAktivitet[] }) {
     return () => {
       avbrutt = true
     }
-  }, [a.garmin_id])
+  }, [a.garmin_id, a.har_spor, sporFinnes])
 
   useEffect(() => {
     if (!stor) return
@@ -115,6 +129,8 @@ export function Garminokt({ aktiviteter }: { aktiviteter: GarminAktivitet[] }) {
     return v.length ? v[Math.floor(v.length / 2)] : null
   }, [spor])
   const harKart = !!(p?.lat && p.lon && p.lat.some((v) => v != null))
+  const midt = useMemo(() => (p?.lat && p.lon ? midtpunkt(p.lat, p.lon) : null), [p])
+  const lag: Kartlag = lagValg ?? (midt && !iNorge(...midt) ? 'osm' : 'topo')
   const erLop = (a.distanse_km ?? 0) > 0 && /running|run/.test(a.type)
 
   return (
@@ -173,7 +189,7 @@ export function Garminokt({ aktiviteter }: { aktiviteter: GarminAktivitet[] }) {
             <Segment
               etikett="Kart"
               verdi={lag}
-              onEndre={setLag}
+              onEndre={setLagValg}
               valg={[
                 { id: 'topo', navn: 'Topo' },
                 { id: 'osm', navn: 'OSM' },
