@@ -86,7 +86,7 @@ export function Oversikt({ k }: { k: Analysekontekst }) {
         <p className="ingress">
           {helt
             ? `Hele sesongen, 1. nov. ${k.valgt.fra.slice(0, 4)}–31. okt. ${k.valgt.til.slice(0, 4)}.`
-            : `Fra 1. november til og med ${dato(sluttDag, 'd. MMMM yyyy')}.`}{' '}
+            : `Fra 1. november til og med ${dato(sluttDag, 'd. MMMM yyyy')}, siste økt i dagboka.`}{' '}
           {k.forrige && `Sammenlignet med samme periode i ${k.forrige.navn}.`}
         </p>
         <table className="nokkeltabell">

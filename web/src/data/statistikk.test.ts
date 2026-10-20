@@ -5,6 +5,7 @@ import { summer, summerEtter } from './aggregat'
 import { byggDagbok } from './last'
 import {
   aktivitetsfordeling,
+  analyseperiode,
   dagserie,
   erKvalitet,
   glidendeSnitt,
@@ -41,6 +42,16 @@ describe('sesonger', () => {
     const s = sesonger(dagbok).map((x) => x.navn)
     expect(s[0]).toBe('2019/20')
     expect(s.at(-1)).toBe('2025/26')
+  })
+
+  it('analysen går til siste importerte økt, ikke til i dag', () => {
+    expect(dagbok.sisteDato).toBe('2026-10-05')
+    const s = lagSesong(2025)
+    expect(analyseperiode(s, '2026-10-05')).toEqual({ sammenligningsdag: sesongDag('2026-10-05'), sluttdato: '2026-10-05', pagaende: true })
+    // En ferdig sesong dekkes hele, også når dagboka har gått videre.
+    expect(analyseperiode(lagSesong(2024), '2026-10-05')).toEqual({ sammenligningsdag: lagSesong(2024).dager - 1, sluttdato: '2025-10-31', pagaende: false })
+    // Siste økt på siste dag i sesongen regnes som en hel sesong.
+    expect(analyseperiode(s, '2026-10-31').pagaende).toBe(false)
   })
 
   it('summene per sesong blir til sammen totalen', () => {

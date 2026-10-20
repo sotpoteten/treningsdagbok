@@ -5,6 +5,8 @@ export const DAGBOK_FRA = '2019-11-01'
 
 export interface Dagbok {
   okter: Okt[] // kronologisk
+  /** Datoen for siste importerte økt. Dagboka går ikke lenger enn dette. */
+  sisteDato: string
   oktPerId: Map<string, Okt>
   okterPerDato: Map<string, Okt[]>
   dagerPerDato: Map<string, Dag>
@@ -77,6 +79,7 @@ export function byggDagbok(
 
   return {
     okter,
+    sisteDato,
     oktPerId: new Map(okter.map((o) => [o.id, o])),
     okterPerDato,
     dagerPerDato,

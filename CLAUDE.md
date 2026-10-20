@@ -315,7 +315,10 @@ først i PATH. Python-testene for Garmin-koblingen kjøres med
   (`?q=…&type=loping,konk`), så visninger kan lenkes. `#/?uke=2025-14` åpner dagboka på
   en bestemt uke. Analysegrafene bruker dette når du klikker på en uke.
 - **Treningsår:** Analysen regner sesonger fra 1. november til 31. oktober. «Samme dato»
-  betyr at inneværende sesong sammenlignes med sesongen før, fram til samme dag.
+  betyr at sesongen som pågår sammenlignes med sesongen før, fram til samme dag. Sluttdatoen
+  er **siste importerte økt** (`Dagbok.sisteDato`, `analyseperiode()` i `statistikk.ts`), ikke
+  dagens dato. Dagboka går ikke lenger enn dit, så en uke uten import teller ikke som tom.
+  Topplinja viser perioden dagboka dekker.
 - **Farger i grafer:** Det er ingen egen kategoripalett. Valgt sesong er blå, forrige
   sesong er blekk, og resten er dempet. Aktiviteter vises som små multipler i blekk.
   Kvalitetsøkter bruker I3-fargen, konkurranser kotebrunt, og syk og skadet stempelrødt

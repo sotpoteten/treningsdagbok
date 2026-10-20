@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { NavLink, Route, Routes, useLocation, useSearchParams } from 'react-router'
 import type { Dagbok } from '../data/last'
-import { sesongDag, sesonger, sesongFraUrl, sesongTilUrl, type Sesong } from '../data/statistikk'
-import { isoDato } from '../data/uker'
+import { analyseperiode, sesonger, sesongFraUrl, sesongTilUrl, type Sesong } from '../data/statistikk'
 import { Topplinje } from '../komponenter/Topplinje'
 import { Helse } from './analyse/Helse'
 import { Intensitet } from './analyse/Intensitet'
@@ -16,9 +15,9 @@ export interface Analysekontekst {
   sesonger: Sesong[] // eldste først
   valgt: Sesong
   forrige: Sesong | null
-  /** Dag i sesongen som sammenlignes «på samme dato»: i dag for inneværende sesong, ellers siste dag. */
+  /** Dag i sesongen som sammenlignes «på samme dato»: siste importerte økt for sesongen som pågår, ellers siste dag. */
   sammenligningsdag: number
-  /** Siste dag i valgt sesong som har passert (i dag eller sesongslutt). */
+  /** Siste dag i valgt sesong som dagboka dekker (siste importerte økt eller sesongslutt). */
   sluttdato: string
 }
 
@@ -35,23 +34,22 @@ export function Analyse({ dagbok }: { dagbok: Dagbok }) {
   const [params, setParams] = useSearchParams()
   const { search } = useLocation()
   const alle = useMemo(() => sesonger(dagbok), [dagbok])
-  const idag = isoDato(new Date())
 
   const kontekst = useMemo<Analysekontekst>(() => {
     const onsket = params.get('sesong')
     const i = onsket ? alle.findIndex((s) => s.navn === sesongFraUrl(onsket)) : -1
     const indeks = i >= 0 ? i : alle.length - 1
     const valgt = alle[indeks]
-    const pagaende = idag >= valgt.fra && idag <= valgt.til
+    const { sammenligningsdag, sluttdato } = analyseperiode(valgt, dagbok.sisteDato)
     return {
       dagbok,
       sesonger: alle,
       valgt,
       forrige: indeks > 0 ? alle[indeks - 1] : null,
-      sammenligningsdag: pagaende ? sesongDag(idag) : valgt.dager - 1,
-      sluttdato: pagaende ? idag : valgt.til,
+      sammenligningsdag,
+      sluttdato,
     }
-  }, [alle, params, dagbok, idag])
+  }, [alle, params, dagbok])
 
   // På smale skjermer kan aktiv fane ligge utenfor undermenyen; rull den inn.
   const { pathname } = useLocation()

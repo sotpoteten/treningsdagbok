@@ -59,6 +59,17 @@ export function sesonger(dagbok: Dagbok): Sesong[] {
   return ut
 }
 
+/**
+ * Hvor langt analysen av en sesong rekker. Dagboka går til siste importerte økt, så en
+ * sesong som ikke er ferdig sammenlignes fram til den datoen, ikke til i dag.
+ */
+export function analyseperiode(s: Sesong, sisteOkt: string): { sammenligningsdag: number; sluttdato: string; pagaende: boolean } {
+  const pagaende = sisteOkt >= s.fra && sisteOkt < s.til
+  return pagaende
+    ? { sammenligningsdag: sesongDag(sisteOkt), sluttdato: sisteOkt, pagaende }
+    : { sammenligningsdag: s.dager - 1, sluttdato: s.til, pagaende }
+}
+
 export function okterISesong(okter: Okt[], s: Sesong): Okt[] {
   return okter.filter((o) => o.dato >= s.fra && o.dato <= s.til)
 }

@@ -1,6 +1,8 @@
 import { Moon, Sun } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { NavLink } from 'react-router'
+import { dato } from '../data/format'
+import { useSisteOkt } from './DagbokPeriode'
 
 type Tema = 'light' | 'dark'
 
@@ -15,6 +17,7 @@ function lesTema(): Tema | null {
 
 export function Topplinje({ children }: { children?: ReactNode }) {
   const [tema, setTema] = useState<Tema | null>(lesTema)
+  const sisteOkt = useSisteOkt()
 
   useEffect(() => {
     if (tema) document.documentElement.dataset.theme = tema
@@ -35,7 +38,8 @@ export function Topplinje({ children }: { children?: ReactNode }) {
   return (
     <header className="topplinje">
       <span className="merke">
-        Treningsdagbok<small>Isak Jonsson · fra nov. 2019</small>
+        Treningsdagbok
+        <small>Isak Jonsson · 1. nov. 2019 – {sisteOkt ? dato(sisteOkt, 'd. MMM yyyy') : 'nå'}</small>
       </span>
       <nav className="hovedmeny" aria-label="Hovedmeny">
         <NavLink to="/" end>

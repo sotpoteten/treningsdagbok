@@ -108,7 +108,7 @@ export function Sesonger({ k }: { k: Analysekontekst }) {
         serier={serier}
         lengde={lengde}
         xMerker={xMerker}
-        merke={pagaende ? { indeks: dag, etikett: 'i dag' } : undefined}
+        merke={pagaende ? { indeks: dag, etikett: 'siste økt' } : undefined}
         yFormat={(v) => (mal === 'timer' ? `${v} t` : `${v}`)}
         beskrivelse={`Akkumulerte ${mal} per sesong fra 1. november`}
         tips={(i) => {
