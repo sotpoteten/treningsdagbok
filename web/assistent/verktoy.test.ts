@@ -43,7 +43,7 @@ describe('perioder', () => {
   })
 
   it('sesongoversikten dekker alle økter', () => {
-    expect(sesongoversikt(dagbok).reduce((s, r) => s + r.okter, 0)).toBe(3929)
+    expect(sesongoversikt(dagbok).reduce((s, r) => s + r.okter, 0)).toBe(dagbok.okter.length)
   })
 })
 
@@ -87,7 +87,7 @@ describe('dager og ukeskommentarer', () => {
     const rader = dager(dagbok, { fra: '2026-10-01', til: '2026-10-05' })
     expect(rader).toHaveLength(5)
     expect(rader[0].ukedag).toBe('tor')
-    expect(rader.flatMap((r) => r.okter).length).toBe(dagbok.okter.filter((o) => o.dato >= '2026-10-01').length)
+    expect(rader.flatMap((r) => r.okter).length).toBe(dagbok.okter.filter((o) => o.dato >= '2026-10-01' && o.dato <= '2026-10-05').length)
     expect(() => dager(dagbok, { fra: '2026-01-01', til: '2026-10-05' })).toThrow(`maks ${MAKS_DAGER}`)
   })
 

@@ -45,7 +45,7 @@ describe('sesonger', () => {
   })
 
   it('analysen går til siste importerte økt, ikke til i dag', () => {
-    expect(dagbok.sisteDato).toBe('2026-10-05')
+    expect(dagbok.sisteDato).toBe(dagbok.okter.at(-1)!.dato)
     const s = lagSesong(2025)
     expect(analyseperiode(s, '2026-10-05')).toEqual({ sammenligningsdag: sesongDag('2026-10-05'), sluttdato: '2026-10-05', pagaende: true })
     // En ferdig sesong dekkes hele, også når dagboka har gått videre.
@@ -56,8 +56,9 @@ describe('sesonger', () => {
 
   it('summene per sesong blir til sammen totalen', () => {
     const per = [...summerEtter(dagbok.okter, perSesong).values()]
-    expect(per.reduce((a, s) => a + s.okter, 0)).toBe(3929)
-    expect(Math.round(per.reduce((a, s) => a + s.km, 0))).toBe(29588)
+    const total = summer(dagbok.okter)
+    expect(per.reduce((a, s) => a + s.okter, 0)).toBe(total.okter)
+    expect(Math.round(per.reduce((a, s) => a + s.km, 0))).toBe(Math.round(total.km))
   })
 })
 
@@ -99,7 +100,7 @@ describe('kvalitet, uker og måneder', () => {
   it('ukepunktene er kronologiske og har alle øktene', () => {
     const p = ukepunkter(dagbok.uker)
     expect(p[0].uke.mandag < p[1].uke.mandag).toBe(true)
-    expect(p.reduce((a, x) => a + x.sum.okter, 0)).toBe(3929)
+    expect(p.reduce((a, x) => a + x.sum.okter, 0)).toBe(dagbok.okter.length)
   })
 
   it('månedspunktene tar med tomme måneder', () => {
@@ -129,8 +130,12 @@ describe('rekker og helse', () => {
     const h = helsePerSesong(dagbok.dagerPerDato.values())
     const syk = [...h.values()].reduce((a, x) => a + x.syk, 0)
     const skadet = [...h.values()].reduce((a, x) => a + x.skadet, 0)
-    expect(syk).toBe(66)
-    expect(skadet).toBe(83)
+    const dager = [...dagbok.dagerPerDato.values()]
+    expect(syk).toBe(dager.filter((d) => d.syk).length)
+    expect(skadet).toBe(dager.filter((d) => d.skadet).length)
+    // Tallene fra importen 5. okt. 2026 kan bare øke.
+    expect(syk).toBeGreaterThanOrEqual(66)
+    expect(skadet).toBeGreaterThanOrEqual(83)
   })
 })
 

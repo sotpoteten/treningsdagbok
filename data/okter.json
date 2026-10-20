@@ -183598,5 +183598,508 @@
     "minutter": 42
    }
   ]
+ },
+ {
+  "id": "59f232d0-39c6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-10",
+  "rekkefolge": 0,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Liten joggetur etter lang dag på 25manna. ",
+  "kommentarer_andre": [],
+  "varighet_min": 29,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 29
+  },
+  "distanse_km": 5.7,
+  "loping_min": 29,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 29
+    },
+    "distanse_km": 5.7,
+    "minutter": 29
+   }
+  ]
+ },
+ {
+  "id": "b1b85931-3ac6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-11",
+  "rekkefolge": 0,
+  "navn": "25mannamedeln",
+  "beskrivelse": null,
+  "kommentar": "Gåtur rundt Svart 5 på 25mannamedeln. Litt løping før og etter. Fint i skogen. Morsomt med orientering. ",
+  "kommentarer_andre": [],
+  "varighet_min": 94,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 94
+  },
+  "distanse_km": 12.7,
+  "loping_min": 94,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 21
+    },
+    "distanse_km": 3.8,
+    "minutter": 21
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 1,
+    "aktivitet": "Løping terreng",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 52
+    },
+    "distanse_km": 5,
+    "minutter": 52
+   },
+   {
+    "posisjon": 2,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 21
+    },
+    "distanse_km": 3.9,
+    "minutter": 21
+   }
+  ]
+ },
+ {
+  "id": "2e552909-3bc6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-12",
+  "rekkefolge": 0,
+  "navn": "Løp + styrke",
+  "beskrivelse": null,
+  "kommentar": "Rolig formiddag med litt løp og styrke. Litt styrke på beina og det vanlige på skuldrene. ",
+  "kommentarer_andre": [],
+  "varighet_min": 65,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": null,
+  "sone_min": {
+   "I1": 32
+  },
+  "distanse_km": 6.4,
+  "loping_min": 32,
+  "otek_min": 0,
+  "styrke_min": 33,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 25
+    },
+    "distanse_km": 4.9,
+    "minutter": 25
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 12,
+    "aktivitet": "Generell styrke",
+    "kategori": "styrke",
+    "soner": {},
+    "distanse_km": null,
+    "minutter": 33
+   },
+   {
+    "posisjon": 2,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 7
+    },
+    "distanse_km": 1.5,
+    "minutter": 7
+   }
+  ]
+ },
+ {
+  "id": "10a83aff-a0cb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-12",
+  "rekkefolge": 1,
+  "navn": "10mila-tåg gående",
+  "beskrivelse": null,
+  "kommentar": "Løping til og fra Myran med gående natt-o på militærområdet. Fire pers på økt og fint i skogen.",
+  "kommentarer_andre": [],
+  "varighet_min": 85,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 85
+  },
+  "distanse_km": 11.2,
+  "loping_min": 85,
+  "otek_min": 53,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 15
+    },
+    "distanse_km": 3,
+    "minutter": 15
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 1,
+    "aktivitet": "Løping terreng",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 53
+    },
+    "distanse_km": 4.9,
+    "minutter": 53
+   },
+   {
+    "posisjon": 2,
+    "aktivitet_id": 9,
+    "aktivitet": "O-teknikk nordisk",
+    "kategori": "o-teknikk",
+    "soner": {},
+    "distanse_km": null,
+    "minutter": 53
+   },
+   {
+    "posisjon": 3,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 17
+    },
+    "distanse_km": 3.3,
+    "minutter": 17
+   }
+  ]
+ },
+ {
+  "id": "3c305011-a1cb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-13",
+  "rekkefolge": 0,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Rolig løp på skiløyper",
+  "kommentarer_andre": [],
+  "varighet_min": 67,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 67
+  },
+  "distanse_km": 12.1,
+  "loping_min": 67,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 67
+    },
+    "distanse_km": 12.1,
+    "minutter": 67
+   }
+  ]
+ },
+ {
+  "id": "ec522041-a1cb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-13",
+  "rekkefolge": 1,
+  "navn": "Elljusjakten Lugnet",
+  "beskrivelse": "13,5 min bra fart",
+  "kommentar": "Topp stemning å dra igang Elljusjakten igjen. Tok det litt pent i dag. Ca 1 min dårligere tid enn i fjor.",
+  "kommentarer_andre": [],
+  "varighet_min": 50,
+  "hoyeste_sone": "I4",
+  "hoyeste_sone_registrert": "I4",
+  "sone_min": {
+   "I1": 36,
+   "I4": 14
+  },
+  "distanse_km": 11.0,
+  "loping_min": 50,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 6,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 26
+    },
+    "distanse_km": 4.9,
+    "minutter": 26
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I4": 14
+    },
+    "distanse_km": 4,
+    "minutter": 14
+   },
+   {
+    "posisjon": 2,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 10
+    },
+    "distanse_km": 2.1,
+    "minutter": 10
+   }
+  ]
+ },
+ {
+  "id": "a8bb7059-a1cb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-14",
+  "rekkefolge": 0,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Rolig løp på Elit-15 mens Hanna løp intervaller.",
+  "kommentarer_andre": [],
+  "varighet_min": 87,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 87
+  },
+  "distanse_km": 15.5,
+  "loping_min": 87,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 87
+    },
+    "distanse_km": 15.5,
+    "minutter": 87
+   }
+  ]
+ },
+ {
+  "id": "46bebc83-a1cb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-14",
+  "rekkefolge": 1,
+  "navn": "Felles styrke med DSA",
+  "beskrivelse": null,
+  "kommentar": "Lett ettermiddag med en felles styrkeøkt med DSA. Gjennomgang av litt øvelser som gjengen på Idrottskliniken tenker er bra for o-løpere.",
+  "kommentarer_andre": [],
+  "varighet_min": 45,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": null,
+  "sone_min": {
+   "I1": 15
+  },
+  "distanse_km": 3.2,
+  "loping_min": 15,
+  "otek_min": 0,
+  "styrke_min": 30,
+  "opplevd_belastning": 2,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 15
+    },
+    "distanse_km": 3.2,
+    "minutter": 15
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 12,
+    "aktivitet": "Generell styrke",
+    "kategori": "styrke",
+    "soner": {},
+    "distanse_km": null,
+    "minutter": 30
+   }
+  ]
+ },
+ {
+  "id": "339e56ca-a1cb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-15",
+  "rekkefolge": 0,
+  "navn": "10 x 1000m",
+  "beskrivelse": "34 min terskel+",
+  "kommentar": "1000-metere på banen med DSA. Solo i dag. 3:25-3:21, 1 min pause. 3,6 mmol etter 6 stk. Ingen topp følelse.",
+  "kommentarer_andre": [],
+  "varighet_min": 74,
+  "hoyeste_sone": "I3",
+  "hoyeste_sone_registrert": "I3",
+  "sone_min": {
+   "I1": 40,
+   "I3": 34
+  },
+  "distanse_km": 16.8,
+  "loping_min": 74,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 7,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 23
+    },
+    "distanse_km": 4.6,
+    "minutter": 23
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 10,
+     "I3": 34
+    },
+    "distanse_km": 10.7,
+    "minutter": 44
+   },
+   {
+    "posisjon": 2,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 7
+    },
+    "distanse_km": 1.5,
+    "minutter": 7
+   }
+  ]
+ },
+ {
+  "id": "d9bf5561-a2cb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-18",
+  "rekkefolge": 0,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Ettermiddagsjogg med Hanna og Vilma. Fint og deilig selv om kroppen og følelsen er råtten.",
+  "kommentarer_andre": [],
+  "varighet_min": 54,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 54
+  },
+  "distanse_km": 11.7,
+  "loping_min": 54,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 54
+    },
+    "distanse_km": 11.7,
+    "minutter": 54
+   }
+  ]
+ },
+ {
+  "id": "59c2175c-ddcb-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-19",
+  "rekkefolge": 0,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Liten formiddagsjogg",
+  "kommentarer_andre": [],
+  "varighet_min": 30,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 30
+  },
+  "distanse_km": 6.2,
+  "loping_min": 30,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 30
+    },
+    "distanse_km": 6.2,
+    "minutter": 30
+   }
+  ]
  }
 ]

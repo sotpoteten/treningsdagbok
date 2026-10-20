@@ -85,11 +85,33 @@ teller mot bruksgrensene i Claude-abonnementet.
 
 ### Olympiatoppen-dagboka
 
-1. Eksporter fra dagboka, og legg `workoutSessions.json`, `userData.json` og
-   `weekComments.json` i `data/raw/`.
+Kjør dette for å hente en fersk eksport og konvertere den:
+
+```
+.venv\Scripts\python scripts/hent_olt.py
+```
+
+- **Hva skriptet gjør:**
+  - Det åpner Min side → Admin i Chrome og trykker «Eksporter data».
+  - Det pakker ut `workoutSessions.json`, `userData.json` og `weekComments.json` fra
+    `UserDataExport.zip`.
+  - Det sjekker filene før de erstatter dem i `data/raw/`. De forrige filene legges i
+    `data/raw/forrige/`.
+  - Til slutt kjører det `konverter.py`.
+- **Innlogging:** Første gang, og når innloggingen har gått ut, åpnes et vindu der du
+  logger inn med Idrettens ID. Økta lagres i `data/raw/olt-innlogging.json`. Passordet
+  lagres aldri.
+- **Førstegangsoppsett:** `.venv\Scripts\python -m pip install playwright`. Skriptet
+  bruker Chrome-en som er installert på maskinen.
+- **Valg:**
+  - `--fil <zip>` bruker en eksport du har lastet ned selv.
+  - `--vis` viser vinduet.
+  - `--tving` godtar en eksport med færre økter enn forrige.
+
+Alternativet er å gjøre det for hånd:
+1. Eksporter fra dagboka, og legg de tre filene i `data/raw/`.
 2. Kjør `python scripts/konverter.py`. Det lager `data/okter.json`, `dager.json`,
-   `uker.json`, `profil.json` og `blokker.csv`. Skriptet varsler hvis det finner ukjente
-   koder.
+   `uker.json`, `profil.json` og `blokker.csv`, og varsler hvis det finner ukjente koder.
 
 ### Garmin
 
@@ -122,6 +144,7 @@ data/                 ryddige data (kilden for nettsiden)
   raw/                rå eksporter – holdt utenfor git
   garmin_spor/        GPS-spor per aktivitet – holdt utenfor git
 scripts/
+  hent_olt.py         henter eksporten fra Olympiatoppen og kjører konverter.py
   konverter.py        Olympiatoppen-eksport → data/*.json
   konverter_garmin.py Garmin-eksport → data/garmin_*.json og spor
   garmin_kobling.py   kobler Garmin-aktiviteter til dagbokøkter (+ test_garmin_kobling.py)

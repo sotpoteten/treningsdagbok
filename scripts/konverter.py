@@ -99,7 +99,8 @@ def konverter(raw_dir: Path, fra: str):
                      "aktivitet": navn, "kategori": kategori,
                      "soner": {}, "distanse_km": None, "minutter": 0}
 
-            for m in a["ReportedActivityMetrics"]:
+            # Sortert, fordi eksporten ikke gir målingene i fast rekkefølge.
+            for m in sorted(a["ReportedActivityMetrics"], key=lambda m: m["ActivityMetricId"]):
                 mid, v = m["ActivityMetricId"], m["Value"]
                 rad = {"okt_id": s["Id"], "dato": s["Date"], "okt_navn": s["Name"],
                        "posisjon": a["Position"], "aktivitet_id": aid,

@@ -48,6 +48,24 @@ Ved ny eksport legger du filene i `data/raw/` med navnene over og kjører
 `python scripts/konverter.py`. Skriptet skriver ut advarsler hvis det dukker opp ukjente
 koder, eller hvis varighetsregelen under ikke stemmer.
 
+**Automatisk henting** (`scripts/hent_olt.py`):
+- **Eksporten:** «Eksporter data» på `/minside?tab=admin` kaller `GET
+  /api/Auth/ExportUserData`. Svaret er `UserDataExport.zip` med åtte filer. Bare de tre
+  over brukes.
+- **Skriptet:** Det bruker Playwright med installert Chrome (`channel="chrome"`), sjekker
+  filene (gyldig JSON, ikke færre økter, ikke eldre siste dato) og flytter de forrige
+  filene til `data/raw/forrige/`.
+- **Innlogging:** Den går via Idrettens ID, og Isak gjør den selv i vinduet som åpnes.
+  Claude skriver aldri inn passord. Økta lagres i `data/raw/olt-innlogging.json`.
+  Fila inneholder innloggingstokens og skal aldri ut av `data/raw/`.
+- **Ukentlig kjøring:** Oppgaveplanleggeren kjører `pythonw scripts/hent_olt.py --planlagt`
+  natt til mandag kl. 03. Den kjører uten vindu og logger til `data/raw/hent_olt.log`.
+  Varsler sendes med ntfy til emnet i `data/raw/varsel.json`.
+- **Unntak fra commit-regelen, godkjent av Isak:** Den planlagte kjøringen committer og
+  pusher selv, men bare `DATAFILER` (de fem filene `konverter.py` skriver), og bare når
+  testene er grønne. Kodeendringer skal Isak fortsatt godkjenne. Varselet inneholder bare
+  status, aldri notater eller helsedata.
+
 ## Avgrensning
 
 - **Bare økter fra og med 1. november 2019 brukes.** Eldre økter i eksporten (2015–2016)
@@ -194,6 +212,9 @@ Noen få økter mangler disse verdiene, og da er feltet `null`.
 ```
 
 ## Kontrolltall (fra 1. nov. 2019)
+
+Tallene er fra importen 5. okt. 2026. Testene låser de avsluttede årene, mens 2026 og
+totalene bare må være minst så store, så en ny import ikke gjør testene røde.
 
 | År | Økter | Timer | Km |
 |---|---|---|---|

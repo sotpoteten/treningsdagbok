@@ -7,7 +7,8 @@ import { byggDagbok } from './last'
 const les = (fil: string) => JSON.parse(readFileSync(resolve(__dirname, '../../../data', fil), 'utf-8'))
 const dagbok = byggDagbok(les('okter.json'), les('dager.json'), les('uker.json'), les('profil.json'))
 
-// Kontrolltall fra CLAUDE.md: [økter, timer, km]
+// Kontrolltall fra CLAUDE.md for avsluttede år: [økter, timer, km]. Året som pågår vokser
+// ved hver import og sjekkes bare mot det som var importert 5. okt. 2026.
 const KONTROLL: Record<string, [number, number, number]> = {
   '2019': [86, 113, 399],
   '2020': [456, 550, 3138],
@@ -16,8 +17,8 @@ const KONTROLL: Record<string, [number, number, number]> = {
   '2023': [560, 659, 4163],
   '2024': [578, 634, 5006],
   '2025': [634, 730, 6152],
-  '2026': [456, 519, 4051],
 }
+const AR_2026_MINST: [number, number, number] = [456, 519, 4051]
 
 describe('summer per år', () => {
   const ar = summerEtter(dagbok.okter, perAr)
@@ -30,11 +31,18 @@ describe('summer per år', () => {
     })
   }
 
-  it('totalen er om lag 4 630 t og 29 588 km', () => {
+  it('2026 har minst det som var importert 5. okt.', () => {
+    const s = ar.get('2026')!
+    expect(s.okter).toBeGreaterThanOrEqual(AR_2026_MINST[0])
+    expect(Math.round(s.minutter / 60)).toBeGreaterThanOrEqual(AR_2026_MINST[1])
+    expect(Math.round(s.km)).toBeGreaterThanOrEqual(AR_2026_MINST[2])
+  })
+
+  it('totalen er summen av årene', () => {
     const s = summer(dagbok.okter)
-    expect(s.okter).toBe(3929)
-    expect(Math.abs(s.minutter / 60 - 4630)).toBeLessThan(5)
-    expect(Math.round(s.km)).toBe(29588)
+    expect(s.okter).toBe(dagbok.okter.length)
+    expect(s.okter).toBe([...ar.values()].reduce((a, x) => a + x.okter, 0))
+    expect(s.minutter).toBe([...ar.values()].reduce((a, x) => a + x.minutter, 0))
   })
 
   it('o-teknikk legges ikke til i varigheten', () => {
@@ -56,6 +64,6 @@ describe('uker', () => {
   })
 
   it('hver økt havner i nøyaktig én uke', () => {
-    expect(dagbok.uker.reduce((n, u) => n + u.okter.length, 0)).toBe(3929)
+    expect(dagbok.uker.reduce((n, u) => n + u.okter.length, 0)).toBe(dagbok.okter.length)
   })
 })

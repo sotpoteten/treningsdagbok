@@ -7574,5 +7574,107 @@
    "pavirkning_prestasjon": "Stor"
   },
   "skade": null
+ },
+ {
+  "dato": "2026-10-06",
+  "syk": true,
+  "skadet": false,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": {
+   "symptomer": [
+    "Sår hals"
+   ],
+   "kommentar": "Våknet med sår hals. Ikke veldig dårlig, men nok til å ikke trene.",
+   "pavirkning_deltagelse": "Ingen deltagelse",
+   "pavirkning_prestasjon": "Moderat"
+  },
+  "skade": null
+ },
+ {
+  "dato": "2026-10-07",
+  "syk": true,
+  "skadet": false,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": {
+   "symptomer": [
+    "Sår hals"
+   ],
+   "kommentar": "Halsen litt dårligere i dag.",
+   "pavirkning_deltagelse": "Ingen deltagelse",
+   "pavirkning_prestasjon": "Moderat"
+  },
+  "skade": null
+ },
+ {
+  "dato": "2026-10-08",
+  "syk": true,
+  "skadet": false,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": {
+   "symptomer": [
+    "Sår hals",
+    "Tett nese / rennende nese / nysing"
+   ],
+   "kommentar": "Halsen ganske bra, mer tett i nese og bihuler.",
+   "pavirkning_deltagelse": "Ingen deltagelse",
+   "pavirkning_prestasjon": "Moderat"
+  },
+  "skade": null
+ },
+ {
+  "dato": "2026-10-09",
+  "syk": true,
+  "skadet": false,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": {
+   "symptomer": [
+    "Sår hals",
+    "Tett nese / rennende nese / nysing"
+   ],
+   "kommentar": "Nese og bihuler i bedring. ",
+   "pavirkning_deltagelse": "Ingen deltagelse",
+   "pavirkning_prestasjon": "Moderat"
+  },
+  "skade": null
+ },
+ {
+  "dato": "2026-10-16",
+  "syk": false,
+  "skadet": false,
+  "reise": false,
+  "hoyde": false,
+  "fridag": true,
+  "konkurranse": false,
+  "notat": "Følt meg mer og mer sliten siste dagene og som at det kanskje finnes noe rest av sykdommen fra forrige uke igjen så var greit å ta litt fri.",
+  "sykdom": null,
+  "skade": null
+ },
+ {
+  "dato": "2026-10-17",
+  "syk": false,
+  "skadet": false,
+  "reise": false,
+  "hoyde": false,
+  "fridag": true,
+  "konkurranse": false,
+  "notat": "Lang dag i speakerbua på Daladubblen og SM-ultra så kun litt vedlikehold for skulderen i dag.",
+  "sykdom": null,
+  "skade": null
  }
 ]
