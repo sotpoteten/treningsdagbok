@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { summer } from '../../data/aggregat'
 import { dato, tall, timer, ukespenn } from '../../data/format'
@@ -7,14 +7,17 @@ import {
   AKTIVITETER,
   aktivitetsfordeling,
   erKvalitet,
+  glidendeSnitt,
   hardeMinutter,
   KVALITET_TERSKEL_MIN,
+  manedspunkter,
   okterISesong,
   ukepunkter,
 } from '../../data/statistikk'
-import { SONER } from '../../data/typer'
-import { Grafkort, Tegnforklaring } from '../../komponenter/graf/felles'
-import { Stolper } from '../../komponenter/graf/Stolper'
+import { SONER, type Sone } from '../../data/typer'
+import { ukeForDato } from '../../data/uker'
+import { Grafkort, Segment, Tegnforklaring, type Seriedef } from '../../komponenter/graf/felles'
+import { Stolper, type Stolpepunkt } from '../../komponenter/graf/Stolper'
 import { Sonestolpe } from '../../komponenter/Sonestolpe'
 import type { Analysekontekst } from '../Analyse'
 
@@ -24,6 +27,7 @@ export function Intensitet({ k }: { k: Analysekontekst }) {
   return (
     <>
       <Sonefordeling k={k} />
+      <Intensitetstid k={k} />
       <Kvalitet k={k} />
       <Aktivitet k={k} />
     </>
@@ -244,6 +248,166 @@ function Aktivitet({ k }: { k: Analysekontekst }) {
           ]
         })}
       </div>
+    </Grafkort>
+  )
+}
+
+// ── Tid med intensitet per uke eller måned ─────────────
+
+type Opplosning = 'uke' | 'maned'
+const INTENSITETSSONER = ['I3', 'I4', 'I5'] as const
+const INTENSITETSSERIER: Seriedef[] = INTENSITETSSONER.map((s) => ({ id: s, navn: s, klasse: `seg-${s.toLowerCase()}` }))
+
+interface Intensitetspunkt {
+  nokkel: string
+  /** Uke-nøkkel å åpne i dagboka. */
+  uke: string
+  etikett: string
+  kort: string | null
+  sone: Record<Sone, number> // minutter
+  kvalitet: number
+  konkurranser: number
+}
+
+const over = (p: Intensitetspunkt) => p.sone.I3 + p.sone.I4 + p.sone.I5
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+
+/** Tabellcelle der 0 vises som en dempet strek, så tomme perioder synes uten å lese tallene. */
+function Celle({ verdi, vis = String }: { verdi: number; vis?: (v: number) => string }) {
+  return verdi ? <td>{vis(verdi)}</td> : <td className="null" aria-label="0">–</td>
+}
+
+function Intensitetstid({ k }: { k: Analysekontekst }) {
+  const [opplosning, setOpplosning] = useState<Opplosning>('uke')
+  const navigate = useNavigate()
+  const til = k.valgt.til < k.sluttdato ? k.valgt.til : k.sluttdato
+
+  const punkter = useMemo<Intensitetspunkt[]>(() => {
+    if (opplosning === 'uke')
+      return ukepunkter(k.dagbok.uker)
+        .filter((p) => p.uke.dager[3].dato >= k.valgt.fra && p.uke.dager[3].dato <= k.valgt.til && p.uke.mandag <= k.sluttdato)
+        .map((p, i, liste) => {
+          const torsdag = p.uke.dager[3].dato
+          const nyMnd = i === 0 || liste[i - 1].uke.dager[3].dato.slice(5, 7) !== torsdag.slice(5, 7)
+          return {
+            nokkel: p.uke.nokkel,
+            uke: p.uke.nokkel,
+            etikett: `Uke ${p.uke.uke} · ${ukespenn(p.uke.mandag, p.uke.sondag)}`,
+            kort: nyMnd ? dato(torsdag, 'MMM').replace('.', '') : null,
+            sone: p.sum.sone,
+            kvalitet: p.kvalitet,
+            konkurranser: p.konkurranser,
+          }
+        })
+    const okter = okterISesong(k.dagbok.okter, k.valgt)
+    return manedspunkter(okter, k.valgt.fra, til).map((p) => {
+      const forste = `${p.maned}-01`
+      let konkurranser = 0
+      for (const [d, r] of k.dagbok.dagerPerDato) if (r.konkurranse && d.startsWith(p.maned)) konkurranser++
+      return {
+        nokkel: p.maned,
+        uke: ukeForDato(forste),
+        etikett: cap(dato(forste, 'MMMM yyyy')),
+        kort: dato(forste, 'MMM').replace('.', ''),
+        sone: p.sum.sone,
+        kvalitet: okter.filter((o) => o.dato.startsWith(p.maned) && erKvalitet(o)).length,
+        konkurranser,
+      }
+    })
+  }, [k, opplosning, til])
+
+  const snittLengde = opplosning === 'uke' ? 4 : 3
+  const snitt = useMemo(() => glidendeSnitt(punkter.map((p) => over(p) / 60), snittLengde), [punkter, snittLengde])
+  const stolper: Stolpepunkt[] = punkter.map((p) => ({
+    nokkel: p.nokkel,
+    verdier: Object.fromEntries(INTENSITETSSONER.map((s) => [s, p.sone[s] / 60])),
+    markorer: Array.from({ length: Math.min(p.konkurranser, 3) }, (_, i) => ({ klasse: `m-konk m-konk-${i}`, navn: 'Konkurranse' })),
+  }))
+  const enhet = opplosning === 'uke' ? 'uke' : 'måned'
+  // Fra øktene, ikke fra ukene: første og siste uke kan ligge delvis utenfor sesongen.
+  const sum = useMemo(() => {
+    const z = summer(okterISesong(k.dagbok.okter, k.valgt)).sone
+    return z.I3 + z.I4 + z.I5
+  }, [k])
+  const indeks = new Map(punkter.map((p, i) => [p.nokkel, i]))
+
+  const tabell = () => (
+    <table className="arstabell">
+      <thead>
+        <tr>
+          <th scope="col">{opplosning === 'uke' ? 'Uke' : 'Måned'}</th>
+          {INTENSITETSSONER.map((s) => (
+            <th key={s} scope="col">
+              {s}
+            </th>
+          ))}
+          <th scope="col">I3–I5</th>
+          <th scope="col">Kvalitetsøkter</th>
+          <th scope="col">Konkurransedager</th>
+        </tr>
+      </thead>
+      <tbody>
+        {[...punkter].reverse().map((p) => (
+          <tr key={p.nokkel}>
+            <th scope="row">
+              <Link to={`/?uke=${p.uke}`}>{p.etikett}</Link>
+            </th>
+            {INTENSITETSSONER.map((s) => (
+              <Celle key={s} verdi={p.sone[s]} vis={timer} />
+            ))}
+            <Celle verdi={over(p)} vis={timer} />
+            <Celle verdi={p.kvalitet} />
+            <Celle verdi={p.konkurranser} />
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+
+  return (
+    <Grafkort
+      tittel={`Tid med intensitet per ${enhet}, ${k.valgt.navn}`}
+      forklaring={`Timer i I3–I5, stablet etter sone. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}, og brune merker viser konkurransedager. Sesongen har ${timer(sum)} t i I3–I5 så langt. Klikk for å åpne i dagboka.`}
+      valg={<Segment etikett="Oppløsning" verdi={opplosning} onEndre={setOpplosning} valg={[{ id: 'uke', navn: 'Uke' }, { id: 'maned', navn: 'Måned' }]} />}
+      tabell={tabell}
+    >
+      <Stolper
+        punkter={stolper}
+        serier={INTENSITETSSERIER}
+        linje={{ verdier: snitt, navn: 'Snitt' }}
+        yFormat={(v) => `${v} t`}
+        xEtikett={(_, i) => punkter[i].kort}
+        beskrivelse={`Stablede stolper med timer i I3–I5 per ${enhet}`}
+        onKlikk={(p) => navigate(`/?uke=${punkter[indeks.get(p.nokkel)!].uke}`)}
+        tips={(_, i) => {
+          const p = punkter[i]
+          return (
+            <>
+              <b>{p.etikett}</b>
+              <span className="tips-tall">
+                {timer(over(p))} t i I3–I5 · {p.kvalitet} kvalitetsøkter
+              </span>
+              {INTENSITETSSONER.filter((s) => p.sone[s] > 0).map((s) => (
+                <span key={s} className="tips-rad">
+                  <i className={`seg-${s.toLowerCase()}`} />
+                  {s} {timer(p.sone[s])}
+                </span>
+              ))}
+              {p.konkurranser > 0 && <span className="tips-rad">{p.konkurranser} konkurransedager</span>}
+              <span className="tips-rad dempet">
+                Snitt {snittLengde} {opplosning === 'uke' ? 'uker' : 'mnd.'}: {timer(snitt[i] * 60)} t
+              </span>
+            </>
+          )
+        }}
+      />
+      <Tegnforklaring
+        serier={[
+          ...INTENSITETSSERIER,
+          { id: 'snitt', navn: 'Snitt', klasse: 'linjenokkel snitt' },
+          { id: 'konk', navn: 'Konkurranse', klasse: 'fyll-konk' },
+        ]}
+      />
     </Grafkort>
   )
 }

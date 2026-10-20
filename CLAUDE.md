@@ -305,7 +305,7 @@ først i PATH. Python-testene for Garmin-koblingen kjøres med
 | `src/sider/Analyse.tsx` | Ramme for analysesiden: undermeny, sesongvelger (`?sesong=2025-26`) og felles `Analysekontekst` |
 | `src/sider/Spor.tsx` | «Spør»: samtalen med assistenten, strømmet svar som Markdown, lagret i `localStorage` |
 | `assistent/` | Tjenersiden av «Spør», se «Assistenten» under |
-| `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (og aktivitet), Rekorder, Helse (hvilepuls, HRV, søvn, belastning, syke- og skadedager) |
+| `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (sonefordeling per sesong, tid i I3–I5 per uke eller måned, kvalitetsøkter og aktivitet), Rekorder, Helse (hvilepuls, HRV, søvn, belastning, syke- og skadedager) |
 | `src/data/statistikk.ts` | Sesonger (1. nov.–31. okt.), kumulative kurver, glidende snitt (også med hull), dagserier, kvalitetsøkter (≥ 10 min i I3–I5), aktivitetsfordeling, rekorder og rekker, syke- og skadedager per sesong |
 | `src/komponenter/graf/` | Egne SVG-grafer (`Stolper`, `Linjer`, `Tidsserie`) med d3, verktøytips, tastatur (piltaster, Enter), berøring og tabellvisning (`Grafkort`) |
 | `src/komponenter/` | Ukerad, Oktkort, Oktpanel, Garminokt, Hoydelag (årsnavigasjonen), Sok, Topplinje, Sonestolpe, Dagsmarkorer, `kart/Kart.tsx` (MapLibre) |
