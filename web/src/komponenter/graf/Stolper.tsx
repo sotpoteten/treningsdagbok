@@ -27,6 +27,9 @@ interface Props {
   beskrivelse: string
 }
 
+/** Seriene som tegnes skravert med 1 px kant (se analyse.css). */
+const SKRAVERTE = new Set(['seg-styrke', 'fyll-skadet'])
+
 export type Markorikon = 'pokal' | 'syk' | 'skadet'
 const IKONER = { pokal: Trophy, syk: Thermometer, skadet: Cross }
 
@@ -149,7 +152,13 @@ export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, x
                 // Mellomrommet ligger under hvert segment unntatt det nederste.
                 const synlig = Math.max(1, topp === hoydeIndre ? h : h - gap)
                 topp -= h
-                return <rect key={s.id} className={s.klasse} x={x0} y={topp} width={tykk} height={synlig} />
+                // Skraverte segmenter har 1 px kant. SVG tegner kanten midt på rektangelets
+                // ytterkant, så rektangelet trekkes inn 0,5 px for at kanten skal ligge innenfor
+                // og segmentet bli like bredt som resten av stolpen.
+                const inn = SKRAVERTE.has(s.klasse) ? 0.5 : 0
+                return (
+                  <rect key={s.id} className={s.klasse} x={x0 + inn} y={topp + inn} width={tykk - 2 * inn} height={Math.max(0.5, synlig - 2 * inn)} />
+                )
               })
               return (
                 <g key={p.nokkel} className={aktiv === i ? 'stolpe aktiv' : 'stolpe'}>
