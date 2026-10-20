@@ -1,3 +1,4 @@
+import { Trophy } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { summer } from '../../data/aggregat'
@@ -143,14 +144,14 @@ function Kvalitet({ k }: { k: Analysekontekst }) {
   return (
     <Grafkort
       tittel={`Kvalitetsøkter per uke, ${k.valgt.navn}`}
-      forklaring={`En kvalitetsøkt har minst ${KVALITET_TERSKEL_MIN} min i I3–I5. Brune merker viser konkurransedager. Klikk for å åpne uka.`}
+      forklaring={`En kvalitetsøkt har minst ${KVALITET_TERSKEL_MIN} min i I3–I5. Pokalene viser konkurransedager, med antallet når det er flere. Klikk for å åpne uka.`}
       tabell={tabell}
     >
       <Stolper
         punkter={punkter.map((p) => ({
           nokkel: p.uke.nokkel,
           verdier: { kval: p.kvalitet },
-          markorer: Array.from({ length: Math.min(p.konkurranser, 3) }, (_, i) => ({ klasse: `m-konk m-konk-${i}`, navn: 'Konkurranse' })),
+          markorer: p.konkurranser ? [{ klasse: 'm-konk', navn: 'Konkurranse', ikon: 'pokal', antall: p.konkurranser }] : [],
         }))}
         serier={[{ id: 'kval', navn: 'Kvalitetsøkter', klasse: 'seg-i3' }]}
         hoyde={220}
@@ -321,7 +322,7 @@ function Intensitetstid({ k }: { k: Analysekontekst }) {
   const stolper: Stolpepunkt[] = punkter.map((p) => ({
     nokkel: p.nokkel,
     verdier: Object.fromEntries(INTENSITETSSONER.map((s) => [s, p.sone[s] / 60])),
-    markorer: Array.from({ length: Math.min(p.konkurranser, 3) }, (_, i) => ({ klasse: `m-konk m-konk-${i}`, navn: 'Konkurranse' })),
+    markorer: p.konkurranser ? [{ klasse: 'm-konk', navn: 'Konkurranse', ikon: 'pokal', antall: p.konkurranser }] : [],
   }))
   const enhet = opplosning === 'uke' ? 'uke' : 'måned'
   // Fra øktene, ikke fra ukene: første og siste uke kan ligge delvis utenfor sesongen.
@@ -367,7 +368,7 @@ function Intensitetstid({ k }: { k: Analysekontekst }) {
   return (
     <Grafkort
       tittel={`Tid med intensitet per ${enhet}, ${k.valgt.navn}`}
-      forklaring={`Timer i I3–I5, stablet etter sone. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}, og brune merker viser konkurransedager. Sesongen har ${timer(sum)} t i I3–I5 så langt. Klikk for å åpne i dagboka.`}
+      forklaring={`Timer i I3–I5, stablet etter sone. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}, og pokalene viser konkurransedager. Sesongen har ${timer(sum)} t i I3–I5 så langt. Klikk for å åpne i dagboka.`}
       valg={<Segment etikett="Oppløsning" verdi={opplosning} onEndre={setOpplosning} valg={[{ id: 'uke', navn: 'Uke' }, { id: 'maned', navn: 'Måned' }]} />}
       tabell={tabell}
     >
@@ -405,7 +406,7 @@ function Intensitetstid({ k }: { k: Analysekontekst }) {
         serier={[
           ...INTENSITETSSERIER,
           { id: 'snitt', navn: 'Snitt', klasse: 'linjenokkel snitt' },
-          { id: 'konk', navn: 'Konkurranse', klasse: 'fyll-konk' },
+          { id: 'konk', navn: 'Konkurranse', klasse: 'm-konk', ikon: <Trophy aria-hidden /> },
         ]}
       />
     </Grafkort>

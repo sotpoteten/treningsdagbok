@@ -337,8 +337,10 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
 - **Akser:** 1 px `rute-svak` for rutenett og 1 px blekk for grunnlinjen. Aksetekst står
   i Barlow Condensed 11 px `blekk-3`, med enhet på y-aksen («t», «km»). Det brukes aldri
   to y-akser.
-- **Merker over stolper:** 6 px kvadrater. Syk er fylt stempelrød, skadet er skravert
-  stempelrød og konkurranse er kotebrun.
+- **Merker over stolper:** 14 px lucide-ikoner med antall dager ved siden av når perioden
+  har flere. Konkurranse er en pokal (Trophy) i kotebrunt, syk et termometer
+  (Thermometer) og skadet et medisinsk kors (Cross), begge i stempelrødt. Ikonformen skiller
+  syk fra skadet, så fargen aldri bærer det alene.
 - **Ingen ny kategoripalett:**
   - Aktiviteter vises som små multipler i `blekk-2`, og valgt sesong i rutenettblå.
   - Kvalitetsøkter bruker I3.

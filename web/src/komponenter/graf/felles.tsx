@@ -20,6 +20,8 @@ export interface Seriedef {
   navn: string
   /** CSS-klasse som gir fyll, f.eks. «seg-i1» eller «fyll-volum». */
   klasse: string
+  /** Ikon i stedet for fargefeltet, f.eks. pokalen for konkurranser. */
+  ikon?: ReactNode
 }
 
 export function Tegnforklaring({ serier }: { serier: Seriedef[] }) {
@@ -28,7 +30,7 @@ export function Tegnforklaring({ serier }: { serier: Seriedef[] }) {
     <ul className="graf-tegnforklaring">
       {serier.map((s) => (
         <li key={s.id}>
-          <i className={s.klasse} />
+          {s.ikon ? <span className={`nokkel-ikon ${s.klasse}`}>{s.ikon}</span> : <i className={s.klasse} />}
           {s.navn}
         </li>
       ))}

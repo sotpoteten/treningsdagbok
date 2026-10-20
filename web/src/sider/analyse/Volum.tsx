@@ -1,3 +1,4 @@
+import { Cross, Thermometer } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { dato, km, tall, timer, ukespenn } from '../../data/format'
@@ -25,8 +26,9 @@ interface Punkt {
   etikett: string // til verktøytips og tabell
   kort: string | null // x-akse
   sum: Sum
-  syk: boolean
-  skadet: boolean
+  /** Antall dager markert som syk eller skadet i perioden. */
+  syk: number
+  skadet: number
 }
 
 export function Volum({ k }: { k: Analysekontekst }) {
@@ -59,16 +61,16 @@ export function Volum({ k }: { k: Analysekontekst }) {
             etikett: `Uke ${p.uke.uke} · ${ukespenn(p.uke.mandag, p.uke.sondag)}`,
             kort,
             sum: p.sum,
-            syk: p.syk,
-            skadet: p.skadet,
+            syk: p.uke.dager.filter((d) => d.dato >= fra && d.rapport?.syk).length,
+            skadet: p.uke.dager.filter((d) => d.dato >= fra && d.rapport?.skadet).length,
           }
         })
     }
-    const helse = new Map<string, { syk: boolean; skadet: boolean }>()
+    const helse = new Map<string, { syk: number; skadet: number }>()
     for (const [d, r] of k.dagbok.dagerPerDato) {
       const m = d.slice(0, 7)
-      const h = helse.get(m) ?? { syk: false, skadet: false }
-      helse.set(m, { syk: h.syk || r.syk, skadet: h.skadet || r.skadet })
+      const h = helse.get(m) ?? { syk: 0, skadet: 0 }
+      helse.set(m, { syk: h.syk + (r.syk ? 1 : 0), skadet: h.skadet + (r.skadet ? 1 : 0) })
     }
     return manedspunkter(k.dagbok.okter, fra, til).map((p) => {
       const forste = `${p.maned}-01`
@@ -78,8 +80,8 @@ export function Volum({ k }: { k: Analysekontekst }) {
         etikett: cap(dato(forste, 'MMMM yyyy')),
         kort: periode === 'sesong' ? dato(forste, 'MMM').replace('.', '') : p.maned.endsWith('-11') ? sesongKort(forste) : null,
         sum: p.sum,
-        syk: helse.get(p.maned)?.syk ?? false,
-        skadet: helse.get(p.maned)?.skadet ?? false,
+        syk: helse.get(p.maned)?.syk ?? 0,
+        skadet: helse.get(p.maned)?.skadet ?? 0,
       }
     })
   }, [k, opplosning, periode, fra, til])
@@ -92,8 +94,8 @@ export function Volum({ k }: { k: Analysekontekst }) {
     nokkel: p.nokkel,
     verdier: { ...Object.fromEntries(SONER.map((s) => [s, p.sum.sone[s] / 60])), styrke: p.sum.styrke / 60 },
     markorer: [
-      ...(p.syk ? [{ klasse: 'm-syk', navn: 'Syk' }] : []),
-      ...(p.skadet ? [{ klasse: 'm-skadet', navn: 'Skadet' }] : []),
+      ...(p.syk ? [{ klasse: 'm-syk', navn: 'Syk', ikon: 'syk' as const, antall: p.syk }] : []),
+      ...(p.skadet ? [{ klasse: 'm-skadet', navn: 'Skadet', ikon: 'skadet' as const, antall: p.skadet }] : []),
     ],
   }))
   const kmPunkter: Stolpepunkt[] = punkter.map((p) => ({ nokkel: p.nokkel, verdier: { km: p.sum.km } }))
@@ -147,7 +149,7 @@ export function Volum({ k }: { k: Analysekontekst }) {
     <>
       <Grafkort
         tittel={`Timer per ${enhet}`}
-        forklaring={`Fordelt på sone og styrke. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}. Merkene over stolpene viser sykdom og skade. Klikk (eller Enter) for å åpne i dagboka.`}
+        forklaring={`Fordelt på sone og styrke. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}. Termometeret viser syke dager og korset skadedager, med antallet når det er flere. Klikk (eller Enter) for å åpne i dagboka.`}
         valg={valg}
         tabell={tabell}
       >
@@ -165,8 +167,8 @@ export function Volum({ k }: { k: Analysekontekst }) {
           serier={[
             ...SONESERIER,
             { id: 'snitt', navn: 'Snitt', klasse: 'linjenokkel snitt' },
-            { id: 'syk', navn: 'Syk', klasse: 'fyll-syk' },
-            { id: 'skadet', navn: 'Skadet', klasse: 'fyll-skadet' },
+            { id: 'syk', navn: 'Syk', klasse: 'm-syk', ikon: <Thermometer aria-hidden /> },
+            { id: 'skadet', navn: 'Skadet', klasse: 'm-skadet', ikon: <Cross aria-hidden /> },
           ]}
         />
       </Grafkort>
@@ -223,7 +225,13 @@ function Volumtips({ p, snitt, snittLengde, enhet }: { p: Punkt; snitt: number; 
       <span className="tips-rad dempet">
         Snitt {snittLengde} {enhet === 'uke' ? 'uker' : 'mnd.'}: {timer(snitt * 60)} t
       </span>
-      {(p.syk || p.skadet) && <span className="tips-rad varsel">{[p.syk && 'Syk', p.skadet && 'Skadet'].filter(Boolean).join(' og ')} i perioden</span>}
+      {(p.syk > 0 || p.skadet > 0) && (
+        <span className="tips-rad varsel">
+          {[p.syk && `${p.syk} ${p.syk === 1 ? 'syk dag' : 'syke dager'}`, p.skadet && `${p.skadet} ${p.skadet === 1 ? 'skadedag' : 'skadedager'}`]
+            .filter(Boolean)
+            .join(' og ')}
+        </span>
+      )}
     </>
   )
 }

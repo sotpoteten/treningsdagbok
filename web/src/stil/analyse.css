@@ -269,10 +269,6 @@ svg .seg-styrke {
 .arstabell td.null {
   color: var(--blekk-3);
 }
-.fyll-konk {
-  background: var(--kote);
-  fill: var(--kote);
-}
 .fyll-skadet {
   background: repeating-linear-gradient(135deg, var(--stempel) 0 2px, transparent 2px 4px);
   box-shadow: inset 0 0 0 1px var(--stempel);
@@ -291,8 +287,32 @@ svg .fyll-skadet {
   stroke: var(--stempel);
   stroke-width: 1;
 }
-.markor-prikk.m-konk {
-  fill: var(--kote);
+/* Ikoner over stolpene, med antall dager ved siden av når det er flere:
+   konkurranse er en pokal i kotebrunt, syk et termometer og skadet et medisinsk kors i stempelrødt. */
+.markor-ikon {
+  pointer-events: none;
+}
+.markor-ikon.m-konk,
+.nokkel-ikon.m-konk {
+  color: var(--kote);
+}
+.markor-ikon.m-syk,
+.markor-ikon.m-skadet,
+.nokkel-ikon.m-syk,
+.nokkel-ikon.m-skadet {
+  color: var(--stempel);
+}
+.markor-antall {
+  font: 600 10px var(--font-tall);
+  fill: currentColor;
+}
+.graf-tegnforklaring .nokkel-ikon {
+  display: grid;
+}
+.graf-tegnforklaring .nokkel-ikon svg {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.25;
 }
 
 .graf-linje {

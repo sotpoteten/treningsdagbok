@@ -1,14 +1,16 @@
 import { scaleBand, scaleLinear } from 'd3-scale'
 import { line } from 'd3-shape'
 import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { Cross, Thermometer, Trophy } from 'lucide-react'
 import { useBredde, Verktoytips, type Seriedef } from './felles'
 
 export interface Stolpepunkt {
   nokkel: string
   /** Verdi per serie-id. */
   verdier: Record<string, number>
-  /** Små markører over stolpen (f.eks. syk, konkurranse), som CSS-klasser. */
-  markorer?: { klasse: string; navn: string }[]
+  /** Markører over stolpen: et ikon for konkurranse, syk eller skadet, med antall dager
+   *  ved siden av når det er flere. Uten ikon blir det et lite kvadrat i CSS-klassens farge. */
+  markorer?: { klasse: string; navn: string; ikon?: Markorikon; antall?: number }[]
 }
 
 interface Props {
@@ -24,6 +26,9 @@ interface Props {
   onKlikk?: (p: Stolpepunkt) => void
   beskrivelse: string
 }
+
+export type Markorikon = 'pokal' | 'syk' | 'skadet'
+const IKONER = { pokal: Trophy, syk: Thermometer, skadet: Cross }
 
 const MARG = { topp: 18, hoyre: 8, bunn: 24, venstre: 40 }
 
@@ -152,9 +157,29 @@ export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, x
                   {aktiv === i && totaler[i] > 0 && (
                     <rect className="stolpe-ramme" x={x0 - 1.5} y={topp - 1.5} width={tykk + 3} height={hoydeIndre - topp + 1.5} />
                   )}
-                  {p.markorer?.map((m, k) => (
-                    <rect key={m.klasse} className={`markor-prikk ${m.klasse}`} x={x0 + tykk / 2 - 3} y={topp - 9 - k * 8} width={6} height={6} />
-                  ))}
+                  {(() => {
+                    // Markørene stables oppover fra stolpetoppen: ikonene tar 15 px, kvadratene 8 px.
+                    let y0 = topp - 3
+                    return p.markorer?.map((m) => {
+                      if (m.ikon) {
+                        y0 -= 15
+                        const xm = x0 + tykk / 2
+                        const Ikon = IKONER[m.ikon]
+                        return (
+                          <g key={m.klasse} className={`markor-ikon ${m.klasse}`}>
+                            <Ikon x={xm - 7} y={y0} width={14} height={14} strokeWidth={2.25} aria-hidden />
+                            {(m.antall ?? 1) > 1 && (
+                              <text className="markor-antall" x={xm + 8} y={y0 + 11}>
+                                {m.antall}
+                              </text>
+                            )}
+                          </g>
+                        )
+                      }
+                      y0 -= 8
+                      return <rect key={m.klasse} className={`markor-prikk ${m.klasse}`} x={x0 + tykk / 2 - 3} y={y0 + 2} width={6} height={6} />
+                    })
+                  })()}
                 </g>
               )
             })}
