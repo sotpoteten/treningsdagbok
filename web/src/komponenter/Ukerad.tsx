@@ -1,5 +1,5 @@
 import { NotebookText } from 'lucide-react'
-import { memo, useLayoutEffect, useRef, useState } from 'react'
+import { memo, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { summer } from '../data/aggregat'
 import { dato, km, timer, UKEDAG, ukespenn } from '../data/format'
 import type { Okt } from '../data/typer'
@@ -114,48 +114,72 @@ function Dagcelle({ dag, ukedag, tom, treff, valgtId, idag, medSpor }: DagProps)
         <Dagsmarkorer rapport={r} />
       </div>
       <Stempler rapport={r} />
-      {(sykdom || skade) && (
-        <p className="dag-notat helse" title={[sykdom, skade].filter(Boolean).join(' · ')}>
-          {[sykdom, skade].filter(Boolean).join(' · ')}
-        </p>
-      )}
+      {(sykdom || skade) && <Dagnotat klasse="dag-notat helse">{[sykdom, skade].filter(Boolean).join(' · ')}</Dagnotat>}
       {dag.okter.map((o) => (
         <Oktkort key={o.id} okt={o} dempet={!!treff && !treff(o)} valgt={o.id === valgtId} spor={medSpor.has(o.id)} />
       ))}
       {r?.notat && (
-        <p className="dag-notat" title={r.notat}>
+        <Dagnotat klasse="dag-notat">
           <NotebookText className="ikon" aria-label="Dagsnotat" />
           {r.notat}
-        </p>
+        </Dagnotat>
       )}
     </div>
   )
 }
 
-function Ukekommentar({ kommentarer }: { kommentarer: string[] }) {
+/** Dagsnotatet er kuttet til fire linjer. Er det lengre, kan det foldes ut med et trykk på
+ *  teksten eller på «Les mer», på alle dager, også de uten økter. */
+function Dagnotat({ klasse, children }: { klasse: string; children: ReactNode }) {
   const [apen, setApen] = useState(false)
-  const [lang, setLang] = useState(false)
-  const tekst = useRef<HTMLDivElement>(null)
+  const [ref, kuttet] = useKuttet<HTMLParagraphElement>(apen)
+  return (
+    <>
+      <p
+        ref={ref}
+        className={apen ? `${klasse} apen` : kuttet ? `${klasse} kuttet` : klasse}
+        onClick={kuttet || apen ? () => setApen(!apen) : undefined}
+      >
+        {children}
+      </p>
+      {(kuttet || apen) && (
+        <button type="button" className="lenkeknapp dag-mer" onClick={() => setApen(!apen)} aria-expanded={apen}>
+          {apen ? 'Vis mindre' : 'Les mer'}
+        </button>
+      )}
+    </>
+  )
+}
 
-  // Knappen vises bare når teksten faktisk er kuttet (avhenger av bredden).
+/** Om teksten i elementet er kuttet. Avhenger av bredden, så den måles på nytt ved endring. */
+function useKuttet<T extends HTMLElement>(apen: boolean) {
+  const ref = useRef<T>(null)
+  const [kuttet, setKuttet] = useState(false)
   useLayoutEffect(() => {
-    const el = tekst.current
+    const el = ref.current
     if (!el || apen) return
-    const mal = () => setLang(el.scrollHeight > el.clientHeight + 1)
+    const mal = () => setKuttet(el.scrollHeight > el.clientHeight + 1)
     mal()
     const ro = new ResizeObserver(mal)
     ro.observe(el)
     return () => ro.disconnect()
   }, [apen])
+  return [ref, kuttet] as const
+}
+
+function Ukekommentar({ kommentarer }: { kommentarer: string[] }) {
+  const [apen, setApen] = useState(false)
+  // Knappen vises bare når teksten faktisk er kuttet.
+  const [ref, kuttet] = useKuttet<HTMLDivElement>(apen)
 
   return (
     <div className={apen ? 'ukekommentar apen' : 'ukekommentar'}>
-      <div className="ukekommentar-tekst" ref={tekst}>
+      <div className="ukekommentar-tekst" ref={ref}>
         {kommentarer.map((k, i) => (
           <p key={i}>{k}</p>
         ))}
       </div>
-      {(lang || apen) && (
+      {(kuttet || apen) && (
         <button type="button" className="lenkeknapp" onClick={() => setApen(!apen)} aria-expanded={apen}>
           {apen ? 'Vis mindre' : 'Les mer'}
         </button>

@@ -463,6 +463,18 @@ button {
   margin: 0 0 6px;
   color: var(--stempel);
 }
+.dag-notat.kuttet {
+  cursor: pointer;
+}
+.dag-notat.apen {
+  display: block;
+  cursor: pointer;
+}
+.dag-mer {
+  display: block;
+  margin: 2px 0 6px;
+  font-size: 12px;
+}
 .tom-spenn {
   display: none;
 }
