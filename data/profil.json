@@ -5,26 +5,26 @@
  "klubb": "Kjelsås IL, Nydalens SK",
  "pulssoner": {
   "I1": {
-   "Min": 126,
-   "Max": 150
+   "Min": 110,
+   "Max": 144
   },
   "I2": {
-   "Min": 151,
-   "Max": 171
+   "Min": 145,
+   "Max": 164
   },
   "I3": {
-   "Min": 172,
-   "Max": 182
+   "Min": 165,
+   "Max": 174
   },
   "I4": {
-   "Min": 183,
-   "Max": 192
+   "Min": 175,
+   "Max": 184
   },
   "I5": {
-   "Min": 193,
-   "Max": 210
+   "Min": 185,
+   "Max": 200
   },
   "enhet": "slag/min",
-  "sist_oppdatert": "2026-01-29"
+  "sist_oppdatert": "2026-10-22"
  }
 }
