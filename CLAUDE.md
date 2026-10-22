@@ -132,8 +132,10 @@ Den ligger urørt i dataene, så spør Isak om den skal flyttes.
 
 ## Pulssoner (`profil.json`)
 
-Isaks nåværende pulssoner, oppdatert 29. jan. 2026, i slag/min: I1 126–150, I2 151–171,
-I3 172–182, I4 183–192, I5 193–210. Eksporten har bare de nåværende verdiene, ingen historikk.
+Isaks pulssoner (bekreftet av Isak 22. okt. 2026), i slag/min: I1 110–144, I2 145–164,
+I3 165–174, I4 175–184, I5 185+. Siden viser I5 uten øvre grense (`pulsomrade()` i
+`format.ts`). Sonene hentes fra OLT ved hver import, så de rettes i OLT, ikke i
+`profil.json`. Eksporten har bare de nåværende verdiene, ingen historikk.
 Bruk dem gjerne som forklaring til sonene på siden.
 
 ## Koder (bekreftet mot dataene)

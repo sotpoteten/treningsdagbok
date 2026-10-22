@@ -1,4 +1,5 @@
 import type { Dagbok } from '../src/data/last'
+import { pulsomrade } from '../src/data/format'
 import { SONER } from '../src/data/typer'
 import { sesongoversikt } from './verktoy'
 
@@ -6,7 +7,7 @@ import { sesongoversikt } from './verktoy'
 export function lagPrompt(dagbok: Dagbok, idag: string): string {
   const p = dagbok.profil
   const siste = dagbok.okter[dagbok.okter.length - 1]?.dato ?? idag
-  const soner = SONER.map((s) => `${s} ${p.pulssoner[s].Min}–${p.pulssoner[s].Max}`).join(', ')
+  const soner = SONER.map((s) => `${s} ${pulsomrade(p.pulssoner, s)}`).join(', ')
   const sesonger = sesongoversikt(dagbok)
     .map((s) => `| ${s.sesong} | ${s.okter} | ${s.timer} | ${s.km} | ${SONER.map((z) => s.sone_min[z]).join(' / ')} | ${s.styrke_min} |`)
     .join('\n')

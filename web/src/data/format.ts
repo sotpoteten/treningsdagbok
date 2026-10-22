@@ -1,5 +1,6 @@
 import { format, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale'
+import { SONER, type Profil, type Sone } from './typer'
 
 const km1 = new Intl.NumberFormat('nb-NO', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
 const heltall = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
@@ -59,3 +60,9 @@ export function hoydelag(min: number): number {
   return 6
 }
 export const HOYDELAG_ETIKETT = ['0', '< 5', '5–9', '9–12', '12–15', '15–18', '18+']
+
+/** Pulsområdet for en sone i slag/min: «145–164», og «185+» for den øverste sonen, som ikke har noen øvre grense. */
+export function pulsomrade(soner: Profil['pulssoner'], sone: Sone): string {
+  const { Min, Max } = soner[sone]
+  return sone === SONER[SONER.length - 1] ? `${Min}+` : `${Min}–${Max}`
+}

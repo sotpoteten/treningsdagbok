@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from 'react'
 import { summer } from '../data/aggregat'
-import { HOYDELAG_ETIKETT, hoydelag, km, timer, ukespenn } from '../data/format'
+import { HOYDELAG_ETIKETT, hoydelag, km, pulsomrade, timer, ukespenn } from '../data/format'
 import { SONER, type Okt, type Profil } from '../data/typer'
 import type { Uke } from '../data/uker'
 
@@ -105,7 +105,7 @@ export const Hoydelag = memo(function Hoydelag({ uker, synlige, treff, pulssoner
               <i className={`seg-${s.toLowerCase()}`} />
               <b>{s}</b>
               <span>
-                {pulssoner[s].Min}–{pulssoner[s].Max}
+                {pulsomrade(pulssoner, s)}
               </span>
             </li>
           ))}

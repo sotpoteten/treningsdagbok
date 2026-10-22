@@ -2,7 +2,7 @@ import { Trophy } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { summer } from '../../data/aggregat'
-import { dato, tall, timer, ukespenn } from '../../data/format'
+import { dato, pulsomrade, tall, timer, ukespenn } from '../../data/format'
 import {
   AKTIVITET_NAVN,
   AKTIVITETER,
@@ -104,7 +104,7 @@ function Sonefordeling({ k }: { k: Analysekontekst }) {
           </div>
         ))}
       </div>
-      <Tegnforklaring serier={SONER.map((z) => ({ id: z, navn: `${z} ${k.dagbok.profil.pulssoner[z].Min}–${k.dagbok.profil.pulssoner[z].Max}`, klasse: `seg-${z.toLowerCase()}` }))} />
+      <Tegnforklaring serier={SONER.map((z) => ({ id: z, navn: `${z} ${pulsomrade(k.dagbok.profil.pulssoner, z)}`, klasse: `seg-${z.toLowerCase()}` }))} />
     </Grafkort>
   )
 }

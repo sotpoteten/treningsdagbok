@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { tempo as fart } from '../data/aggregat'
-import { dato, km, tempo, timer, varighetLang } from '../data/format'
+import { dato, km, pulsomrade, tempo, timer, varighetLang } from '../data/format'
 import type { Dagbok } from '../data/last'
 import { SONER, type Okt } from '../data/typer'
 import { Dagsmarkorer, Stempler } from './Dagsmarkorer'
@@ -124,7 +124,7 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
                     {s}
                   </th>
                   <td className="puls">
-                    {puls[s].Min}–{puls[s].Max}
+                    {pulsomrade(puls, s)}
                   </td>
                   <td>{varighetLang(okt.sone_min[s]!)}</td>
                   <td>{Math.round(((okt.sone_min[s] ?? 0) / soneSum) * 100)} %</td>

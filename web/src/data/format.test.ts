@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { tempo, timer, varighet } from './format'
+import { pulsomrade, tempo, timer, varighet } from './format'
 
 describe('format', () => {
   it('timer runder av til hele minutter før timer og minutter skilles', () => {
@@ -14,5 +14,12 @@ describe('format', () => {
     expect(varighet(110)).toBe('1:50')
     expect(tempo(5.35)).toBe('5:21')
     expect(tempo(4.999)).toBe('5:00')
+  })
+
+  it('pulsområdet viser den øverste sonen uten øvre grense', () => {
+    const p = { I1: { Min: 110, Max: 144 }, I2: { Min: 145, Max: 164 }, I3: { Min: 165, Max: 174 },
+      I4: { Min: 175, Max: 184 }, I5: { Min: 185, Max: 210 }, enhet: 'slag/min', sist_oppdatert: '2026-10-22' }
+    expect(pulsomrade(p, 'I1')).toBe('110–144')
+    expect(pulsomrade(p, 'I5')).toBe('185+')
   })
 })
