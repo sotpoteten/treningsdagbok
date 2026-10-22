@@ -6,12 +6,11 @@ Leser fra data/raw/garmin/  (kopi av DI_CONNECT/ fra eksporten, holdt utenfor gi
     DI-Connect-Uploaded-Files/UploadedFiles_*.zip    – FIT-filer (aktiviteter, HRV m.m.)
     DI-Connect-Aggregator/UDSFile_*.json             – daglig sammendrag (hvilepuls)
     DI-Connect-Wellness/*_sleepData.json             – søvn
-    DI-Connect-Wellness/*_healthStatusData.json      – HRV med baseline (fra sept. 2025)
-    DI-Connect-Metrics/MetricsAcuteTrainingLoad_*    – akutt/kronisk belastning (fra 2023)
+    DI-Connect-Wellness/*_healthStatusData.json      – HRV per natt der FIT-filene mangler (fra sept. 2025)
 
 Lager:
     data/garmin_aktiviteter.json   – én post per aktivitet fra 1.11.2019, med okt_id (uten koordinater)
-    data/garmin_helse.json         – én post per dag: hvilepuls, HRV, søvn, belastning
+    data/garmin_helse.json         – én post per dag med det som er målt: hvilepuls, HRV, søvntid, søvnscore
     data/garmin_spor/<id>.json     – GPS-spor, puls, fart og runder per aktivitet (holdt utenfor git)
     data/raw/garmin/fit_indeks.json – buffer, så FIT-filene bare dekodes én gang
 
@@ -301,6 +300,9 @@ def gaa_gjennom_fit(aktiviteter):
 
 
 def les_helse(hrv_fit):
+    """Bare det som er målt: hvilepuls, HRV per natt, søvntid og søvnscore. Normalområde for
+    HRV og belastning regnes på nettsiden (web/src/data/helse.ts), likt for hele dagboka
+    uansett om dataene kom herfra eller fra intervals.icu."""
     dager = defaultdict(dict)
 
     for p in RAW.glob("DI-Connect-Aggregator/UDSFile_*.json"):
@@ -314,63 +316,28 @@ def les_helse(hrv_fit):
             d = r.get("calendarDate")
             if not d or d < FRA:
                 continue
-            dyp, lett, rem = (r.get(k) or 0 for k in ("deepSleepSeconds", "lightSleepSeconds", "remSleepSeconds"))
-            if dyp + lett + rem <= 0:
+            sovn = sum(r.get(k) or 0 for k in ("deepSleepSeconds", "lightSleepSeconds", "remSleepSeconds"))
+            if sovn <= 0:
                 continue  # natt uten måling
-            start = r.get("sleepStartTimestampGMT")
-            slutt = r.get("sleepEndTimestampGMT")
-
-            def lokal(s):
-                return datetime.fromisoformat(s).replace(tzinfo=timezone.utc).astimezone(OSLO).strftime("%H:%M") if s else None
-
-            dager[d].update(
-                {
-                    "sovn_start": lokal(start),
-                    "sovn_slutt": lokal(slutt),
-                    "sovn_min": round((dyp + lett + rem) / 60),
-                    "dyp_min": round(dyp / 60),
-                    "lett_min": round(lett / 60),
-                    "rem_min": round(rem / 60) if r.get("remSleepSeconds") is not None else None,
-                    "vaken_min": round((r.get("awakeSleepSeconds") or 0) / 60),
-                    "sovnscore": (r.get("sleepScores") or {}).get("overallScore"),
-                    "respirasjon": rund(r.get("averageRespiration")),
-                }
-            )
+            dager[d]["sovn_min"] = round(sovn / 60)
+            score = (r.get("sleepScores") or {}).get("overallScore")
+            if score is not None:
+                dager[d]["sovnscore"] = score
 
     # HRV: FIT-filene først, så helsestatus (fra sept. 2025) for dager som mangler
     for d, h in hrv_fit.items():
         if d >= FRA and h.get("hrv_natt"):
-            dager[d].update({k: v for k, v in h.items() if k != "dato"})
+            dager[d]["hrv_natt"] = h["hrv_natt"]
     for p in RAW.glob("DI-Connect-Wellness/*_healthStatusData.json"):
         for r in les_json(p):
             d = r.get("calendarDate")
-            if not d or "hrv_natt" in dager.get(d, {}):
+            if not d or d < FRA or "hrv_natt" in dager.get(d, {}):
                 continue
             for m in r.get("metrics") or []:
                 if m.get("type") == "HRV" and m.get("value"):
-                    dager[d].update(
-                        {
-                            "hrv_natt": m["value"],
-                            "hrv_baseline_lav": m.get("baselineLowerLimit"),
-                            "hrv_baseline_hoy": m.get("baselineUpperLimit"),
-                            "hrv_status": (m.get("status") or "").lower() or None,
-                        }
-                    )
+                    dager[d]["hrv_natt"] = m["value"]
 
-    for p in RAW.glob("DI-Connect-Metrics/MetricsAcuteTrainingLoad_*.json"):
-        for r in les_json(p):
-            d = datetime.fromtimestamp(r["calendarDate"] / 1000, tz=timezone.utc).date().isoformat()
-            if d < FRA:
-                continue
-            dager[d].update(
-                {
-                    "belastning_akutt": r.get("dailyTrainingLoadAcute"),
-                    "belastning_kronisk": r.get("dailyTrainingLoadChronic"),
-                    "acwr": rund(r.get("dailyAcuteChronicWorkloadRatio"), 2),
-                }
-            )
-
-    return [{"dato": d, **v} for d, v in sorted(dager.items())]
+    return [{"dato": d, **v} for d, v in sorted(dager.items()) if v]
 
 
 # ── Kobling ─────────────────────────────────────────────
@@ -412,6 +379,21 @@ def koble_okter(aktiviteter):
 # ── Hovedprogram ────────────────────────────────────────
 
 
+def behold_nyere(aktiviteter, helse):
+    """Data hentet fra intervals.icu etter eksporten (scripts/hent_intervals.py) skal ikke
+    forsvinne når en eldre eksport konverteres på nytt. Det som er nyere enn eksporten, beholdes."""
+    gamle_akt = les_json(UT / "garmin_aktiviteter.json") if (UT / "garmin_aktiviteter.json").exists() else []
+    gamle_helse = les_json(UT / "garmin_helse.json") if (UT / "garmin_helse.json").exists() else []
+    siste_akt = max((a["start_lokal"] for a in aktiviteter), default="")
+    siste_dag = max((d["dato"] for d in helse), default="")
+    kjente = {a["garmin_id"] for a in aktiviteter}
+    nye_akt = [a for a in gamle_akt if a["start_lokal"] > siste_akt and a["garmin_id"] not in kjente]
+    nye_dager = [d for d in gamle_helse if d["dato"] > siste_dag]
+    if nye_akt or nye_dager:
+        print(f"  Beholder {len(nye_akt)} aktiviteter og {len(nye_dager)} dager som er nyere enn eksporten")
+    return sorted(aktiviteter + nye_akt, key=lambda a: a["start_lokal"]), helse + nye_dager
+
+
 def main():
     argparse.ArgumentParser(description="Konverterer Garmin-eksporten i data/raw/garmin/").parse_args()
 
@@ -428,10 +410,11 @@ def main():
     print("Leser helsedata …")
     helse = les_helse(hrv)
 
-    koble_okter(aktiviteter)
-
     for a in aktiviteter:
         del a["start_gmt_ms"]
+    aktiviteter, helse = behold_nyere(aktiviteter, helse)
+    koble_okter(aktiviteter)
+
     skriv_json(UT / "garmin_aktiviteter.json", aktiviteter)
     skriv_json(UT / "garmin_helse.json", helse)
 
@@ -441,7 +424,7 @@ def main():
     print("\nSkrev:")
     print(f"  garmin_aktiviteter.json: {len(aktiviteter)} aktiviteter, {sum(a['har_spor'] for a in aktiviteter)} med GPS-spor")
     print(f"  garmin_helse.json: {len(helse)} dager – hvilepuls {antall('hvilepuls')}, HRV {antall('hrv_natt')}, "
-          f"søvn {antall('sovn_min')}, søvnscore {antall('sovnscore')}, belastning {antall('belastning_akutt')}")
+          f"søvn {antall('sovn_min')}, søvnscore {antall('sovnscore')}")
     print(f"  garmin_spor/: {len(list(SPOR.glob('*.json')))} filer")
 
 

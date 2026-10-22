@@ -195,10 +195,10 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
                 <dt>HRV natt</dt>
                 <dd>
                   {natt.hrv_natt ?? '–'}
-                  {natt.hrv_baseline_lav != null && natt.hrv_baseline_hoy != null && (
+                  {natt.hrv_normal_lav != null && natt.hrv_normal_hoy != null && (
                     <small>
                       {' '}
-                      normal {natt.hrv_baseline_lav}–{natt.hrv_baseline_hoy}
+                      normal {natt.hrv_normal_lav}–{natt.hrv_normal_hoy}
                     </small>
                   )}
                 </dd>

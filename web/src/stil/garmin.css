@@ -192,27 +192,10 @@
   opacity: 0.12;
 }
 
-/* Søvnfaser: nøytral blekkskala, mørkest for dyp søvn. Våken er skravert. */
-.fyll-dyp {
-  background: var(--blekk);
-  fill: var(--blekk);
-}
-.fyll-rem {
+/* Søvn per natt: én dempet serie i blekk-3, så stolpene ikke blir tyngre enn grafene rundt. */
+.fyll-sovn {
   background: var(--blekk-3);
   fill: var(--blekk-3);
-}
-.fyll-lett {
-  background: var(--sovn-lett);
-  fill: var(--sovn-lett);
-}
-.fyll-vaken {
-  background: repeating-linear-gradient(135deg, var(--blekk-3) 0 2px, transparent 2px 4px);
-  box-shadow: inset 0 0 0 1px var(--blekk-3);
-}
-svg .fyll-vaken {
-  fill: url(#skravur-vaken);
-  stroke: var(--blekk-3);
-  stroke-width: 1;
 }
 .dempet-tall {
   color: var(--blekk-3);

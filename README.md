@@ -115,6 +115,21 @@ Alternativet er å gjøre det for hånd:
 
 ### Garmin
 
+Nye data hentes hver uke fra [intervals.icu](https://intervals.icu), som er koblet til
+Garmin Connect:
+
+```
+.venv\Scripts\python scripts/hent_intervals.py
+```
+
+Mandagskjøringen gjør dette selv etter OLT-importen. Skriptet trenger en API-nøkkel fra
+intervals.icu (Settings → Developer Settings) i `data/raw/intervals.json`:
+`{"api_nokkel": "…"}`. Det henter:
+- nye aktiviteter, med originalfila fra klokka (sammendrag og spor)
+- hvilepuls, HRV, søvntid og søvnscore til og med i går
+
+Full historikk kommer fra Garmins GDPR-eksport:
+
 1. Be om full eksport fra Garmin-kontoen (Data Management → Export Your Data).
 2. Kopier mappa `DI_CONNECT/` fra eksporten til `data/raw/garmin/`.
 3. Sett opp Python-miljøet første gang:
@@ -131,7 +146,8 @@ Alternativet er å gjøre det for hånd:
 
 Skriptet lager:
 - `data/garmin_aktiviteter.json`: aktivitetene, koblet til dagbokøktene
-- `data/garmin_helse.json`: hvilepuls, HRV, søvn og belastning per dag
+- `data/garmin_helse.json`: hvilepuls, HRV, søvntid og søvnscore per dag. HRV-normalområdet
+  og belastningen regnes ut på nettsiden, likt for alle data.
 - `data/garmin_spor/`: GPS-spor, bare lokalt
 
 Det skriver også ut hvor stor andel av øktene som ble koblet. Ved forrige eksport var det
@@ -147,6 +163,7 @@ scripts/
   hent_olt.py         henter eksporten fra Olympiatoppen og kjører konverter.py
   konverter.py        Olympiatoppen-eksport → data/*.json
   konverter_garmin.py Garmin-eksport → data/garmin_*.json og spor
+  hent_intervals.py   nye Garmin-data fra intervals.icu hver uke
   garmin_kobling.py   kobler Garmin-aktiviteter til dagbokøkter (+ test_garmin_kobling.py)
 web/                  nettsiden (Vite + React + TypeScript)
   assistent/          «Spør»: Vite-tillegg, agent, systemprompt og dagbokverktøy

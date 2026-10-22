@@ -43,6 +43,7 @@ orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tek
 | `data/profil.json` | Navn, idrett, klubb og pulssoner. Uten e-post og fødselsdato. |
 | `data/garmin_*.json`, `data/garmin_spor/` | Garmin-data, se seksjonen «Garmin-data» under. |
 | `scripts/konverter_garmin.py`, `scripts/garmin_kobling.py` | Garmin-eksport → `data/garmin_*`. Krever `.venv` (Python 3.12 med `fitdecode` og `tzdata`). |
+| `scripts/hent_intervals.py` | Nye Garmin-data fra intervals.icu hver uke. Testet i `scripts/test_hent_intervals.py`. |
 
 Ved ny eksport legger du filene i `data/raw/` med navnene over og kjører
 `python scripts/konverter.py`. Skriptet skriver ut advarsler hvis det dukker opp ukjente
@@ -255,9 +256,19 @@ konkurranser, ikke av turer som starter hjemme.
 
 ## Garmin-data
 
-Kilden er Garmins fullstendige GDPR-eksport. Mappa `DI_CONNECT/` fra eksporten
-kopieres til `data/raw/garmin/` (794 MB, holdt utenfor git). Ved ny eksport erstattes
-mappa, og så kjøres:
+Det er to kilder:
+- **intervals.icu (hver uke):** `scripts/hent_intervals.py` henter nye aktiviteter med
+  originalfila fra klokka, og det som er målt per dag. Mandagskjøringen (`hent_olt.py
+  --planlagt`) kaller den etter OLT-importen, og committer de to Garmin-filene sammen med
+  resten. Nøkkelen ligger i `data/raw/intervals.json`. intervals.icu er koblet til Garmin
+  Connect, og Garmin sendte bare ett år bakover (fra 1. juni 2026).
+- **GDPR-eksporten (full historikk):** Mappa `DI_CONNECT/` fra eksporten kopieres til
+  `data/raw/garmin/` (794 MB, holdt utenfor git). Ved ny eksport erstattes mappa, og så
+  kjøres konverteringen under. Data som er nyere enn eksporten, beholdes
+  (`behold_nyere()`).
+
+Garmins eget API er bare for bedrifter. Strava er ikke brukt, fordi Strava-vilkårene ikke
+tillater å vise data fra API-et til andre enn brukeren selv.
 
 ```
 .venv\Scripts\python scripts/konverter_garmin.py     # krever fitdecode og tzdata i .venv
@@ -271,7 +282,7 @@ blokkerte innloggingen. De er beholdt, men eksporten er kilden.
 | Fil | Innhold | Git |
 |---|---|---|
 | `data/garmin_aktiviteter.json` | Én post per Garmin-aktivitet fra 1.11.2019: tid, type, varighet, distanse, puls, høydemeter, kadens, Training Effect, belastning, `har_spor` og `okt_id` (koblet dagbokøkt). Ingen koordinater. | ja |
-| `data/garmin_helse.json` | Én post per dag: `hvilepuls`, `hrv_natt`, `hrv_ukesnitt`, `hrv_baseline_lav/hoy`, `hrv_status`, søvn (`sovn_min`, `dyp_min`, `lett_min`, `rem_min`, `vaken_min`, `sovnscore`, `respirasjon`, `sovn_start/slutt`) og belastning (`belastning_akutt`, `belastning_kronisk`, `acwr`). | ja |
+| `data/garmin_helse.json` | Én post per dag med det som er målt: `hvilepuls`, `hrv_natt`, `sovn_min` og `sovnscore`. | ja |
 | `data/garmin_spor/<garmin_id>.json` | GPS-spor, puls, fart, høyde og distanse, tynnet til hvert 5. sekund (kolonnevis), samt runder. Avslører hvor Isak bor. | **nei** |
 
 **Kilder og enheter i eksporten**
@@ -283,17 +294,32 @@ blokkerte innloggingen. De er beholdt, men eksporten er kilden.
     `startTimeGmt` (±2 s).
   - Type 68 er `hrv_status_summary`, med HRV fra høsten 2023.
 - **Hvilepuls:** `UDSFile` (`restingHeartRate`).
-- **Søvn:** `sleepData`. Søvnscore og REM finnes fra ca. 2023.
-- **HRV med baseline fra sept. 2025:** `healthStatusData`. Brukes bare der FIT mangler.
-- **Belastning:** `MetricsAcuteTrainingLoad`, der `calendarDate` er i ms. Finnes fra aug. 2023.
+- **Søvn:** `sleepData` (tid og søvnscore). Søvnscore finnes fra ca. 2023.
+- **HRV fra sept. 2025:** `healthStatusData`. Brukes bare der FIT mangler.
+
+**Avledede tall** (`web/src/data/helse.ts`, `avledHelse()`): Isak har valgt at de skal
+regnes likt for hele dagboka, uansett kilde. Garmins egne versjoner (HRV-baseline og
+-status, akutt og kronisk belastning) og søvnfaser og respirasjon er derfor fjernet.
+- **HRV-normalområde:** exp(snitt ± 1 SD) av ln(HRV) de 60 foregående nettene, med minst
+  20 målinger. Det er omtrent like bredt som Garmins.
+- **Belastning:** fra Garmins belastning per aktivitet (`belastning`, fra aug. 2023).
+  - Akutt er summen de siste 7 dagene.
+  - Kronisk er summen de siste 28 dagene delt på 4.
+  - ACWR er akutt delt på kronisk.
+
+**intervals.icu mot GDPR-eksporten** (testet 22.10.2026 med `scripts/intervals_test.py`):
+- Aktivitetene laget fra FIT-fila er like i alle felt, og multisport slås sammen til én
+  aktivitet.
+- HRV og søvnscore er like, og søvntiden er nesten alltid lik.
+- Hvilepulsen avviker ±1–3 slag, uten skjevhet.
 
 **Resultat (eksport fra 9.10.2026):**
 - **Aktiviteter:** 4 886 Garmin-aktiviteter fra 1.11.2019, hvorav 3 528 med GPS-spor
   (132 MB lokalt).
 - **Kobling:** 94 % av dagbokøktene har Garmin-data, og minst 92 % hvert år. Øktene som
   mangler, er mest styrke og noen mølleøkter.
-- **Helsedata:** hvilepuls for 2 259 dager, HRV for 1 109 netter (fra 6.9.2023), søvn
-  for 1 246 netter og belastning for 1 163 dager.
+- **Helsedata:** hvilepuls for 2 259 dager, HRV for 1 109 netter (fra 6.9.2023) og søvn
+  for 1 246 netter.
 - `hvilepuls` er Garmins `restingHeartRate` (UDS). Helsestatusens «HR» er snittpuls om
   natta og brukes ikke.
 

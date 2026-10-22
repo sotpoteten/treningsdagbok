@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { dato, km, tall, timer, ukespenn } from '../../data/format'
+import { AKUTT_DAGER, HRV_VINDU, KRONISK_DAGER } from '../../data/helse'
 import { dagserie, glidendeSnittMedHull, snitt, ukepunkter } from '../../data/statistikk'
 import type { GarminDag } from '../../data/typer'
 import { Grafkort, Segment, Tegnforklaring } from '../../komponenter/graf/felles'
@@ -90,8 +91,8 @@ function HelseInnhold({
       hvilepulsSnitt: glidendeSnittMedHull(hvilepuls.verdier, SNITT_DAGER),
       hrv: hrv.verdier,
       hrvSnitt: glidendeSnittMedHull(hrv.verdier, SNITT_DAGER),
-      hrvLav: s((d) => d.hrv_baseline_lav).verdier,
-      hrvHoy: s((d) => d.hrv_baseline_hoy).verdier,
+      hrvLav: s((d) => d.hrv_normal_lav).verdier,
+      hrvHoy: s((d) => d.hrv_normal_hoy).verdier,
       score: s((d) => d.sovnscore).verdier,
       akutt: s((d) => d.belastning_akutt).verdier,
       kronisk: s((d) => d.belastning_kronisk).verdier,
@@ -110,10 +111,6 @@ function HelseInnhold({
             hvilepuls: snitt(dager.map((d) => d.hvilepuls)),
             hrv: snitt(dager.map((d) => d.hrv_natt)),
             sovn: snitt(dager.map((d) => d.sovn_min)),
-            dyp: snitt(dager.map((d) => (d.sovn_min ? d.dyp_min : null))),
-            rem: snitt(dager.map((d) => (d.sovn_min ? d.rem_min : null))),
-            lett: snitt(dager.map((d) => (d.sovn_min ? d.lett_min : null))),
-            vaken: snitt(dager.map((d) => (d.sovn_min ? d.vaken_min : null))),
             score: snitt(dager.map((d) => d.sovnscore)),
             akutt: snitt(dager.map((d) => d.belastning_akutt)),
           }
@@ -209,7 +206,7 @@ function HelseInnhold({
         tittel="HRV om natta"
         forklaring={
           harHrv
-            ? `Snitt-HRV (ms) per natt. Det grå båndet er Garmins normalområde. ${sykForklaring}`
+            ? `Snitt-HRV (ms) per natt. Det grå båndet er normalområdet: snittet ± ett standardavvik av de ${HRV_VINDU} foregående nettene, regnet på samme måte for hele dagboka. ${sykForklaring}`
             : 'HRV finnes fra høsten 2023 (Forerunner 255). Velg en senere sesong.'
         }
         tabell={tabell}
@@ -252,13 +249,10 @@ function HelseInnhold({
         )}
       </Grafkort>
 
-      <Grafkort tittel="Søvn per natt, snitt per uke" forklaring="Søvnfaser i timer. REM og søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den." tabell={tabell}>
+      <Grafkort tittel="Søvn per natt, snitt per uke" forklaring="Timer søvn. Søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den." tabell={tabell}>
         <Stolper
-          punkter={uker.map((u) => ({
-            nokkel: u.p.uke.nokkel,
-            verdier: { dyp: (u.dyp ?? 0) / 60, rem: (u.rem ?? 0) / 60, lett: (u.lett ?? 0) / 60, vaken: (u.vaken ?? 0) / 60 },
-          }))}
-          serier={SOVNFASER}
+          punkter={uker.map((u) => ({ nokkel: u.p.uke.nokkel, verdier: { sovn: (u.sovn ?? 0) / 60 } }))}
+          serier={[{ id: 'sovn', navn: 'Søvn', klasse: 'fyll-sovn' }]}
           hoyde={220}
           yFormat={(v) => `${v} t`}
           xEtikett={(_, i) => {
@@ -266,7 +260,7 @@ function HelseInnhold({
             const f = i > 0 ? uker[i - 1].p.uke.dager[3].dato : ''
             return t.slice(5, 7) !== f.slice(5, 7) ? dato(t, alle ? 'MMM yy' : 'MMM').replace('.', '') : null
           }}
-          beskrivelse="Søvn per natt i snitt per uke, fordelt på faser"
+          beskrivelse="Søvn per natt i snitt per uke"
           onKlikk={(p) => apneUke(p.nokkel)}
           tips={(_, i) => {
             const u = uker[i]
@@ -276,21 +270,11 @@ function HelseInnhold({
                   Uke {u.p.uke.uke} · {ukespenn(u.p.uke.mandag, u.p.uke.sondag)}
                 </b>
                 <span className="tips-tall">{u.sovn != null ? `${timer(u.sovn)} t søvn per natt` : 'Ingen søvndata'}</span>
-                {SOVNFASER.map((f) => {
-                  const v = u[f.id as 'dyp' | 'rem' | 'lett' | 'vaken']
-                  return v ? (
-                    <span key={f.id} className="tips-rad">
-                      <i className={f.klasse} />
-                      {f.navn} <span className="tips-verdi">{timer(v)}</span>
-                    </span>
-                  ) : null
-                })}
                 {u.score != null && <span className="tips-rad dempet">Søvnscore {en(u.score)}</span>}
               </>
             )
           }}
         />
-        <Tegnforklaring serier={SOVNFASER} />
         {serier.score.some((v) => v != null) && (
           <>
             <h3 className="grafkort-undertittel">Søvnscore</h3>
@@ -323,10 +307,10 @@ function HelseInnhold({
       </Grafkort>
 
       <Grafkort
-        tittel="Garmins treningsbelastning"
+        tittel="Treningsbelastning"
         forklaring={
           harBelastning
-            ? 'Akutt (7 dager) og kronisk (4 uker) belastning fra klokka. Under: ACWR, forholdet mellom dem, med Garmins optimale område 0,8–1,3, og ukas timer fra dagboka.'
+            ? `Ut fra klokkas belastning per økt: akutt er summen de siste ${AKUTT_DAGER} dagene, kronisk er snittet per uke de siste ${KRONISK_DAGER / 7} ukene. Under: ACWR, forholdet mellom dem, med området 0,8–1,3 som ofte regnes som trygt (Gabbett 2016), og ukas timer fra dagboka.`
             : 'Belastning finnes fra august 2023. Velg en senere sesong.'
         }
         tabell={tabell}
@@ -412,12 +396,5 @@ function HelseInnhold({
 const SYK_NOKLER = [
   { id: 'syk', navn: 'Syk', klasse: 'fyll-syk' },
   { id: 'skadet', navn: 'Skadet', klasse: 'fyll-skadet' },
-]
-
-const SOVNFASER = [
-  { id: 'dyp', navn: 'Dyp', klasse: 'fyll-dyp' },
-  { id: 'rem', navn: 'REM', klasse: 'fyll-rem' },
-  { id: 'lett', navn: 'Lett', klasse: 'fyll-lett' },
-  { id: 'vaken', navn: 'Våken', klasse: 'fyll-vaken' },
 ]
 

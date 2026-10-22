@@ -45,8 +45,9 @@ ADMIN = "https://dagbok.olympiatoppen.no/minside?tab=admin"
 INNLOGGINGSFRIST = 10 * 60  # sekunder du har på deg til å logge inn
 LOGG = RAW / "hent_olt.log"
 VARSEL = RAW / "varsel.json"
-# Filene konverter.py skriver. Bare disse committes av en planlagt kjøring.
-DATAFILER = ["data/okter.json", "data/blokker.csv", "data/dager.json", "data/uker.json", "data/profil.json"]
+# Filene konverter.py og hent_intervals.py skriver. Bare disse committes av en planlagt kjøring.
+DATAFILER = ["data/okter.json", "data/blokker.csv", "data/dager.json", "data/uker.json", "data/profil.json",
+             "data/garmin_aktiviteter.json", "data/garmin_helse.json"]
 NODE = r"C:\Program Files\nodejs"
 
 
@@ -255,6 +256,23 @@ def bytt_inn() -> None:
         shutil.move(NY / f, RAW / f)
 
 
+# ── Garmin via intervals.icu ────────────────────────────
+
+def hent_garmin() -> str:
+    """Henter nye Garmin-data fra intervals.icu etter OLT-importen, så nye økter kan kobles.
+    En feil her stopper ikke importen fra OLT; den står i loggen og i varselet."""
+    try:
+        import hent_intervals
+        if not hent_intervals.nokkel():
+            return "Garmin: ikke satt opp (data/raw/intervals.json)"
+        print("\nHenter Garmin-data fra intervals.icu …")
+        resultat = hent_intervals.oppdater()
+    except Exception as e:
+        resultat = f"Garmin feilet: {str(e).splitlines()[0] if str(e) else type(e).__name__}"
+    print(resultat)
+    return resultat
+
+
 # ── Varsel, tester og commit (planlagt kjøring) ─────────
 
 def varsle(tittel: str, tekst: str, viktig: bool = False) -> None:
@@ -296,7 +314,7 @@ def commit_data(siste: str, nye: int) -> bool:
         return False
     print("Kjører testene …")
     kjor(["npm.cmd", "test"], ROOT / "web")
-    melding = (f"Data: import fra OLT til {siste}\n\n"
+    melding = (f"Data: import fra OLT og Garmin til {siste}\n\n"
                f"{nye:+} økter i eksporten. Kjørt automatisk av scripts/hent_olt.py --planlagt.")
     # Med stiene etter -- tas bare datafilene med, selv om noe annet er endret eller lagt til.
     kjor(["git", "commit", "-m", melding, "--", *DATAFILER])
@@ -355,13 +373,16 @@ def main() -> int:
         print(f"Ukeskommentarer: {gammel['uker']} → {ny['uker']}, dagsrapporter: {gammel['dager']} → {ny['dager']}")
     print("De forrige filene ligger i data/raw/forrige/.\n")
     konverter(RAW, a.fra)
+    garmin = hent_garmin()
+    garmin_feil = garmin.startswith("Garmin feilet")
 
     if a.planlagt:
         try:
             if commit_data(ny["siste"], nye):
-                varsle("Treningsdagbok oppdatert", f"{nye:+} økter, siste økt {ny['siste']}. Pushet til main.")
+                varsle("Treningsdagbok oppdatert", f"{nye:+} økter, siste økt {ny['siste']}. {garmin}. Pushet til main.",
+                       viktig=garmin_feil)
             else:
-                varsle("Treningsdagbok: ingen nye data", f"Siste økt er fortsatt {ny['siste']}.")
+                varsle("Treningsdagbok: ingen nye data", f"Siste økt er fortsatt {ny['siste']}. {garmin}.", viktig=garmin_feil)
         except Exception as e:
             print(f"Ikke committet: {e}")
             varsle("Treningsdagbok: ikke committet",
@@ -369,8 +390,6 @@ def main() -> int:
             return 1
         return 0
 
-    print("\nNye økter kobles til Garmin med .venv\\Scripts\\python scripts/konverter_garmin.py,"
-          " helst etter en ny Garmin-eksport.")
     print("Se over endringene med git status / git diff --stat før du committer.")
     return 0
 

@@ -18,7 +18,6 @@ colors:
   i4: "#9b3c2a"
   i5: "#4e1f2a"
   styrke: "#6b6b64"
-  sovn-lett: "#c9c9c0"
   h0: "#f1f1ea"
   h1: "#dde8f2"
   h2: "#bcd3e8"
@@ -42,7 +41,6 @@ colors:
   i4-mork: "#bf3350"
   i5-mork: "#a77bda"
   styrke-mork: "#a3a199"
-  sovn-lett-mork: "#4a4a46"
   h1-mork: "#1d2b38"
   h2-mork: "#24405a"
   h3-mork: "#2f5b80"
@@ -376,16 +374,11 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
     loddrette vegger.
   - Tempoaksen er snudd, så raskere er høyere.
 - **Bånd og merker:**
-  - Normalområder (HRV-baseline, ACWR 0,8–1,3) er et flatt bånd i blekk med 8 % opasitet.
+  - Normalområder (HRV-normalområdet, ACWR 0,8–1,3) er et flatt bånd i blekk med 8 % opasitet.
   - Syke og skadde dager markeres med en 2 px loddrett strek i stempelrødt (skadet
     skravert). De står også i tegnforklaringen.
-- **Søvnfaser:** De følger en nøytral lyshetsskala:
-  - dyp = blekk
-  - REM = `blekk-3`
-  - lett = `sovn-lett`
-  - våken = skravert `blekk-3`
-
-  Identiteten bæres av lyshet, tegnforklaring og tabell, ikke av farge (One Meaning).
+- **Søvn:** timer per natt i snitt per uke, som én serie i `blekk-3`. Den er dempet, så
+  stolpene ikke blir tyngre enn grafene rundt. Søvnfaser vises ikke.
 - **Rundetabellen:** Pauser og rolige drag (≤ 100 m, eller mer enn 40 % tregere enn
   midtrunden) dempes til `blekk-3`, så dragene kan leses rett nedover.
 

@@ -1,4 +1,5 @@
-import type { Dag, GarminAktivitet, GarminDag, Okt, Profil, UkeRad } from './typer'
+import { avledHelse } from './helse'
+import type { Dag, GarminAktivitet, GarminDag, GarminMaling, Okt, Profil, UkeRad } from './typer'
 import { byggUker, ukeNokkel, type Uke } from './uker'
 
 export const DAGBOK_FRA = '2019-11-01'
@@ -15,6 +16,7 @@ export interface Dagbok {
   /** Garmin-data; tomme hvis eksporten ikke er konvertert. */
   garmin: GarminAktivitet[]
   garminPerOkt: Map<string, GarminAktivitet[]>
+  /** Hver dag fra første til siste måling, med målinger og avledede tall. */
   helse: GarminDag[] // kronologisk
   helsePerDato: Map<string, GarminDag>
   /** Garmin-id-ene som har en sporfil på siden; null hvis lista mangler. */
@@ -49,7 +51,7 @@ export function byggDagbok(
   ukerader: UkeRad[],
   profil: Profil,
   garmin: GarminAktivitet[] = [],
-  helse: GarminDag[] = [],
+  malinger: GarminMaling[] = [],
   sporFinnes: number[] | null = null,
 ): Dagbok {
   const okter = raOkter
@@ -75,7 +77,7 @@ export function byggDagbok(
     else garminPerOkt.set(a.okt_id, [a])
   }
   for (const liste of garminPerOkt.values()) liste.sort((a, b) => (a.start_lokal < b.start_lokal ? -1 : 1))
-  const helseSortert = [...helse].sort((a, b) => (a.dato < b.dato ? -1 : 1))
+  const helse = avledHelse(malinger, garmin)
 
   return {
     okter,
@@ -87,8 +89,8 @@ export function byggDagbok(
     profil,
     garmin,
     garminPerOkt,
-    helse: helseSortert,
-    helsePerDato: new Map(helseSortert.map((d) => [d.dato, d])),
+    helse,
+    helsePerDato: new Map(helse.map((d) => [d.dato, d])),
     sporFinnes: sporFinnes ? new Set(sporFinnes) : null,
   }
 }
@@ -100,7 +102,7 @@ export async function lastDagbok(): Promise<Dagbok> {
     hent<UkeRad[]>('uker.json'),
     hent<Profil>('profil.json'),
     hentValgfri<GarminAktivitet[]>('garmin_aktiviteter.json'),
-    hentValgfri<GarminDag[]>('garmin_helse.json'),
+    hentValgfri<GarminMaling[]>('garmin_helse.json'),
     hentValgfri<number[]>('garmin_spor.json'),
   ])
   return byggDagbok(okter, dager, uker, profil, garmin ?? [], helse ?? [], spor)

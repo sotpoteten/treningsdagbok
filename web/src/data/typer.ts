@@ -108,26 +108,23 @@ export interface GarminAktivitet {
   okt_id: string | null
 }
 
-export interface GarminDag {
+/** Det som er målt en dag, slik det står i garmin_helse.json. */
+export interface GarminMaling {
   dato: string
   hvilepuls?: number
   hrv_natt?: number
-  hrv_ukesnitt?: number
-  hrv_baseline_lav?: number
-  hrv_baseline_hoy?: number
-  hrv_status?: string
-  sovn_start?: string
-  sovn_slutt?: string
   sovn_min?: number
-  dyp_min?: number
-  lett_min?: number
-  rem_min?: number | null
-  vaken_min?: number
   sovnscore?: number | null
-  respirasjon?: number | null
+}
+
+/** En dag med målingene og tallene som regnes ut av dem (se avledHelse i helse.ts). */
+export interface GarminDag extends GarminMaling {
+  hrv_ukesnitt?: number
+  hrv_normal_lav?: number
+  hrv_normal_hoy?: number
   belastning_akutt?: number
   belastning_kronisk?: number
-  acwr?: number | null
+  acwr?: number
 }
 
 export interface Runde {

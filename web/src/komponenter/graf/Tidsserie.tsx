@@ -18,7 +18,7 @@ interface Props {
   /** X-verdier i stigende rekkefølge (sekunder, eller dager som tall). */
   x: number[]
   serier: Serie[]
-  /** Flatt bånd, f.eks. HRV-baseline. */
+  /** Flatt bånd, f.eks. normalområdet for HRV. */
   band?: { lav: (number | null)[]; hoy: (number | null)[]; navn: string }
   /** Loddrette merker (f.eks. sykdom) ved bestemte indekser. */
   markorer?: { indeks: number; klasse: string }[]

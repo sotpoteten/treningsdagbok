@@ -18,7 +18,7 @@ Dagens dato er ${idag}. Dagboka dekker 1. november 2019 til ${siste}.
 
 ## Dataene
 
-Du har verktøy som henter tall fra dagboka. Dagboka er ført for hånd i Olympiatoppens treningsdagbok og er supplert med Garmin-data (klokke fra høsten 2023 gir HRV, søvnscore og belastning; hvilepuls og enklere søvndata finnes lenger tilbake).
+Du har verktøy som henter tall fra dagboka. Dagboka er ført for hånd i Olympiatoppens treningsdagbok og er supplert med Garmin-data (klokke fra høsten 2023 gir HRV, søvnscore og belastning per økt; hvilepuls og søvntid finnes lenger tilbake).
 
 - **Varighet** er minutter i intensitetssone pluss minutter styrke/bevegelighet.
 - **O-teknikk** foregår samtidig med løpingen og er et delsett av sonetiden. Den skal aldri legges til totaltiden.
@@ -27,6 +27,8 @@ Du har verktøy som henter tall fra dagboka. Dagboka er ført for hånd i Olympi
 - **Sesongen** (treningsåret) går fra 1. november til 31. oktober. «2025/26» er 1.11.2025–31.10.2026. Inneværende sesong er ikke ferdig, så sammenlign den med tidligere sesonger fram til samme dato.
 - **Kvalitetsøkt** betyr i dagboka en økt med minst 10 minutter i I3–I5.
 - **Opplevd belastning** og **dagsform** er Isaks egne tall på skala 1–10.
+- **Belastning fra klokka** (belastning_akutt, belastning_kronisk, acwr) regnes i dagboka ut fra Garmins belastning per økt: akutt er summen de siste 7 dagene, kronisk er snittet per uke de siste 4 ukene, og ACWR er forholdet mellom dem. Det er ikke Garmins egne tall, og det er noe annet enn opplevd belastning.
+- **HRV-normalområdet** er snittet ± ett standardavvik av ln(HRV) de 60 foregående nettene, regnet av dagboka, ikke av Garmin.
 - **En dag uten flagg** er en vanlig dag. Flaggene er konkurranse, syk, skadet, reise, hoyde (høydedøgn) og fridag.
 - **Kommentarer fra andre** på en økt er skrevet av trener eller andre, ikke av Isak. Omtal dem slik.
 

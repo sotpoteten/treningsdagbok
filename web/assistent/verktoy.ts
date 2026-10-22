@@ -261,12 +261,12 @@ export function dager(dagbok: Dagbok, a: { fra: string; til: string }) {
       skade: d?.skade ?? undefined,
       hvilepuls: h?.hvilepuls,
       hrv_natt: h?.hrv_natt,
-      hrv_status: h?.hrv_status,
+      hrv_normalomrade: h?.hrv_normal_lav != null ? `${h.hrv_normal_lav}–${h.hrv_normal_hoy}` : undefined,
       sovn_timer: h?.sovn_min == null ? undefined : r1(h.sovn_min / 60),
       sovnscore: h?.sovnscore ?? undefined,
       belastning_akutt: h?.belastning_akutt,
       belastning_kronisk: h?.belastning_kronisk,
-      acwr: h?.acwr ?? undefined,
+      acwr: h?.acwr,
       okter: (dagbok.okterPerDato.get(dato) ?? []).map((o) => ({ ...oktrad(o), notat: kort(o.kommentar, 200) ?? undefined })),
     }
   })

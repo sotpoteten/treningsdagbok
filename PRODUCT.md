@@ -55,13 +55,14 @@ historikken samlet, med både notater og tall.
 - **Lese, ikke registrere:** Det er en personlig dagbok som skal leses og blas i, ikke et
   verktøy for å registrere økter.
 - **Nye data fra Olympiatoppen:** Ny eksport, og så `python scripts/konverter.py`.
-- **Nye data fra Garmin:** Full Garmin-eksport, og så
-  `.venv\Scripts\python scripts/konverter_garmin.py`. Garmins API blokkerte innloggingen
-  i 2026, så eksporten er kilden.
+- **Nye data fra Garmin:** De hentes hver mandag fra intervals.icu
+  (`scripts/hent_intervals.py`). Full historikk kommer fra Garmins GDPR-eksport
+  (`scripts/konverter_garmin.py`).
 - **Treningsåret:** Isak regner det fra 1. november til 31. oktober. Alle
   sesongsammenligninger følger det.
 - **Helsedata:** HRV, søvnscore og belastning finnes fra høsten 2023 (Forerunner 255).
-  Hvilepuls og søvnlengde går lenger tilbake.
+  Hvilepuls og søvnlengde går lenger tilbake. HRV-normalområdet og akutt og kronisk
+  belastning regnes ut av dagboka, likt for hele perioden, og er ikke Garmins tall.
 
 ## Capabilities and Constraints
 
