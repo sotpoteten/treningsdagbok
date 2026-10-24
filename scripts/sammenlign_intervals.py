@@ -8,7 +8,7 @@ Krever API-nøkkelen i data/raw/intervals.json: {"api_nokkel": "…"} (Settings 
 Developer Settings på intervals.icu). Fila holdes utenfor git.
 
 Bruk (fra prosjektmappen):
-    .venv\\Scripts\\python scripts/intervals_test.py
+    .venv\\Scripts\\python scripts/sammenlign_intervals.py
 """
 import base64
 import gzip

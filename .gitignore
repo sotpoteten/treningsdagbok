@@ -11,3 +11,7 @@ web/public/data/
 data/garmin_spor/
 web/public/garmin_spor/
 web/.env.local
+
+.env*
+*.log
+*.crx

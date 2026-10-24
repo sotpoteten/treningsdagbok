@@ -279,8 +279,8 @@ tillater å vise data fra API-et til andre enn brukeren selv.
 
 Første kjøring dekoder rundt 5 900 FIT-filer parallelt og tar omtrent en time. Resultatet
 bufres i `data/raw/garmin/fit_indeks.json`, så senere kjøringer bare tar nye filer.
-API-skriptene (`garmin_login.py`, `hent_garmin.py`) virket ikke i 2026 fordi Garmin
-blokkerte innloggingen. De er beholdt, men eksporten er kilden.
+API-skriptene (`garmin_login.py`, `hent_garmin.py`) sluttet å virke i 2026 fordi Garmin
+blokkerte innloggingen. De er fjernet, men ligger i git-historikken.
 
 | Fil | Innhold | Git |
 |---|---|---|
@@ -310,7 +310,7 @@ regnes likt for hele dagboka, uansett kilde. Garmins egne versjoner (HRV-baselin
   - Kronisk er summen de siste 28 dagene delt på 4.
   - ACWR er akutt delt på kronisk.
 
-**intervals.icu mot GDPR-eksporten** (testet 22.10.2026 med `scripts/intervals_test.py`):
+**intervals.icu mot GDPR-eksporten** (testet 22.10.2026 med `scripts/sammenlign_intervals.py`):
 - Aktivitetene laget fra FIT-fila er like i alle felt, og multisport slås sammen til én
   aktivitet.
 - HRV og søvnscore er like, og søvntiden er nesten alltid lik.
