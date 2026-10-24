@@ -177,7 +177,8 @@ web/                  nettsiden (Vite + React + TypeScript)
 
 ```
 cd web && npm test                                   # nettsiden
-.venv\Scripts\python -m unittest scripts/test_garmin_kobling.py   # Garmin-koblingen
+.venv\Scripts\python -m unittest discover -s scripts -p "test_*.py"   # skriptene
+.venv\Scripts\python scripts/personvern.py           # ingen koordinater, e-post eller nøkler i data/
 ```
 
 Testene sjekker at summene per år stemmer med kontrolltallene i `CLAUDE.md`, at sesonger og

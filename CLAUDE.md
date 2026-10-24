@@ -250,9 +250,12 @@ Dette skal aldri committes:
   `garmin_aktiviteter.json` har ingen koordinater.
 - **Nøkler og innstillinger** (`web/.env.local`).
 
-Alle tre er dekket av `.gitignore`. Nye datafiler og skjermbilder sjekkes for koordinater,
-e-post, fødselsdato og nøkler før de legges til. Skjermbilder med kart tas av
-konkurranser, ikke av turer som starter hjemme.
+Alle tre er dekket av `.gitignore`. `python scripts/personvern.py` sjekker filene git sporer:
+forbudte stier, bilder utenfor `docs/bilder/`, og koordinater, e-post, fødselsdato og
+nøkler i `data/`. Den kjøres av GitHub-kjøringen og før den automatiske commiten i
+`hent_olt.py`, og den er testet i `scripts/test_personvern.py`. Kjør den før nye filer
+legges til. Innholdet i skjermbildene sjekkes ikke, så se over dem selv. Skjermbilder med
+kart tas av konkurranser, ikke av turer som starter hjemme.
 
 ## Garmin-data
 
@@ -344,8 +347,8 @@ npm run build      # typesjekk og bygg til web/dist/
 ```
 
 Node ligger i `C:\Program Files\nodejs`. Hvis skallet ikke finner `npm`, legg den mappa
-først i PATH. Python-testene for Garmin-koblingen kjøres med
-`.venv\Scripts\python -m unittest scripts/test_garmin_kobling.py`.
+først i PATH. Alle Python-testene kjøres med
+`.venv\Scripts\python -m unittest scripts/test_*.py` (i Git Bash; PowerShell utvider ikke `*`).
 
 | Mappe/fil | Innhold |
 |---|---|

@@ -13,8 +13,9 @@ Bruk (fra prosjektmappen):
     .venv\\Scripts\\pythonw scripts/hent_olt.py --planlagt  # ukentlig, fra Oppgaveplanleggeren
 
 --planlagt kjører uten vindu, logger til data/raw/hent_olt.log og varsler på mobilen
-med ntfy (data/raw/varsel.json). Går importen gjennom og testene er grønne, committes og
-pushes datafilene i data/, og ingenting annet. Har innloggingen gått ut, kommer et varsel.
+med ntfy (data/raw/varsel.json). Går importen gjennom, og personvernsjekken, testene og
+bygget er i orden, committes og pushes datafilene i data/, og ingenting annet. Har
+innloggingen gått ut, kommer et varsel.
 
 Innloggingen gjør du selv, med Idrettens ID, i vinduet som åpnes første gang eller når
 innloggingen har gått ut. Skriptet lagrer aldri passord, bare innloggingsøkten
@@ -34,6 +35,7 @@ import zipfile
 from datetime import datetime
 from pathlib import Path
 
+import personvern
 from konverter import ROOT, konverter
 
 RAW = ROOT / "data/raw"
@@ -305,15 +307,38 @@ def kjor(kommando: list[str], mappe: Path = ROOT) -> str:
     return r.stdout
 
 
+def _python() -> str:
+    """Python med konsoll. Den planlagte kjøringen går i pythonw, som ikke har det."""
+    exe = Path(sys.executable)
+    if exe.name.lower() == "pythonw.exe" and (exe.parent / "python.exe").exists():
+        return str(exe.parent / "python.exe")
+    return str(exe)
+
+
+def kontroller() -> None:
+    """Alt som må være i orden før repoet (som er offentlig) får nye data: personvernsjekken,
+    Python-testene, vitest og bygget med typesjekk. Kaster Avbrutt ved første feil."""
+    print("Kjører personvernsjekken …")
+    problemer = personvern.sjekk(ROOT)
+    if problemer:
+        print("\n".join(problemer))
+        raise Avbrutt(f"personvernsjekken fant {len(problemer)} problem(er), først: {problemer[0]}")
+    print("Kjører testene …")
+    tester = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / "scripts").glob("test_*.py"))
+    kjor([_python(), "-m", "unittest", *tester])
+    kjor(["npm.cmd", "test"], ROOT / "web")
+    print("Bygger nettsiden …")
+    kjor(["npm.cmd", "run", "build"], ROOT / "web")
+
+
 def commit_data(siste: str, nye: int) -> bool:
-    """Kjører testene og committer og pusher datafilene, og ingenting annet.
+    """Kjører kontrollene og committer og pusher datafilene, og ingenting annet.
     Gir False hvis datafilene ikke er endret."""
     if kjor(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip() != "main":
         raise Avbrutt("repoet står ikke på main")
     if not kjor(["git", "status", "--porcelain", "--", *DATAFILER]).strip():
         return False
-    print("Kjører testene …")
-    kjor(["npm.cmd", "test"], ROOT / "web")
+    kontroller()
     melding = (f"Data: import fra OLT og Garmin til {siste}\n\n"
                f"{nye:+} økter i eksporten. Kjørt automatisk av scripts/hent_olt.py --planlagt.")
     # Med stiene etter -- tas bare datafilene med, selv om noe annet er endret eller lagt til.

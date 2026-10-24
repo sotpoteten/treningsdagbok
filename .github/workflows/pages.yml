@@ -27,10 +27,11 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Python-tester (Garmin-koblingen og intervals.icu)
+      - name: Python-tester og personvernsjekk
         run: |
           python -m pip install --quiet fitdecode tzdata
-          python -m unittest scripts/test_garmin_kobling.py scripts/test_hent_intervals.py
+          python -m unittest scripts/test_*.py
+          python scripts/personvern.py
       - name: Installer
         working-directory: web
         run: npm ci
