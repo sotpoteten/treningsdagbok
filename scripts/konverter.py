@@ -74,7 +74,8 @@ def les(path: Path):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
-def konverter(raw_dir: Path, fra: str):
+def konverter(raw_dir: Path, fra: str, ut: Path = ROOT / "data"):
+    """Skriver filene til `ut` (standard data/). Testene gir en midlertidig mappe."""
     okter_raw = les(raw_dir / "workoutSessions.json")
     bruker = les(raw_dir / "userData.json")
     uker_raw = les(raw_dir / "weekComments.json")
@@ -162,7 +163,6 @@ def konverter(raw_dir: Path, fra: str):
             "blokker": blokker,
         })
 
-    ut = ROOT / "data"
     ut.mkdir(exist_ok=True)
     (ut / "okter.json").write_text(json.dumps(okter, ensure_ascii=False, indent=1), encoding="utf-8")
     with open(ut / "blokker.csv", "w", newline="", encoding="utf-8-sig") as f:

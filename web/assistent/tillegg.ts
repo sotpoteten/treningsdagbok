@@ -23,7 +23,7 @@ function lesKropp(req: IncomingMessage): Promise<string> {
 }
 
 /** Bare siden selv får spørre: forespørselen må komme fra og til localhost. */
-function erLokal(req: IncomingMessage): boolean {
+export function erLokal(req: Pick<IncomingMessage, 'headers'>): boolean {
   const lokal = (vert: string | undefined) => /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(vert ?? '')
   if (!lokal(req.headers.host)) return false
   const opphav = req.headers.origin

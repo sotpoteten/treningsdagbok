@@ -1,4 +1,4 @@
-import { createSdkMcpServer, query, tool } from '@anthropic-ai/claude-agent-sdk'
+import { createSdkMcpServer, query, tool, type Options } from '@anthropic-ai/claude-agent-sdk'
 import { mkdirSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -103,6 +103,22 @@ function lagVerktoy(dagbok: Dagbok, datamappe: string) {
 
 const VERKTOY = ['perioder', 'finn_okter', 'okt', 'dager', 'ukekommentarer'].map((n) => `mcp__dagbok__${n}`)
 
+/**
+ * Bare dagbokverktøyene og nettet. Ingen fil-, skall- eller redigeringsverktøy,
+ * og verken Isaks Claude Code-oppsett eller kontoens koblinger lastes inn.
+ * Egen funksjon, så en test kan passe på at avgrensningen holder.
+ */
+export function avgrensning() {
+  return {
+    tools: ['WebSearch', 'WebFetch'],
+    allowedTools: ['WebSearch', 'WebFetch', ...VERKTOY],
+    permissionMode: 'dontAsk',
+    settingSources: [],
+    strictMcpConfig: true,
+    settings: { disableClaudeAiConnectors: true },
+  } satisfies Options
+}
+
 /** Kort tekst til statuslinja mens et verktøy kjører. */
 function status(navn: string, inn: Record<string, unknown>): string {
   const kort = (d: unknown) => String(d).replace(/^(\d{4})-(\d{2})-(\d{2})$/, (_, a, m, dag) => `${+dag}.${+m}.${a}`)
@@ -158,14 +174,7 @@ export async function* spor(
       model: oppsett.modell,
       systemPrompt: lagPrompt(dagbok, idag),
       mcpServers: { dagbok: lagVerktoy(dagbok, oppsett.datamappe) },
-      // Bare dagbokverktøyene og nettet. Ingen fil-, skall- eller redigeringsverktøy,
-      // og verken Isaks Claude Code-oppsett eller kontoens koblinger lastes inn.
-      tools: ['WebSearch', 'WebFetch'],
-      allowedTools: ['WebSearch', 'WebFetch', ...VERKTOY],
-      permissionMode: 'dontAsk',
-      settingSources: [],
-      strictMcpConfig: true,
-      settings: { disableClaudeAiConnectors: true },
+      ...avgrensning(),
       includePartialMessages: true,
       maxTurns: 40,
       resume: samtaleId,
