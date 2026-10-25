@@ -13,8 +13,8 @@ mkdirSync(til, { recursive: true })
 for (const fil of ['okter.json', 'dager.json', 'uker.json', 'profil.json']) {
   copyFileSync(resolve(fra, fil), resolve(til, fil))
 }
-// Garmin-filene er valgfrie; siden virker uten dem.
-for (const fil of ['garmin_aktiviteter.json', 'garmin_helse.json']) {
+// Garmin- og konkurransefilene er valgfrie; siden virker uten dem.
+for (const fil of ['garmin_aktiviteter.json', 'garmin_helse.json', 'konkurranser.json']) {
   if (existsSync(resolve(fra, fil))) copyFileSync(resolve(fra, fil), resolve(til, fil))
 }
 

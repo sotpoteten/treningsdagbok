@@ -16,6 +16,8 @@ export function lesDagbok(datamappe: string): Dagbok {
     les(f('profil.json')),
     lesValgfri(f('garmin_aktiviteter.json')),
     lesValgfri(f('garmin_helse.json')),
+    null,
+    lesValgfri(f('konkurranser.json')) ?? null,
   )
 }
 

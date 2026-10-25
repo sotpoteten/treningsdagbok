@@ -148,3 +148,67 @@ export interface GarminSpor {
   }
   runder: Runde[]
 }
+
+// ── Konkurranser (fra scripts/hent_eventor.py) ─────────
+// Bare Isaks egne resultater. Referansetidene er avledet; andre løpere navngis aldri.
+
+export type Konkurransetype = 'o-løp' | 'ski-o' | 'sykkel-o' | 'pre-o'
+export type Disiplin = 'sprint' | 'mellom' | 'lang' | 'ultralang' | 'tempo'
+
+export interface Strekk {
+  /** Postnummeret, eller «M» for innløpet til mål. */
+  post: number | string
+  tid_s: number | null
+  /** Beste strekktid i klassen (blant topp 10). */
+  beste_s: number | null
+  /** Snittet av de tre beste strekktidene. */
+  ref_s: number | null
+  /** tid_s / ref_s */
+  indeks: number | null
+  /** Indeks over 1,25 × medianen for løpet. */
+  bom: boolean
+}
+
+export interface Konkurranse {
+  eventor_id: number
+  dato: string
+  navn: string
+  arrangor: string
+  type: Konkurransetype
+  disiplin: Disiplin
+  natt: boolean
+  klasse: string
+  /** OK, DNF, DSQ, NC … */
+  status: string
+  tid_s: number | null
+  plass: number | null
+  antall: number
+  vinnertid_s: number | null
+  prosent_bak: number | null
+  strekk: Strekk[] | null
+  /** Medianen av indeksene på strekk uten bom (1,0 = referansen). */
+  strekkfart: number | null
+  /** Tid tapt på bomstrekkene, utover forventet. */
+  bomtid_s: number | null
+  /** Strekktidene fra Eventor er ødelagte (se hent_eventor.py). Da er strekk, strekkfart og bomtid null, men tiden gjelder. */
+  strekk_ugyldige?: boolean
+  lenker: { eventor: string; livelox?: string; winsplits?: string }
+  okt_ider: string[]
+}
+
+export interface Stafett {
+  eventor_id: number
+  dato: string
+  navn: string
+  klasse: string
+  etappe: number
+  status: string
+  plass: number | null
+  lenker: { eventor: string; livelox?: string; winsplits?: string }
+  okt_ider: string[]
+}
+
+export interface Konkurranser {
+  individuelle: Konkurranse[]
+  stafett: Stafett[]
+}

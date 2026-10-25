@@ -29,6 +29,14 @@ interface Props {
   /** Lavere er bedre (f.eks. tempo): snur y-aksen. */
   snuY?: boolean
   yDomene?: [number, number]
+  /** Fast x-domene, f.eks. hele sesongen når punktene er spredt. Standard: fra første til siste x. */
+  xDomene?: [number, number]
+  /** Radius for punktserier (standard 1,6 for tette dagserier). */
+  punktRadius?: number
+  /** Klikk eller Enter på aktivt punkt, f.eks. for å velge et løp. */
+  onKlikk?: (i: number) => void
+  /** Indeksen som er valgt, markert med en blå ring. */
+  valgt?: number | null
   tips: (i: number) => ReactNode
   /** Kontrollert aktiv indeks, så grafen kan synkroniseres med kartet. */
   aktiv?: number | null
@@ -41,7 +49,7 @@ const finnX = bisector<number, number>((d) => d).center
 
 /** Tidsserie med felles x-akse, trådkors, tastatur og berøring. Aldri to y-akser. */
 export function Tidsserie(p: Props) {
-  const { x: xs, serier, band, markorer, hoyde = 180, xMerker, yFormat, snuY, tips, beskrivelse } = p
+  const { x: xs, serier, band, markorer, hoyde = 180, xMerker, yFormat, snuY, tips, beskrivelse, punktRadius = 1.6, onKlikk, valgt } = p
   const [ref, bredde] = useBredde<HTMLDivElement>()
   const [egenAktiv, setEgenAktiv] = useState<number | null>(null)
   const aktiv = p.aktiv !== undefined ? p.aktiv : egenAktiv
@@ -53,7 +61,7 @@ export function Tidsserie(p: Props) {
   const hoydeIndre = hoyde - MARG.topp - MARG.bunn
   const alle = serier.flatMap((s) => s.verdier).concat(band ? [...band.lav, ...band.hoy] : [])
   const [ymin, ymaks] = p.yDomene ?? (extent(alle.filter((v): v is number => v != null)) as [number, number])
-  const xd = (extent(xs) as [number, number]) ?? [0, 1]
+  const xd = p.xDomene ?? ((extent(xs) as [number, number]) ?? [0, 1])
   const x = scaleLinear().domain(xd).range([0, indre])
   const y = scaleLinear()
     .domain([ymin ?? 0, ymaks ?? 1])
@@ -90,6 +98,10 @@ export function Tidsserie(p: Props) {
     else if (e.key === 'Home') ny = 0
     else if (e.key === 'End') ny = n - 1
     else if (e.key === 'Escape') return settAktiv(null)
+    else if (e.key === 'Enter' && onKlikk && aktiv != null) {
+      e.preventDefault()
+      return onKlikk(aktiv)
+    }
     if (ny != null) {
       e.preventDefault()
       settAktiv(ny)
@@ -106,7 +118,7 @@ export function Tidsserie(p: Props) {
           width={bredde}
           height={hoyde}
           role="img"
-          aria-label={`${beskrivelse}. Bruk piltastene for å flytte trådkorset (Shift: ti steg).`}
+          aria-label={`${beskrivelse}. Bruk piltastene for å flytte trådkorset (Shift: ti steg)${onKlikk ? ', og Enter for å velge' : ''}.`}
           tabIndex={0}
           onKeyDown={tast}
           onFocus={() => aktiv == null && settAktiv(xs.length - 1)}
@@ -145,11 +157,18 @@ export function Tidsserie(p: Props) {
                 <path key={s.id} className={`ts-linje ${s.klasse}`} d={sti(s.verdier)} />
               ) : (
                 <g key={s.id} className={`ts-punkter ${s.klasse}`}>
-                  {s.verdier.map((v, i) => (v == null ? null : <circle key={i} cx={x(xs[i])} cy={y(v)} r={1.6} />))}
+                  {s.verdier.map((v, i) => (v == null ? null : <circle key={i} cx={x(xs[i])} cy={y(v)} r={punktRadius} />))}
                 </g>
               ),
             )}
             </g>
+
+            {valgt != null &&
+              serier.map((s) =>
+                s.form === 'punkt' && s.verdier[valgt] != null ? (
+                  <circle key={`valgt-${s.id}`} className="ts-valgt-ring" cx={x(xs[valgt])} cy={y(s.verdier[valgt] as number)} r={punktRadius + 4} />
+                ) : null,
+              )}
 
             {ax != null && aktiv != null && (
               <g>
@@ -162,7 +181,23 @@ export function Tidsserie(p: Props) {
               </g>
             )}
 
-            <rect className="treffflate" x={0} y={0} width={indre} height={hoydeIndre} onPointerMove={flytt} onPointerDown={flytt} />
+            <rect
+              className={onKlikk ? 'treffflate klikkbar' : 'treffflate'}
+              x={0}
+              y={0}
+              width={indre}
+              height={hoydeIndre}
+              onPointerMove={flytt}
+              onPointerDown={flytt}
+              onClick={
+                onKlikk
+                  ? (e) => {
+                      const r = e.currentTarget.getBoundingClientRect()
+                      onKlikk(finnX(xs, x.invert(e.clientX - r.left)))
+                    }
+                  : undefined
+              }
+            />
           </g>
         </svg>
       )}

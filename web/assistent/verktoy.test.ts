@@ -4,7 +4,7 @@ import { summer } from '../src/data/aggregat'
 import { lagTreff } from '../src/data/filter'
 import { lagSesong, okterISesong } from '../src/data/statistikk'
 import { lagRundeleser, lesDagbok } from './data'
-import { dager, finnOkter, MAKS_DAGER, okt, perioder, sesongoversikt, ukekommentarer, Verktoyfeil } from './verktoy'
+import { dager, finnOkter, konkurranser, MAKS_DAGER, MAKS_KONKURRANSER, okt, perioder, sesongoversikt, ukekommentarer, Verktoyfeil } from './verktoy'
 
 const DATA = resolve(__dirname, '../../data')
 const dagbok = lesDagbok(DATA)
@@ -95,5 +95,41 @@ describe('dager og ukeskommentarer', () => {
     const svar = ukekommentarer(dagbok, { fra: '2019-10-28', til: '2019-11-10' })
     expect(svar.uker.map((u) => u.uke)).toEqual(['2019-45', '2019-44'])
     expect(svar.uker[1].kommentarer[0]).toContain('Totalt sett grei uke')
+  })
+})
+
+describe('konkurranser', () => {
+  it('finner NM natt 2025 med strekk, oppkjøring og kobling til økta', () => {
+    const svar = konkurranser(dagbok, { fra: '2025-03-28', til: '2025-03-28', eventor_id: 19373 })
+    expect(svar.antall_treff).toBe(1)
+    const [nm] = svar.lop
+    expect(nm).toMatchObject({ navn: 'NM natt', plass: 1, antall: 98, prosent_bak: 0, disiplin: 'lang', natt: true, uke: '2025-13' })
+    expect(nm.strekk?.length).toBe(nm.antall_strekk)
+    expect(nm.oppkjoring_21d.timer).toBeGreaterThan(0)
+    // Samme resultat ligger på økta.
+    const o = okt(dagbok, { id: nm.okt_ider[0] })
+    expect(o.resultat.map((r) => r.eventor_id)).toContain(19373)
+  })
+
+  it('filtrerer på type og disiplin, og holder pre-o for seg', () => {
+    const alle = konkurranser(dagbok, { fra: '2019-11-01', til: '2026-10-31', type: 'o-løp' })
+    expect(alle.antall_treff).toBe(dagbok.konkurranser.filter((k) => k.type === 'o-løp').length)
+    expect(alle.viser).toBe(Math.min(alle.antall_treff, MAKS_KONKURRANSER))
+    expect(alle.lop.every((k) => k.type === 'o-løp' && k.disiplin !== 'tempo')).toBe(true)
+    expect(alle.stafett).toBeUndefined()
+    const sprint = konkurranser(dagbok, { fra: '2024-11-01', til: '2025-10-31', type: 'o-løp', disiplin: 'sprint' })
+    expect(sprint.lop.every((k) => k.disiplin === 'sprint')).toBe(true)
+    // Uten strekk i lista, så svaret holder seg lite.
+    expect(sprint.lop.every((k) => k.strekk === undefined)).toBe(true)
+  })
+
+  it('tar med stafettene uten filter, og bare egne felt', () => {
+    const svar = konkurranser(dagbok, { fra: '2019-11-01', til: '2026-10-31' })
+    expect(svar.stafett?.length).toBe(dagbok.stafetter.length)
+    expect(JSON.stringify(svar)).not.toMatch(/"(Given|Family|PersonName|BirthDate|lat|lon)"/)
+  })
+
+  it('sier fra om ugyldige datoer', () => {
+    expect(() => konkurranser(dagbok, { fra: '2025-03-01', til: '2025-01-01' })).toThrow(Verktoyfeil)
   })
 })

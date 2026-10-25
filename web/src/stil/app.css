@@ -1095,3 +1095,83 @@ button {
     transition: background-color 120ms ease-out, opacity 160ms ease-out;
   }
 }
+
+/* ── Resultat i øktpanelet (konkurranser fra Eventor) ──── */
+
+.skjult {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.eksterne-lenker {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+.eksterne-lenker a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--rute);
+  font: 500 13px var(--font-ui);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.eksterne-lenker svg {
+  width: 12px;
+  height: 12px;
+}
+.resultat-lop + .resultat-lop {
+  margin-top: 20px;
+}
+.resultat-navn {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.resultat-navn b {
+  font: 600 16px var(--font-tall);
+}
+.resultat-navn span {
+  font-size: 13px;
+  color: var(--blekk-2);
+}
+.resultat .nokkeltall {
+  margin-top: 10px;
+}
+.resultat-lenker {
+  margin-top: 10px;
+}
+.strekk {
+  margin-top: 12px;
+}
+.bom-oppsummering {
+  margin-bottom: 4px;
+  font: 500 14px var(--font-ui);
+  color: var(--stempel);
+}
+.strekktabell {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+}
+.strekktabell td {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+/* Bom: stempelrødt, og merket med ord, så fargen aldri bærer det alene. */
+.strekktabell tr.bom td {
+  color: var(--stempel);
+}
+.bom-merke {
+  margin-left: 8px;
+  padding: 0 4px;
+  border: 1px solid var(--stempel);
+  font: 600 10px/1.4 var(--font-tall);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: 1px;
+}

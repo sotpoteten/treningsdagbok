@@ -1,8 +1,9 @@
 import { summer, type Sum } from '../src/data/aggregat'
 import { lagTreff, type Filtertype } from '../src/data/filter'
+import { filtrer, oppkjoring } from '../src/data/konkurranser'
 import type { Dagbok } from '../src/data/last'
 import { aktivitetsfordeling, erKvalitet, hardeMinutter, lagSesong, sesongStart, sesonger, snitt } from '../src/data/statistikk'
-import type { GarminDag, Okt, Runde } from '../src/data/typer'
+import type { Disiplin, GarminDag, Konkurranse, Konkurransetype, Okt, Runde } from '../src/data/typer'
 import { ukeForDato } from '../src/data/uker'
 
 // Verktøyene assistenten henter tall med. Rene funksjoner over dagboka, så de kan testes
@@ -213,6 +214,7 @@ export function okt(dagbok: Dagbok, a: { id: string }, lesRunder: (garminId: num
     opplevd_belastning: o.opplevd_belastning,
     dagsform: o.dagsform,
     konkurransedag: rapport?.konkurranse || undefined,
+    resultat: (dagbok.konkurransePerOkt.get(o.id) ?? []).map((k) => ({ ...lopsrad(k), strekk: strekkrader(k) })),
     blokker: o.blokker.map((b) => ({
       aktivitet: b.aktivitet,
       min: b.minutter,
@@ -295,5 +297,82 @@ export function ukekommentarer(dagbok: Dagbok, a: { fra?: string; til?: string; 
       timer: r1(summer(u.okter).minutter / 60),
       kommentarer: u.kommentarer.map((k) => k.tekst),
     })),
+  }
+}
+
+// ── konkurranser ────────────────────────────────────────
+
+export const MAKS_KONKURRANSER = 60
+export const MAKS_STREKK = 60
+
+function lopsrad(k: Konkurranse) {
+  return {
+    eventor_id: k.eventor_id,
+    dato: k.dato,
+    uke: ukeForDato(k.dato),
+    navn: k.navn,
+    type: k.type,
+    disiplin: k.disiplin,
+    natt: k.natt || undefined,
+    klasse: k.klasse,
+    status: k.status,
+    plass: k.plass,
+    antall: k.antall,
+    tid_s: k.tid_s,
+    vinnertid_s: k.vinnertid_s,
+    prosent_bak: k.prosent_bak,
+    strekkfart: k.strekkfart,
+    bomtid_s: k.bomtid_s,
+    strekk_ugyldige: k.strekk_ugyldige || undefined,
+    antall_strekk: k.strekk?.length,
+    bomstrekk: k.strekk ? k.strekk.filter((s) => s.bom).length : undefined,
+    okt_ider: k.okt_ider,
+    lenker: k.lenker,
+  }
+}
+
+function strekkrader(k: Konkurranse) {
+  return k.strekk?.slice(0, MAKS_STREKK).map((s) => ({ post: s.post, tid_s: s.tid_s, ref_s: s.ref_s, indeks: s.indeks, bom: s.bom || undefined }))
+}
+
+/**
+ * Isaks individuelle løp fra Eventor i et tidsrom, eldste først, med oppkjøringen (de 21
+ * dagene før). Med `eventor_id` gis også strekktidene. Andre løpere finnes ikke i dataene.
+ */
+export function konkurranser(
+  dagbok: Dagbok,
+  a: { fra: string; til: string; type?: Konkurransetype; disiplin?: Disiplin; eventor_id?: number },
+) {
+  sjekkDatoer(a.fra, a.til)
+  const funnet = filtrer(dagbok.konkurranser, a).filter((k) => a.eventor_id == null || k.eventor_id === a.eventor_id)
+  const vist = funnet.slice(-MAKS_KONKURRANSER)
+  const stafett = dagbok.stafetter
+    .filter((s) => s.dato >= a.fra && s.dato <= a.til)
+    .slice(-MAKS_KONKURRANSER)
+    .map((s) => ({ eventor_id: s.eventor_id, dato: s.dato, navn: s.navn, klasse: s.klasse, etappe: s.etappe, status: s.status, plass: s.plass, okt_ider: s.okt_ider }))
+  return {
+    antall_treff: funnet.length,
+    viser: vist.length,
+    lop: vist.map((k) => {
+      const o = oppkjoring(dagbok, k.dato)
+      return {
+        ...lopsrad(k),
+        strekk: a.eventor_id != null ? strekkrader(k) : undefined,
+        oppkjoring_21d: {
+          timer: r1(o.minutter / 60),
+          km: r1(o.km),
+          harde_min: o.harde_min,
+          kvalitetsokter: o.kvalitetsokter,
+          andre_lop: o.konkurranser,
+          sykedager: o.sykedager || undefined,
+          skadedager: o.skadedager || undefined,
+          belastning_akutt_snitt: r1n(o.belastning_akutt) ?? undefined,
+          belastning_akutt_dagen_for: o.belastning_dagen_for ?? undefined,
+          hrv_snitt: r1n(o.hrv) ?? undefined,
+          hvilepuls_snitt: r1n(o.hvilepuls) ?? undefined,
+        },
+      }
+    }),
+    stafett: a.eventor_id != null || a.type || a.disiplin ? undefined : stafett,
   }
 }

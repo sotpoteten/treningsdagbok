@@ -41,7 +41,7 @@ describe('agent: avgrensningen holder', () => {
   it('har bare nettsøk, nettlesing og dagbokverktøyene', () => {
     expect(a.tools).toEqual(['WebSearch', 'WebFetch'])
     expect([...a.allowedTools].sort()).toEqual(
-      ['WebFetch', 'WebSearch', ...['dager', 'finn_okter', 'okt', 'perioder', 'ukekommentarer'].map((n) => `mcp__dagbok__${n}`)].sort(),
+      ['WebFetch', 'WebSearch', ...['dager', 'finn_okter', 'konkurranser', 'okt', 'perioder', 'ukekommentarer'].map((n) => `mcp__dagbok__${n}`)].sort(),
     )
   })
 

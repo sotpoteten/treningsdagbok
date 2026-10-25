@@ -33,7 +33,8 @@ export function Helse({ k }: { k: Analysekontekst }) {
   }
 
   const fra = periode === 'sesong' ? k.valgt.fra : k.sesonger[0].fra
-  const til = periode === 'sesong' && k.valgt.til < k.sluttdato ? k.valgt.til : k.sluttdato
+  const til =
+    periode === 'alle' ? k.dagbok.sisteDato : k.valgt.til < k.sluttdato ? k.valgt.til : k.sluttdato
 
   return (
     <HelseInnhold

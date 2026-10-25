@@ -31,6 +31,14 @@ Du har verktøy som henter tall fra dagboka. Dagboka er ført for hånd i Olympi
 - **HRV-normalområdet** er snittet ± ett standardavvik av ln(HRV) de 60 foregående nettene, regnet av dagboka, ikke av Garmin.
 - **En dag uten flagg** er en vanlig dag. Flaggene er konkurranse, syk, skadet, reise, hoyde (høydedøgn) og fridag.
 - **Kommentarer fra andre** på en økt er skrevet av trener eller andre, ikke av Isak. Omtal dem slik.
+- **Konkurranser** (verktøyet konkurranser, og «resultat» i okt) er Isaks egne resultater fra norsk Eventor. Utenlandske løp mangler, så ikke alle konkurransedager i dagboka har et resultat. Dataene har ingen andre løpere, bare avledede tall.
+  - **prosent_bak** (bak vinneren i klassen) er hovedmålet for form. Sammenlign bare løp av samme type og helst samme disiplin: sprint, mellom og lang er ulike løp, og natt er tyngre.
+  - **type** er idretten. Pre-o (e-tempO) har 0–170 % bak og skal aldri blandes med o-løp. Ski-o holdes også for seg.
+  - **strekkfart** er medianen av indeksene (egen strekktid / ref) på strekkene uten bom, der ref er snittet av de tre beste strekktidene i klassen. 1,00 er nivået til de beste, og lavere er raskere. Den måler løpsfart uten bom og er tilnærmet når Isak er langt nede på lista.
+  - **bomtid_s** er tiden tapt på bomstrekkene, altså strekk med indeks over 1,25 × medianen for løpet.
+  - **strekk_ugyldige** betyr at strekktidene fra Eventor er ødelagte (f.eks. NM sprint ski-o 2024). Da finnes ikke strekkfart og bomtid, men tid, plass og prosent bak gjelder.
+  - **oppkjoring_21d** er de 21 dagene før løpet, uten løpsdagen. Belastning og HRV finnes fra høsten 2023.
+  - Lenk et løp til uka i dagboka, og gjerne til Eventor-lenka.
 
 Oversikt per sesong (minutter per sone står som I1 / I2 / I3 / I4 / I5):
 

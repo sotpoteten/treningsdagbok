@@ -647,3 +647,101 @@ svg .fyll-skadet {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── Konkurranser ──────────────────────────────────────── */
+/* Løpene er kotebrune (konkurranse), valgt løp får en blå ring (samhandling). */
+
+.ts-konk {
+  color: var(--kote);
+}
+.ts-punkter.ts-konk circle {
+  stroke: var(--papir);
+  stroke-width: 1;
+}
+.ts-ref {
+  color: var(--blekk-3);
+}
+.ts-linje.ts-ref {
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+.ts-valgt-ring {
+  fill: none;
+  stroke: var(--rute);
+  stroke-width: 2;
+  pointer-events: none;
+}
+.treffflate.klikkbar {
+  cursor: pointer;
+}
+.graf-tegnforklaring i.prikk-konk {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--kote);
+}
+.graf-tegnforklaring i.ring-valgt {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--rute);
+}
+.konk-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 0 16px;
+}
+.konk-tabell th.tekst {
+  text-align: left;
+}
+.konk-tabell td.tekst {
+  text-align: left;
+  font: 400 14px var(--font-ui);
+}
+.konk-tabell td.tekst,
+.konk-tabell td {
+  white-space: nowrap;
+}
+.tabellvalg {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--blekk);
+  font: 600 14px var(--font-ui);
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--rute-svak);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.tabellvalg:hover,
+.tabellvalg[aria-pressed='true'] {
+  color: var(--rute);
+}
+.tomt {
+  margin-top: 14px;
+  color: var(--blekk-3);
+}
+.konk-nokler {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 640px;
+}
+.konk-meta {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--blekk-2);
+}
+.konk-meta a {
+  color: var(--rute);
+  text-underline-offset: 3px;
+}
+.oppkjoring .nokkeltabell {
+  margin-top: 14px;
+}
+@media (max-width: 720px) {
+  .konk-nokler {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

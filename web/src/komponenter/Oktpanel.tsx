@@ -6,6 +6,7 @@ import type { Dagbok } from '../data/last'
 import { SONER, type Okt } from '../data/typer'
 import { Dagsmarkorer, Stempler } from './Dagsmarkorer'
 import { Garminokt } from './Garminokt'
+import { Resultat } from './Resultat'
 import { Sonestolpe } from './Sonestolpe'
 
 interface Props {
@@ -24,6 +25,8 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
   const garmin = dagbok.garminPerOkt.get(okt.id)
   const natt = dagbok.helsePerDato.get(okt.dato)
   const harNatt = !!(natt && (natt.sovn_min || natt.hrv_natt || natt.hvilepuls))
+  const lop = dagbok.konkurransePerOkt.get(okt.id) ?? []
+  const stafetter = dagbok.stafettPerOkt.get(okt.id) ?? []
 
   useEffect(() => {
     function tast(e: KeyboardEvent) {
@@ -103,6 +106,8 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
           <dd>{okt.dagsform != null ? <Skala verdi={okt.dagsform} /> : '–'}</dd>
         </div>
       </dl>
+
+      {(lop.length > 0 || stafetter.length > 0) && <Resultat lop={lop} stafetter={stafetter} />}
 
       {okt.kommentar && (
         <section className="panel-del">

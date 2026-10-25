@@ -213,7 +213,7 @@ En kartpalett: varmt papir og blekk, rutenettblått som eneste aksent for samhan
 - **Kotebrun** (kote): Dagsmarkører (konkurranse, reise, høyde, fri) og ikonet foran dagsnotat. Mørkere enn kartets originale kotefarge (#B26A34) slik at 11 px etiketter holder 4,5:1 mot papiret. Konkurranse er den eneste fylte markøren.
 
 ### Tertiary
-- **Stempelrød** (stempel): Bare for syk og skadet: det skrå stempelet og helsenotatet under dagdatoen.
+- **Stempelrød** (stempel): For syk og skadet (det skrå stempelet og helsenotatet under dagdatoen), og for bom i strekktidene. Begge er noe som gikk galt.
 
 ### Intensitetssoner (data)
 - **I1 Lys myr** (i1): Rolig grunntrening, dominerer volumet.
@@ -231,7 +231,7 @@ En kartpalett: varmt papir og blekk, rutenettblått som eneste aksent for samhan
 - **Blekk 3** (blekk-3): Etiketter, enheter, plassholdere, pulsverdier.
 
 ### Named Rules
-**The One Meaning Rule.** En farge betyr én ting. Sonefargene brukes bare for intensitet, blått bare for samhandling og ukevolum (som én egen tone), kotebrunt bare for dagsmarkører, rødt bare for syk og skadet.
+**The One Meaning Rule.** En farge betyr én ting. Sonefargene brukes bare for intensitet, blått bare for samhandling og ukevolum (som én egen tone), kotebrunt bare for dagsmarkører og konkurranser, rødt bare for syk, skadet og bom.
 
 **The Hatched Strength Rule.** Styrke er alltid skravert (135°, 2 px strek, 2 px luft) med 1 px kant i styrkefargen, aldri en flat farge. Da kan den aldri forveksles med I5, heller ikke ved fargesvakhet.
 
@@ -382,6 +382,23 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
 - **Rundetabellen:** Pauser og rolige drag (≤ 100 m, eller mer enn 40 % tregere enn
   midtrunden) dempes til `blekk-3`, så dragene kan leses rett nedover.
 
+### Konkurranser (resultater fra Eventor)
+- **Farger:** Løpene er kotebrune punkter (3,5 px radius med 1 px papirkant), fordi
+  konkurranse er kotebrunt. Valgt løp får en 2 px rutenettblå ring, fordi valg er
+  samhandling. Det brukes ingen farge per disiplin eller idrett. De skilles med
+  segmentvalg (idrett, disiplin), og pre-o (e-tempO) og ski-o vises aldri sammen med o-løp.
+- **Akser:** Prosent bak vinner og strekkfart har snudd y-akse, så høyere er bedre, som
+  tempoaksen. Prosent-aksen starter på 0 % øverst. Forklaringen sier det i klartekst.
+  Strekkfart har en stiplet 1 px referanselinje i `blekk-3` ved 1,00.
+- **To paneler med samme x-akse:** prosent bak øverst og strekkfart under. Trådkorset
+  følger begge, og klikk eller Enter velger løpet. Valget ligger i URL-en (`?lop=`).
+- **Oppkjøringen:** Den står i et eget grafkort med nøkkeltall (plass, prosent bak,
+  strekkfart, bomtid) og en tabell i faste celler: dette løpet mot snittet for utvalget.
+- **Bom:** Bomstrekk står i stempelrødt med ordet «Bom» i en 1 px stempelramme, så
+  fargen aldri bærer det alene.
+- **Lenker:** Eventor, Livelox og WinSplits åpnes i ny fane, med et 12 px
+  ExternalLink-ikon. Kart vises aldri, de tilhører arrangørene.
+
 ### Spør (samtalen med assistenten)
 - **To stemmer:** Isaks spørsmål står i Source Serif 4 (19 px), som notatene hans. Svaret
   står i Barlow 16 px, fordi det ikke er Isaks tekst.
@@ -415,3 +432,4 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
 - **Don't** fjern uker, dager eller økter fra kalenderen når et filter er aktivt.
 - **Don't** vis en kommentar fra trener eller andre som Isaks tekst.
 - **Don't** bruk rutenettblått for noe annet enn samhandling, rutenett og volum.
+- **Don't** bland pre-o eller ski-o med o-løp i samme graf over prosent bak.

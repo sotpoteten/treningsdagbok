@@ -1,5 +1,5 @@
 import { avledHelse } from './helse'
-import type { Dag, GarminAktivitet, GarminDag, GarminMaling, Okt, Profil, UkeRad } from './typer'
+import type { Dag, GarminAktivitet, GarminDag, GarminMaling, Konkurranse, Konkurranser, Okt, Profil, Stafett, UkeRad } from './typer'
 import { byggUker, ukeNokkel, type Uke } from './uker'
 
 export const DAGBOK_FRA = '2019-11-01'
@@ -21,7 +21,27 @@ export interface Dagbok {
   helsePerDato: Map<string, GarminDag>
   /** Garmin-id-ene som har en sporfil på siden; null hvis lista mangler. */
   sporFinnes: Set<number> | null
+  /** Individuelle løp fra Eventor, kronologisk; tom hvis konkurranser.json mangler. */
+  konkurranser: Konkurranse[]
+  stafetter: Stafett[]
+  /** Løpene en økt er koblet til (en knockoutsprint kan ha flere heat på én økt). */
+  konkurransePerOkt: Map<string, Konkurranse[]>
+  stafettPerOkt: Map<string, Stafett[]>
 }
+
+function perOkt<T extends { okt_ider: string[] }>(liste: T[]): Map<string, T[]> {
+  const ut = new Map<string, T[]>()
+  for (const k of liste)
+    for (const id of k.okt_ider) {
+      const l = ut.get(id)
+      if (l) l.push(k)
+      else ut.set(id, [k])
+    }
+  return ut
+}
+
+const kronologisk = <T extends { dato: string; eventor_id: number }>(liste: T[]) =>
+  [...liste].sort((a, b) => (a.dato === b.dato ? a.eventor_id - b.eventor_id : a.dato < b.dato ? -1 : 1))
 
 /** Om aktiviteten har et GPS-spor som faktisk kan vises her. */
 export function harSpor(dagbok: Dagbok, a: GarminAktivitet): boolean {
@@ -53,6 +73,7 @@ export function byggDagbok(
   garmin: GarminAktivitet[] = [],
   malinger: GarminMaling[] = [],
   sporFinnes: number[] | null = null,
+  konkurranser: Konkurranser | null = null,
 ): Dagbok {
   const okter = raOkter
     .filter((o) => o.dato >= DAGBOK_FRA)
@@ -78,6 +99,8 @@ export function byggDagbok(
   }
   for (const liste of garminPerOkt.values()) liste.sort((a, b) => (a.start_lokal < b.start_lokal ? -1 : 1))
   const helse = avledHelse(malinger, garmin)
+  const individuelle = kronologisk(konkurranser?.individuelle ?? [])
+  const stafetter = kronologisk(konkurranser?.stafett ?? [])
 
   return {
     okter,
@@ -92,11 +115,15 @@ export function byggDagbok(
     helse,
     helsePerDato: new Map(helse.map((d) => [d.dato, d])),
     sporFinnes: sporFinnes ? new Set(sporFinnes) : null,
+    konkurranser: individuelle,
+    stafetter,
+    konkurransePerOkt: perOkt(individuelle),
+    stafettPerOkt: perOkt(stafetter),
   }
 }
 
 export async function lastDagbok(): Promise<Dagbok> {
-  const [okter, dager, uker, profil, garmin, helse, spor] = await Promise.all([
+  const [okter, dager, uker, profil, garmin, helse, spor, konkurranser] = await Promise.all([
     hent<Okt[]>('okter.json'),
     hent<Dag[]>('dager.json'),
     hent<UkeRad[]>('uker.json'),
@@ -104,6 +131,7 @@ export async function lastDagbok(): Promise<Dagbok> {
     hentValgfri<GarminAktivitet[]>('garmin_aktiviteter.json'),
     hentValgfri<GarminMaling[]>('garmin_helse.json'),
     hentValgfri<number[]>('garmin_spor.json'),
+    hentValgfri<Konkurranser>('konkurranser.json'),
   ])
-  return byggDagbok(okter, dager, uker, profil, garmin ?? [], helse ?? [], spor)
+  return byggDagbok(okter, dager, uker, profil, garmin ?? [], helse ?? [], spor, konkurranser)
 }

@@ -5,6 +5,7 @@ import { analyseperiode, sesonger, sesongFraUrl, sesongTilUrl, type Sesong } fro
 import { Topplinje } from '../komponenter/Topplinje'
 import { Helse } from './analyse/Helse'
 import { Intensitet } from './analyse/Intensitet'
+import { Konkurranser } from './analyse/Konkurranser'
 import { Oversikt } from './analyse/Oversikt'
 import { Rekorder } from './analyse/Rekorder'
 import { Sesonger } from './analyse/Sesonger'
@@ -28,6 +29,7 @@ const UNDERSIDER = [
   { sti: '/analyse/intensitet', navn: 'Intensitet og aktivitet' },
   { sti: '/analyse/rekorder', navn: 'Rekorder' },
   { sti: '/analyse/helse', navn: 'Helse og belastning' },
+  { sti: '/analyse/konkurranser', navn: 'Konkurranser' },
 ]
 
 export function Analyse({ dagbok }: { dagbok: Dagbok }) {
@@ -102,6 +104,7 @@ export function Analyse({ dagbok }: { dagbok: Dagbok }) {
           <Route path="intensitet" element={<Intensitet k={kontekst} />} />
           <Route path="rekorder" element={<Rekorder k={kontekst} />} />
           <Route path="helse" element={<Helse k={kontekst} />} />
+          <Route path="konkurranser" element={<Konkurranser k={kontekst} />} />
         </Routes>
       </main>
     </>

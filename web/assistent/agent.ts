@@ -1,12 +1,12 @@
 import { createSdkMcpServer, query, tool, type Options } from '@anthropic-ai/claude-agent-sdk'
-import { mkdirSync, statSync } from 'node:fs'
+import { existsSync, mkdirSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { z } from 'zod'
 import type { Dagbok } from '../src/data/last'
 import { lagRundeleser, lesDagbok } from './data'
 import { lagPrompt } from './prompt'
-import { dager, finnOkter, okt, perioder, ukekommentarer, Verktoyfeil } from './verktoy'
+import { dager, finnOkter, konkurranser, okt, perioder, ukekommentarer, Verktoyfeil } from './verktoy'
 
 /** Det tjeneren strømmer til siden. */
 export type Hendelse =
@@ -32,9 +32,10 @@ const typer = z.enum(['loping', 'ski', 'sykkel', 'styrke', 'otek', 'konk'])
 
 let buffer: { tid: number; dagbok: Dagbok } | null = null
 
-/** Dagboka leses på nytt når okter.json er endret, f.eks. etter en ny eksport. */
+/** Dagboka leses på nytt når okter.json eller konkurranser.json er endret, f.eks. etter en ny eksport. */
 function hentDagbok(datamappe: string): Dagbok {
-  const tid = statSync(join(datamappe, 'okter.json')).mtimeMs
+  const konk = join(datamappe, 'konkurranser.json')
+  const tid = statSync(join(datamappe, 'okter.json')).mtimeMs + (existsSync(konk) ? statSync(konk).mtimeMs : 0)
   if (buffer?.tid !== tid) buffer = { tid, dagbok: lesDagbok(datamappe) }
   return buffer.dagbok
 }
@@ -97,11 +98,24 @@ function lagVerktoy(dagbok: Dagbok, datamappe: string) {
         async (a) => svar(() => ukekommentarer(dagbok, a)),
         lese,
       ),
+      tool(
+        'konkurranser',
+        'Isaks individuelle løp fra Eventor (norske løp fra des. 2019), eldste først: type (o-løp, ski-o, sykkel-o, pre-o), disiplin, natt, klasse, status, plass av antall, egen tid og vinnertid, prosent bak vinner, strekkfart, bomtid og koblede økt-id-er, og oppkjøringen de 21 dagene før (timer, km, minutter i I3–I5, kvalitetsøkter, andre løp, syke- og skadedager, snitt av akutt belastning, HRV og hvilepuls). Med eventor_id får du også strekktidene. Uten type- og disiplinfilter følger stafettene med (bare plass). Maks 60 løp.',
+        {
+          fra: dato,
+          til: dato,
+          type: z.enum(['o-løp', 'ski-o', 'sykkel-o', 'pre-o']).optional().describe('Idretten. Pre-o (e-tempO) må holdes for seg.'),
+          disiplin: z.enum(['sprint', 'mellom', 'lang', 'ultralang', 'tempo']).optional(),
+          eventor_id: z.number().int().optional().describe('Ett bestemt løp, med strekktider'),
+        },
+        async (a) => svar(() => konkurranser(dagbok, a)),
+        lese,
+      ),
     ],
   })
 }
 
-const VERKTOY = ['perioder', 'finn_okter', 'okt', 'dager', 'ukekommentarer'].map((n) => `mcp__dagbok__${n}`)
+const VERKTOY = ['perioder', 'finn_okter', 'okt', 'dager', 'ukekommentarer', 'konkurranser'].map((n) => `mcp__dagbok__${n}`)
 
 /**
  * Bare dagbokverktøyene og nettet. Ingen fil-, skall- eller redigeringsverktøy,
@@ -134,6 +148,8 @@ function status(navn: string, inn: Record<string, unknown>): string {
       return `Leser dagene${rom}`
     case 'mcp__dagbok__ukekommentarer':
       return `Leser ukeskommentarer${rom}`
+    case 'mcp__dagbok__konkurranser':
+      return `Henter konkurranseresultater${rom}`
     case 'WebSearch':
       return `Søker på nettet etter «${inn.query}»`
     case 'WebFetch': {
