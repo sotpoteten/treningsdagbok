@@ -3,7 +3,7 @@ import { LngLatBounds, Map as Kartmotor, setWorkerUrl, type GeoJSONSource, type 
 import 'maplibre-gl/dist/maplibre-gl.css'
 // MapLibre kjører fliser i en web worker. Vite bunter den, og vi peker MapLibre dit.
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
-import { useEffect, useRef } from 'react'
+import { useEffect, useEffectEvent, useMemo, useRef } from 'react'
 
 setWorkerUrl(workerUrl)
 
@@ -43,17 +43,18 @@ interface Props {
 export default function Kart({ lat, lon, lag, aktiv, onAktiv }: Props) {
   const beholder = useRef<HTMLDivElement>(null)
   const kart = useRef<Kartmotor | null>(null)
-  const onAktivRef = useRef(onAktiv)
-  onAktivRef.current = onAktiv
-  const lagRef = useRef(lag)
-  lagRef.current = lag
+  // Effekthendelser leser siste verdi uten å være avhengigheter, så kartet ikke bygges på nytt
+  // når kartlaget byttes eller forelderen sender en ny onAktiv.
+  const varsleAktiv = useEffectEvent((i: number | null) => onAktiv(i))
+  const lagNa = useEffectEvent(() => lag)
 
-  // Punktene med posisjon, med indeksen i den fulle serien.
-  const punkter = lat.flatMap((la, i) => (la != null && lon[i] != null ? [{ i, lng: lon[i] as number, lat: la }] : []))
+  // Punktene med posisjon, med indeksen i den fulle serien. Bare et nytt spor gir nye punkter,
+  // og bare nye punkter bygger kartet på nytt; kartlaget og aktiv-merket har egne effekter.
+  const punkter = useMemo(() => lat.flatMap((la, i) => (la != null && lon[i] != null ? [{ i, lng: lon[i] as number, lat: la }] : [])), [lat, lon])
 
   useEffect(() => {
     if (!beholder.current || !punkter.length) return
-    const m = new Kartmotor({ container: beholder.current, style: stil(lagRef.current), attributionControl: { compact: true }, cooperativeGestures: true })
+    const m = new Kartmotor({ container: beholder.current, style: stil(lagNa()), attributionControl: { compact: true }, cooperativeGestures: true })
     kart.current = m
     const grenser = new LngLatBounds()
     for (const p of punkter) grenser.extend([p.lng, p.lat])
@@ -100,17 +101,15 @@ export default function Kart({ lat, lon, lag, aktiv, onAktiv }: Props) {
         const d = (s.x - e.point.x) ** 2 + (s.y - e.point.y) ** 2
         if (d < avstand) [avstand, beste] = [d, p.i]
       }
-      onAktivRef.current(avstand < 900 ? beste : null)
+      varsleAktiv(avstand < 900 ? beste : null)
     })
-    m.on('mouseout', () => onAktivRef.current(null))
+    m.on('mouseout', () => varsleAktiv(null))
 
     return () => {
       m.remove()
       kart.current = null
     }
-    // Bare et nytt spor bygger kartet på nytt; kartlaget og aktiv-merket har egne effekter.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lat, lon])
+  }, [punkter])
 
   // Bytt bare bakgrunnsflisene, så sporet og utsnittet blir stående.
   useEffect(() => {

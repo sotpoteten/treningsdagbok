@@ -27,14 +27,18 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Python-tester og personvernsjekk
+      - name: Python-lint, tester og personvernsjekk
         run: |
-          python -m pip install --quiet fitdecode tzdata
+          python -m pip install --quiet fitdecode tzdata ruff==0.17.2
+          ruff check scripts
           python -m unittest scripts/test_*.py
           python scripts/personvern.py
       - name: Installer
         working-directory: web
         run: npm ci
+      - name: Lint
+        working-directory: web
+        run: npm run lint
       - name: Tester
         working-directory: web
         run: npm test

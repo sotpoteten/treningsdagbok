@@ -53,6 +53,9 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
   const idag = isoDato(new Date())
 
   const flate = useRef<HTMLDivElement>(null)
+  // TanStack Virtual gir nye verdier fra samme objekt ved rulling, så React Compiler kan ikke memoisere
+  // komponenten. Vi bruker ikke React Compiler, og useMemo-ene under avhenger av elementene, ikke av `v`.
+  // oxlint-disable-next-line react/incompatible-library -- tredjepartsbibliotek som ikke kan memoiseres
   const v = useVirtualizer({
     count: rader.length,
     getScrollElement: () => flate.current,

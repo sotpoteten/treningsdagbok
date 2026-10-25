@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from personvern import finn_problemer, sjekk, sjekk_innhold, sjekk_sti  # noqa: E402
+from personvern import finn_problemer, sjekk, sjekk_innhold, sjekk_sti
 
 UUID = "3f2b8c1e-9a4d-4e6f-8b2a-1c3d5e7f9a0b"
 

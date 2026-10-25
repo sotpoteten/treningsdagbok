@@ -35,7 +35,7 @@ from zoneinfo import ZoneInfo
 import fitdecode
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from garmin_kobling import koble  # noqa: E402
+from garmin_kobling import koble
 
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw" / "garmin"
@@ -61,7 +61,8 @@ def les_json(p):
 
 def skriv_json(p, data, kompakt=False):
     p.parent.mkdir(parents=True, exist_ok=True)
-    tekst = json.dumps(data, ensure_ascii=False, separators=(",", ":") if kompakt else None, indent=None if kompakt else 1)
+    tekst = json.dumps(data, ensure_ascii=False, separators=(",", ":") if kompakt else None,
+                       indent=None if kompakt else 1)
     p.write_text(tekst, encoding="utf-8")
 
 
@@ -422,7 +423,8 @@ def main():
         return sum(1 for d in helse if d.get(felt) is not None)
 
     print("\nSkrev:")
-    print(f"  garmin_aktiviteter.json: {len(aktiviteter)} aktiviteter, {sum(a['har_spor'] for a in aktiviteter)} med GPS-spor")
+    med_spor = sum(a['har_spor'] for a in aktiviteter)
+    print(f"  garmin_aktiviteter.json: {len(aktiviteter)} aktiviteter, {med_spor} med GPS-spor")
     print(f"  garmin_helse.json: {len(helse)} dager – hvilepuls {antall('hvilepuls')}, HRV {antall('hrv_natt')}, "
           f"søvn {antall('sovn_min')}, søvnscore {antall('sovnscore')}")
     print(f"  garmin_spor/: {len(list(SPOR.glob('*.json')))} filer")

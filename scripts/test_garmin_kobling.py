@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from garmin_kobling import koble  # noqa: E402
+from garmin_kobling import koble
 
 
 def okt(id, dato, minutter, km=0.0):
@@ -15,7 +15,8 @@ def okt(id, dato, minutter, km=0.0):
 
 
 def akt(gid, dato, start, minutter, km=0.0, loping=True):
-    return {"garmin_id": gid, "dato": dato, "start": start, "varighet_min": minutter, "distanse_km": km, "loping": loping}
+    return {"garmin_id": gid, "dato": dato, "start": start, "varighet_min": minutter, "distanse_km": km,
+            "loping": loping}
 
 
 class Kobling(unittest.TestCase):
@@ -27,7 +28,11 @@ class Kobling(unittest.TestCase):
         # Oppvarming + intervaller + nedjogg tatt opp hver for seg
         r = koble(
             [okt("a", "2025-01-01", 61, 11.1)],
-            [akt(1, "2025-01-01", "17:00", 20, 3.5), akt(2, "2025-01-01", "17:21", 30, 6.0), akt(3, "2025-01-01", "17:52", 11, 1.6)],
+            [
+                akt(1, "2025-01-01", "17:00", 20, 3.5),
+                akt(2, "2025-01-01", "17:21", 30, 6.0),
+                akt(3, "2025-01-01", "17:52", 11, 1.6),
+            ],
         )
         self.assertEqual(r, {1: "a", 2: "a", 3: "a"})
 
@@ -39,7 +44,8 @@ class Kobling(unittest.TestCase):
         self.assertEqual(r, {1: "morgen", 2: "kveld"})
 
     def test_styrke_uten_garmin(self):
-        r = koble([okt("styrke", "2025-01-01", 45), okt("jogg", "2025-01-01", 40, 8)], [akt(1, "2025-01-01", "10:00", 40, 8)])
+        okter = [okt("styrke", "2025-01-01", 45), okt("jogg", "2025-01-01", 40, 8)]
+        r = koble(okter, [akt(1, "2025-01-01", "10:00", 40, 8)])
         self.assertEqual(r, {1: "jogg"})
 
     def test_for_stort_avvik(self):

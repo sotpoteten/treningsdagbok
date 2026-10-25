@@ -1,5 +1,5 @@
 import { Maximize2, Minimize2 } from 'lucide-react'
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { km, tempo, varighetLang } from '../data/format'
 import type { GarminAktivitet, GarminSpor } from '../data/typer'
 import { Segment } from './graf/felles'
@@ -24,7 +24,7 @@ const TYPENAVN: Record<string, string> = {
   multi_sport: 'Multisport',
   elliptical: 'Ellipse',
 }
-export const typenavn = (t: string) => TYPENAVN[t] ?? t.replace(/_/g, ' ')
+const typenavn = (t: string) => TYPENAVN[t] ?? t.replace(/_/g, ' ')
 
 /** «m:ss» eller «t:mm:ss» for sekunder. */
 function klokke(sekunder: number) {
@@ -62,6 +62,18 @@ function median(v: (number | null)[], n: number): (number | null)[] {
   })
 }
 
+/**
+ * Tilstand som starter på nytt når `nokkel` endres. Nullstillingen skjer under rendringen,
+ * slik React anbefaler, i stedet for i en effekt som gir en ekstra rendring.
+ */
+function useTilstandPer<V>(nokkel: unknown, start: V) {
+  const [lagret, setLagret] = useState({ nokkel, verdi: start })
+  const ny = !Object.is(lagret.nokkel, nokkel)
+  if (ny) setLagret({ nokkel, verdi: start })
+  const sett = useCallback((v: V) => setLagret({ nokkel, verdi: v }), [nokkel])
+  return [ny ? start : lagret.verdi, sett] as const
+}
+
 interface Props {
   aktiviteter: GarminAktivitet[]
   /** Sporfilene som finnes; null betyr at lista mangler, og da prøver vi alle. */
@@ -69,41 +81,35 @@ interface Props {
 }
 
 export function Garminokt({ aktiviteter, sporFinnes }: Props) {
-  const [valgt, setValgt] = useState(0)
+  // Ny økt gir første aktivitet; valgt kart og aktivt punkt gjelder bare én aktivitet.
+  const [valgt, setValgt] = useTilstandPer(aktiviteter, 0)
   const a = aktiviteter[Math.min(valgt, aktiviteter.length - 1)]
-  const [spor, setSpor] = useState<GarminSpor | null>(null)
-  const [laster, setLaster] = useState(false)
-  const [aktiv, setAktiv] = useState<number | null>(null)
+  const [aktiv, setAktiv] = useTilstandPer<number | null>(a.garmin_id, null)
   // Null til Isak velger selv: da avgjør sporet om det er Kartverket (Norge) eller OSM.
-  const [lagValg, setLagValg] = useState<Kartlag | null>(null)
+  const [lagValg, setLagValg] = useTilstandPer<Kartlag | null>(a.garmin_id, null)
   const [stor, setStor] = useState(false)
 
-  useEffect(() => setValgt(0), [aktiviteter])
+  // Sporfilene ligger ikke i repoet, så den publiserte siden har dem ikke.
+  const kanHente = a.har_spor && (!sporFinnes || sporFinnes.has(a.garmin_id))
+  const [hentet, setHentet] = useState<{ id: number; spor: GarminSpor | null } | null>(null)
+  const ferdig = hentet?.id === a.garmin_id
+  const spor = kanHente && ferdig ? hentet.spor : null
+  const laster = kanHente && !ferdig
 
   useEffect(() => {
+    if (!kanHente) return
     let avbrutt = false
-    setSpor(null)
-    setAktiv(null)
-    setLagValg(null)
-    // Sporfilene ligger ikke i repoet, så den publiserte siden har dem ikke.
-    if (!a.har_spor || (sporFinnes && !sporFinnes.has(a.garmin_id))) {
-      setLaster(false)
-      return
-    }
-    setLaster(true)
-    fetch(`${import.meta.env.BASE_URL}garmin_spor/${a.garmin_id}.json`)
+    const id = a.garmin_id
+    fetch(`${import.meta.env.BASE_URL}garmin_spor/${id}.json`)
       .then((r) => (r.ok ? r.json() : null))
       .catch(() => null)
       .then((s: GarminSpor | null) => {
-        if (!avbrutt) {
-          setSpor(s && s.punkter ? s : null)
-          setLaster(false)
-        }
+        if (!avbrutt) setHentet({ id, spor: s && s.punkter ? s : null })
       })
     return () => {
       avbrutt = true
     }
-  }, [a.garmin_id, a.har_spor, sporFinnes])
+  }, [a.garmin_id, kanHente])
 
   useEffect(() => {
     if (!stor) return

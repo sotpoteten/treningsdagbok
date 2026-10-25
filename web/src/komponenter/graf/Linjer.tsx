@@ -1,7 +1,8 @@
 import { scaleLinear } from 'd3-scale'
 import { line } from 'd3-shape'
 import { useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react'
-import { useBredde, Verktoytips } from './felles'
+import { useBredde } from './useBredde'
+import { Verktoytips } from './felles'
 
 export interface Linjeserie {
   id: string

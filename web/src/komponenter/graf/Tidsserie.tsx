@@ -2,7 +2,8 @@ import { bisector, extent } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 import { area, line } from 'd3-shape'
 import { useId, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react'
-import { useBredde, Verktoytips } from './felles'
+import { useBredde } from './useBredde'
+import { Verktoytips } from './felles'
 import { Skravur } from './Stolper'
 
 export interface Serie {

@@ -24,6 +24,7 @@ med orienteringstrening, rundt 3 900 økter. Dataene kommer fra dagboka til Olym
 - **Design:** Et eget designsystem, «Kartbladet», beskrevet i [`DESIGN.md`](DESIGN.md).
   Sonefargene er validert for fargeblindhet.
 - **Tester:** vitest og Pythons unittest. Summene sjekkes mot kontrolltall fra dagboka.
+  oxlint og ruff stopper bygget ved advarsler, og testfilene typesjekkes også.
 
 Prosjektet er utviklet sammen med Claude Code. [`CLAUDE.md`](CLAUDE.md),
 [`DESIGN.md`](DESIGN.md) og [`PRODUCT.md`](PRODUCT.md) er arbeidsdokumentene som styrer
@@ -61,7 +62,8 @@ npm run dev        # http://localhost:5180
 
 ```
 npm test           # vitest: summer mot kontrolltall, sesonger, søk, helseserier
-npm run build      # typesjekk og bygg til web/dist/
+npm run lint       # oxlint, der advarsler regnes som feil
+npm run build      # typesjekk (også testfilene) og bygg til web/dist/
 ```
 
 ## Spør (AI-assistenten)
@@ -177,6 +179,8 @@ web/                  nettsiden (Vite + React + TypeScript)
 
 ```
 cd web && npm test                                   # nettsiden
+cd web && npm run lint                               # oxlint, uten advarsler
+.venv\Scripts\ruff check scripts                     # Python-lint, oppsett i pyproject.toml
 .venv\Scripts\python -m unittest discover -s scripts -p "test_*.py"   # skriptene
 .venv\Scripts\python scripts/personvern.py           # ingen koordinater, e-post eller nøkler i data/
 ```

@@ -2,7 +2,8 @@ import { scaleBand, scaleLinear } from 'd3-scale'
 import { line } from 'd3-shape'
 import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { Cross, Thermometer, Trophy } from 'lucide-react'
-import { useBredde, Verktoytips, type Seriedef } from './felles'
+import { useBredde } from './useBredde'
+import { Verktoytips, type Seriedef } from './felles'
 
 export interface Stolpepunkt {
   nokkel: string

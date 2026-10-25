@@ -29,7 +29,7 @@ from io import BytesIO
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from konverter_garmin import SPOR, UT, dekod, koble_okter, les_json, rund, skriv_json, spor_fra_fit  # noqa: E402
+from konverter_garmin import SPOR, UT, dekod, koble_okter, les_json, rund, skriv_json, spor_fra_fit
 
 ROOT = Path(__file__).resolve().parent.parent
 NOKKEL = ROOT / "data/raw/intervals.json"
@@ -80,7 +80,8 @@ def hent(sti: str, **params) -> bytes:
     url = f"{API}{sti}" + ("?" + "&".join(f"{k}={v}" for k, v in params.items()) if params else "")
     auth = base64.b64encode(f"API_KEY:{n}".encode()).decode()
     # Cloudflare stopper av og til klienter uten nettleserlik User-Agent.
-    req = urllib.request.Request(url, headers={"Authorization": f"Basic {auth}", "User-Agent": "Mozilla/5.0 treningsdagbok"})
+    headers = {"Authorization": f"Basic {auth}", "User-Agent": "Mozilla/5.0 treningsdagbok"}
+    req = urllib.request.Request(url, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=120) as r:
             return r.read()

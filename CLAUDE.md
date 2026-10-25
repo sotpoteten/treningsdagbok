@@ -343,12 +343,16 @@ cd web
 npm install        # første gang
 npm run dev        # http://localhost:5180 (kopierer data/*.json til public/data/ først)
 npm test           # vitest: kontrolltall, ISO-uker, sesonger, søk, formatering, helseserier
-npm run build      # typesjekk og bygg til web/dist/
+npm run lint       # oxlint --deny-warnings: advarsler er feil, også i GitHub-kjøringen
+npm run build      # typesjekk (også testfilene, tsconfig.test.json) og bygg til web/dist/
 ```
 
 Node ligger i `C:\Program Files\nodejs`. Hvis skallet ikke finner `npm`, legg den mappa
 først i PATH. Alle Python-testene kjøres med
 `.venv\Scripts\python -m unittest scripts/test_*.py` (i Git Bash; PowerShell utvider ikke `*`).
+Python-koden lintes med `.venv\Scripts\ruff check scripts` (oppsett i `pyproject.toml`), og
+GitHub-kjøringen gjør det samme. Bruk `// oxlint-disable-next-line <regel> -- <grunn>` bare
+når en advarsel ikke kan rettes, som `useVirtualizer` i `Dagbok.tsx`.
 
 | Mappe/fil | Innhold |
 |---|---|

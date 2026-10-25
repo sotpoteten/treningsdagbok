@@ -11,7 +11,7 @@ from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import konverter_garmin as kg  # noqa: E402
+import konverter_garmin as kg
 
 ROT = Path(__file__).resolve().parent.parent
 

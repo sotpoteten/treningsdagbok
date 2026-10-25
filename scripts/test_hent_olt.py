@@ -12,8 +12,8 @@ from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import hent_olt  # noqa: E402
-from hent_olt import DATAFILER, Avbrutt, commit_data, sjekk  # noqa: E402
+import hent_olt
+from hent_olt import DATAFILER, Avbrutt, commit_data, sjekk
 
 
 class TestSjekk(unittest.TestCase):
@@ -62,8 +62,11 @@ class FalskKjor:
 
 class TestCommitData(unittest.TestCase):
     def kjor_commit(self, kjor, problemer=()):
-        with mock.patch.object(hent_olt, "kjor", kjor), \
-                mock.patch.object(hent_olt.personvern, "sjekk", return_value=list(problemer)) as pv,                 redirect_stdout(io.StringIO()):
+        with (
+            mock.patch.object(hent_olt, "kjor", kjor),
+            mock.patch.object(hent_olt.personvern, "sjekk", return_value=list(problemer)) as pv,
+            redirect_stdout(io.StringIO()),
+        ):
             try:
                 return commit_data("2026-10-26", 3)
             finally:

@@ -22,7 +22,7 @@ from io import BytesIO
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from konverter_garmin import SPOR, UT, les_json, spor_fra_fit  # noqa: E402
+from konverter_garmin import SPOR, UT, les_json, spor_fra_fit
 
 ROOT = Path(__file__).resolve().parent.parent
 NOKKEL = ROOT / "data/raw/intervals.json"
@@ -37,7 +37,8 @@ def hent(sti: str, **params) -> bytes:
     url = f"{API}{sti}" + ("?" + "&".join(f"{k}={v}" for k, v in params.items()) if params else "")
     auth = base64.b64encode(f"API_KEY:{nokkel}".encode()).decode()
     # Cloudflare stopper av og til klienter uten nettleserlik User-Agent.
-    req = urllib.request.Request(url, headers={"Authorization": f"Basic {auth}", "User-Agent": "Mozilla/5.0 treningsdagbok"})
+    headers = {"Authorization": f"Basic {auth}", "User-Agent": "Mozilla/5.0 treningsdagbok"}
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=60) as r:
         return r.read()
 
@@ -65,7 +66,8 @@ def helse() -> None:
                  if d["id"] in vi_har and vi_har[d["id"]].get(vart) is not None and d.get(deres) is not None]
         if avvik:
             like = sum(a < 1 for a in avvik)
-            print(f"  {vart:12} ← {deres:12} {len(avvik):4} dager, {like} like (avvik < 1), snittavvik {sum(avvik) / len(avvik):.1f}")
+            print(f"  {vart:12} ← {deres:12} {len(avvik):4} dager, {like} like (avvik < 1), "
+                  f"snittavvik {sum(avvik) / len(avvik):.1f}")
         else:
             print(f"  {vart:12} ← {deres:12} ingen felles dager")
 
@@ -110,7 +112,8 @@ def sammenlign_fil(intervals_id: str, gid: str) -> None:
         return
     print(f"Originalfil for Garmin-aktivitet {gid}:")
     for k in sorted(set(nytt["punkter"]) | set(gammelt["punkter"])):
-        print(f"  {k:6} punkter: intervals {len(nytt['punkter'].get(k, []))}, GDPR {len(gammelt['punkter'].get(k, []))}")
+        print(f"  {k:6} punkter: intervals {len(nytt['punkter'].get(k, []))}, "
+              f"GDPR {len(gammelt['punkter'].get(k, []))}")
     print(f"  runder: intervals {len(nytt['runder'])}, GDPR {len(gammelt['runder'])}, "
           f"like: {nytt['runder'] == gammelt['runder']}")
 

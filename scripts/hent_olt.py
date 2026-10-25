@@ -404,10 +404,11 @@ def main() -> int:
     if a.planlagt:
         try:
             if commit_data(ny["siste"], nye):
-                varsle("Treningsdagbok oppdatert", f"{nye:+} økter, siste økt {ny['siste']}. {garmin}. Pushet til main.",
-                       viktig=garmin_feil)
+                varsle("Treningsdagbok oppdatert",
+                       f"{nye:+} økter, siste økt {ny['siste']}. {garmin}. Pushet til main.", viktig=garmin_feil)
             else:
-                varsle("Treningsdagbok: ingen nye data", f"Siste økt er fortsatt {ny['siste']}. {garmin}.", viktig=garmin_feil)
+                varsle("Treningsdagbok: ingen nye data", f"Siste økt er fortsatt {ny['siste']}. {garmin}.",
+                       viktig=garmin_feil)
         except Exception as e:
             print(f"Ikke committet: {e}")
             varsle("Treningsdagbok: ikke committet",

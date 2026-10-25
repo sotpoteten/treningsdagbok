@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hent_intervals import aktivitetstype, flett_helse, helse_fra_wellness  # noqa: E402
+from hent_intervals import aktivitetstype, flett_helse, helse_fra_wellness
 
 
 class TestAktivitetstype(unittest.TestCase):

@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from konverter import konverter  # noqa: E402
+from konverter import konverter
 
 MEG = "isak"
 TRENER = "trener"
