@@ -2,11 +2,14 @@
 Personvernsjekk for filene git sporer. Repoet er offentlig, så alt som committes, publiseres.
 
 Sjekken ser etter:
-- stier som aldri skal committes: data/raw/, GPS-sporene og filer med .env i navnet
+- stier som aldri skal committes: data/raw/, GPS-sporene, filer med .env i navnet og
+  eventor.json (Eventor-nøkkelen er en klubbnøkkel), uansett hvor den ligger
 - bilder (png, jpg o.l.) andre steder enn docs/bilder/
 - i datafilene under data/: koordinatnøkler (lat, lon, position_lat …), nøkler for
   fødselsdato, nøkler for passord og API-nøkler, e-postadresser og tekst som ligner
   nøkler eller tokens (sk-ant-, api_nokkel, lange hex- eller base64-strenger som ikke er UUID-er)
+- i data/konkurranser.json: bare feltene på hvitelista under er lov. Andre løpere skal aldri
+  stå i fila, så et felt som ikke er kjent (for eksempel Given, Family eller person_id), stoppes.
 
 Bildene i docs/bilder/ sjekkes bare for plasseringen, ikke for innholdet. Se dem over selv.
 
@@ -37,6 +40,23 @@ EPOST = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-
 TOKENMERKER = re.compile(r"sk-ant-|api_n[oø]kkel", re.I)
 # En sammenhengende streng av tegn som brukes i hex, base64 og base64url.
 LANG_STRENG = re.compile(r"(?<![A-Za-z0-9+/_-])[A-Za-z0-9+/_-]{32,}={0,2}")
+# Livelox' avspillerlenker har løps- og klassenavnet som ord med bindestrek i stien
+# («livelox.com/Viewer/NM-sprint-ski-O-2024/H-21-?classId=…»), og LANG_STRENG ser bare
+# «com/Viewer/…». Det er ikke en nøkkel så lenge hvert ord er kort.
+LIVELOX_STI = re.compile(r"com/Viewer(?:/[A-Za-z0-9-]*){1,2}")
+# data/konkurranser.json: hviteliste over felt. Fila er enten en liste med løp eller et objekt
+# med listene under LISTER. Alt annet, også et objekt der det skal stå en enkeltverdi, stoppes.
+KONKURRANSER = "data/konkurranser.json"
+LISTER = {"individuelle", "stafett"}
+LOPSFELT = {"eventor_id", "dato", "navn", "arrangor", "disiplin", "klasse", "status", "tid_s", "plass",
+            "antall", "vinnertid_s", "prosent_bak", "strekk", "strekkfart", "bomtid_s", "lenker",
+            "okt_ider", "type", "etappe", "natt", "strekk_ugyldige"}
+STREKKFELT = {"post", "tid_s", "beste_s", "ref_s", "indeks", "bom"}
+LENKEFELT = {"eventor", "livelox", "winsplits"}
+# Felt som bærer navn eller id på en person. De får en tydeligere melding enn andre ukjente felt.
+NAVNENOKLER = {"given", "family", "name", "fornavn", "etternavn", "person", "personid", "personname",
+               "competitor", "navn"}
+
 UUID = re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
 
 
@@ -46,8 +66,11 @@ def _normaliser(nokkel: str) -> str:
 
 def _ligner_token(streng: str) -> bool:
     """Lange strenger med både bokstaver og sifre ligner nøkler. UUID-ene (øktenes id) gjør
-    ikke det, og heller ikke lange ord med bindestrek eller lange tall."""
+    ikke det, og heller ikke lange ord med bindestrek, lange tall eller stien i en
+    Livelox-lenke med korte ord."""
     if UUID.fullmatch(streng):
+        return False
+    if LIVELOX_STI.fullmatch(streng) and all(len(o) <= 20 for o in re.split(r"[/-]", streng)):
         return False
     return bool(re.search(r"\d", streng) and re.search(r"[A-Za-z]", streng))
 
@@ -63,9 +86,83 @@ def _nokler(objekt, sti: str = ""):
             yield from _nokler(v, f"{sti}[]")
 
 
+def _er_enkeltverdi(v) -> bool:
+    return v is None or isinstance(v, (str, int, float, bool))
+
+
+def _ukjent(sti: str, felt: str, nokkel: str) -> str:
+    if _normaliser(nokkel) in NAVNENOKLER:
+        return f"{sti}: navnefelt «{felt}» (andre løpere skal aldri stå i fila)"
+    return f"{sti}: feltet «{felt}» står ikke på hvitelista for konkurranser"
+
+
+def sjekk_konkurranser(sti: str, data) -> list[str]:
+    """Hvitelista for data/konkurranser.json. «navn» er lov bare på løpsnivå, som løpets navn."""
+    problemer: list[str] = []
+    if isinstance(data, dict):
+        lister = []
+        for k, v in data.items():
+            if k not in LISTER or not isinstance(v, list):
+                problemer.append(_ukjent(sti, k, k) if k not in LISTER else f"{sti}: «{k}» skal være en liste")
+            else:
+                lister.append((k, v))
+    elif isinstance(data, list):
+        lister = [("", data)]
+    else:
+        return [f"{sti}: skal være en liste med løp eller et objekt med listene {sorted(LISTER)}"]
+
+    for liste, lop in lister:
+        for i, post in enumerate(lop):
+            sted = f"{liste}[{i}]" if liste else f"[{i}]"
+            if not isinstance(post, dict):
+                problemer.append(f"{sti}: {sted} skal være et objekt")
+                continue
+            for k, v in post.items():
+                felt = f"{sted}.{k}"
+                if k not in LOPSFELT:
+                    problemer.append(_ukjent(sti, felt, k))
+                elif k == "strekk":
+                    problemer += _sjekk_liste_av_objekter(sti, felt, v, STREKKFELT)
+                elif k == "lenker":
+                    problemer += _sjekk_objekt(sti, felt, v, LENKEFELT)
+                elif k == "okt_ider":
+                    if not isinstance(v, list) or not all(isinstance(x, str) for x in v):
+                        problemer.append(f"{sti}: «{felt}» skal være en liste med økt-id-er")
+                elif not _er_enkeltverdi(v):
+                    problemer.append(f"{sti}: «{felt}» skal være en enkeltverdi, ikke et objekt eller en liste")
+    return problemer
+
+
+def _sjekk_objekt(sti: str, felt: str, v, lov: set[str]) -> list[str]:
+    if v is None:
+        return []
+    if not isinstance(v, dict):
+        return [f"{sti}: «{felt}» skal være et objekt"]
+    problemer = []
+    for k, x in v.items():
+        if k not in lov:
+            problemer.append(_ukjent(sti, f"{felt}.{k}", k))
+        elif not _er_enkeltverdi(x):
+            problemer.append(f"{sti}: «{felt}.{k}» skal være en enkeltverdi")
+    return problemer
+
+
+def _sjekk_liste_av_objekter(sti: str, felt: str, v, lov: set[str]) -> list[str]:
+    if v is None:
+        return []
+    if not isinstance(v, list):
+        return [f"{sti}: «{felt}» skal være en liste"]
+    problemer = []
+    for i, x in enumerate(v):
+        problemer += _sjekk_objekt(sti, f"{felt}[{i}]", x, lov) if x is not None else [f"{sti}: «{felt}[{i}]» er tom"]
+    return problemer
+
+
 def sjekk_sti(sti: str) -> list[str]:
     """Problemer med selve stien, uavhengig av innholdet."""
     problemer = []
+    if PurePosixPath(sti).name.lower() == "eventor.json":
+        problemer.append(f"{sti}: eventor.json har Eventor-nøkkelen og skal aldri committes")
     if any(sti.startswith(m) for m in FORBUDTE_MAPPER):
         problemer.append(f"{sti}: skal aldri committes (rådata eller GPS-spor)")
     if fnmatch.fnmatch(PurePosixPath(sti).name.lower(), "*.env*"):
@@ -84,6 +181,8 @@ def sjekk_innhold(sti: str, tekst: str) -> list[str]:
         except json.JSONDecodeError as e:
             problemer.append(f"{sti}: ugyldig JSON ({e})")
         else:
+            if sti == KONKURRANSER:
+                problemer += sjekk_konkurranser(sti, data)
             sett = set()
             for forelder, nokkel in _nokler(data):
                 n = _normaliser(nokkel)

@@ -155,6 +155,27 @@ Skriptet lager:
 Det skriver også ut hvor stor andel av øktene som ble koblet. Ved forrige eksport var det
 94 %.
 
+### Konkurranser (Eventor)
+
+Resultater og strekktider hentes fra norsk Eventor:
+
+```
+.venv\Scripts\python scripts/hent_eventor.py            # oppdater og skriv
+.venv\Scripts\python scripts/hent_eventor.py --lagret   # uten å hente egne resultater på nytt
+```
+
+Mandagskjøringen gjør dette selv etter Garmin. Skriptet trenger en Eventor-nøkkel og
+person-id-en i `data/raw/eventor.json`: `{"api_nokkel": "…", "person_id": …}`. Nøkkelen er en
+klubbnøkkel og skal aldri publiseres. Svarene fra Eventor bufres i `data/raw/eventor/`, fordi
+de har navn og fødselsdato for alle løperne. Et løp hentes på nytt bare til resultatet er
+endelig (14 dager etter løpet).
+
+Skriptet lager `data/konkurranser.json` med egne resultater: plass, tid, prosent bak vinner,
+strekktider med referansetid per strekk, strekkfart og bomtid, lenker til Eventor og Livelox,
+og hvilke dagbokøkter løpet hører til. Andre løpere står aldri i fila, bare avledede tall
+(vinnertid, beste og referanse per strekk og antall startende). Stafetter står i en egen liste
+uten strekk.
+
 ## Struktur
 
 ```
@@ -166,6 +187,7 @@ scripts/
   konverter.py        Olympiatoppen-eksport → data/*.json
   konverter_garmin.py Garmin-eksport → data/garmin_*.json og spor
   hent_intervals.py   nye Garmin-data fra intervals.icu hver uke
+  hent_eventor.py     resultater og strekktider fra Eventor → data/konkurranser.json
   garmin_kobling.py   kobler Garmin-aktiviteter til dagbokøkter (+ test_garmin_kobling.py)
 web/                  nettsiden (Vite + React + TypeScript)
   assistent/          «Spør»: Vite-tillegg, agent, systemprompt og dagbokverktøy
@@ -191,8 +213,11 @@ ISO-uker regnes riktig, og at koblingen mot Garmin håndterer flere aktiviteter 
 ## Personvern
 
 Repoet er offentlig. Dagboknotatene, ukeskommentarene og helsedataene i `data/` ligger
-åpent, og det har Isak valgt selv. To ting holdes utenfor git:
+åpent, og det har Isak valgt selv. Tre ting holdes utenfor git:
 - **Rådataene** (`data/raw/`), fordi de inneholder blant annet e-post og fødselsdato.
+- **Eventor-svarene** (`data/raw/eventor/`), fordi de har navn og fødselsdato for andre
+  løpere. `data/konkurranser.json` har bare Isaks egne resultater og avledede tall, og
+  `personvern.py` stopper alle felt som ikke står på hvitelista.
 - **GPS-sporene** (`data/garmin_spor/`), fordi de viser hvor Isak bor. Den publiserte
   siden har derfor ikke kart og kurver per økt. De vises når siden kjøres lokalt.
 

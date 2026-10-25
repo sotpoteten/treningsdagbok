@@ -43,6 +43,7 @@ orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tek
 | `data/profil.json` | Navn, idrett, klubb og pulssoner. Uten e-post og fødselsdato. |
 | `data/garmin_*.json`, `data/garmin_spor/` | Garmin-data, se seksjonen «Garmin-data» under. |
 | `scripts/konverter_garmin.py`, `scripts/garmin_kobling.py` | Garmin-eksport → `data/garmin_*`. Krever `.venv` (Python 3.12 med `fitdecode` og `tzdata`). |
+| `data/konkurranser.json`, `scripts/hent_eventor.py` | Resultater og strekktider fra Eventor, se «Konkurranser (Eventor)» under. |
 | `scripts/hent_intervals.py` | Nye Garmin-data fra intervals.icu hver uke. Testet i `scripts/test_hent_intervals.py`. |
 
 Ved ny eksport legger du filene i `data/raw/` med navnene over og kjører
@@ -248,7 +249,9 @@ Dette skal aldri committes:
   Garmin-eksporten inneholder mye mer.
 - **GPS-spor** (`data/garmin_spor/`, `web/public/garmin_spor/`): de viser hvor Isak bor.
   `garmin_aktiviteter.json` har ingen koordinater.
-- **Nøkler og innstillinger** (`web/.env.local`).
+- **Nøkler og innstillinger** (`web/.env.local`, `data/raw/eventor.json`).
+- **Andre løpere:** `data/konkurranser.json` har bare Isaks egne resultater og avledede tall.
+  `personvern.py` har en hviteliste over feltene der og stopper alt annet.
 
 Alle tre er dekket av `.gitignore`. `python scripts/personvern.py` sjekker filene git sporer:
 forbudte stier, bilder utenfor `docs/bilder/`, og koordinater, e-post, fødselsdato og
@@ -332,6 +335,50 @@ regnes likt for hele dagboka, uansett kilde. Garmins egne versjoner (HRV-baselin
 - Varigheten må stemme innen maks(5 min, 15 %), og løpedistansen innen maks(1,5 km, 20 %).
 - Parene med minst avvik velges først.
 - `okter.json` endres ikke. Koblingen ligger som `okt_id` i `garmin_aktiviteter.json`.
+
+## Konkurranser (Eventor)
+
+`scripts/hent_eventor.py` henter fra norsk Eventor og skriver `data/konkurranser.json`
+(`{"individuelle": [...], "stafett": [...]}`). Den kjøres av `hent_olt.py` etter Garmin, og
+en feil der stopper ikke importen. Testene ligger i `scripts/test_hent_eventor.py`.
+
+- **Oppsett:** `data/raw/eventor.json` = `{"api_nokkel": "…", "person_id": …}`. Nøkkelen
+  er en klubbnøkkel og skal aldri publiseres.
+- **Kilder**, bufret urørt i `data/raw/eventor/` (de har navn og fødselsdato for alle):
+  - `results/person` **uten `top`** → `person.xml`. Med `top` dropper Eventor løp der Isak
+    ikke var blant de beste. Oppdateringen henter de siste 60 dagene og fletter inn per løp.
+  - `results/event?top=10` → `event_<id>.xml`. Gir de 10 beste i klassen, pluss alle uten
+    godkjent tid, til referansestrekkene.
+  - `events?eventIds=…&includeAttributes=true` → `info_<id>.xml`: `DisciplineId` (1 o-løp,
+    2 sykkel-o, 3 ski-o, 4 pre-o/tempO) og Livelox-id-en.
+  - Livelox' løpsside `Events/Show/<id>` → `data/raw/livelox/<id>.html`. Den gir klassens
+    Livelox-id via `externalIdentifier` = `<eventClassId>-<etappe>`, slik at lenken går rett
+    til klassen (`/Viewer/<løp>/<klasse>?classId=…`). Livelox hentes ett kall om gangen med
+    1,5 s pause. Uten treff lenkes det til løpet, og en feil stopper aldri kjøringen.
+  - Et løp hentes på nytt bare til fila er hentet minst 14 dager etter løpet.
+- **Lenker:** Eventor-lenken går til klassen (`ResultList?eventId=…&eventClassId=…`, og for
+  etapper i tillegg `&eventRaceId=…&overallResults=False`).
+- **Regler:**
+  - `vinnertid_s` = tid − `TimeDiff`, og `prosent_bak` = (tid − vinner) / vinner × 100.
+  - Strekktidene er differansen mellom sammenlagte tider. Strekk med manglende stempel eller
+    urimelig tid (≤ 0 eller lengre enn løpet) står uten tid.
+  - `ref_s` er snittet av de 3 beste på samme strekk (samme fra- og til-post) i klassen, og
+    `indeks = tid_s / ref_s`. Bom er indeks over 1,25 × medianen. `strekkfart` er medianen
+    uten bom, og `bomtid_s` er tid utover `ref_s × median` på bomstrekkene.
+  - **Disiplin:** Middle er Eventors standardverdi og står ikke i `raceDistance`. Når
+    distansen er Middle, overstyrer «sprint», «ultra» eller «lang» i løpsnavnet.
+    `natt` kommer fra `raceLightCondition`.
+  - **Ugyldige strekktider:** Er mer enn halvparten av de sammenlagte tidene høyere enn
+    totaltid + 2 s, settes `strekk_ugyldige`. Da er strekk, strekkfart og bomtid null, men
+    tiden gjelder. Det gjaldt NM sprint ski-o 2024-03-02, der hele klassen hadde ødelagte
+    tider. Løpere med ødelagte tider tas ikke med i referansen.
+  - Flerdagersløp gir én post per etappe. Ikke startet (DNS) og Eventors testløp tas ikke med.
+  - `okt_ider`: øktene samme dag som har flest ord felles med løpsnavnet, ellers løpsord
+    (NM, sprint, KO …), ellers økter med o-teknikk. Jogg, styrke, mølle o.l. kobles aldri, og
+    e-tempO kobles ikke.
+- **Resultat (okt. 2026):** 169 individuelle løp (127 o-løp, 30 ski-o, 12 e-tempO), 148 med
+  strekk, 153 koblet til økter. 11 stafetter. Løp i utlandet mangler fordi de ikke ligger i
+  norsk Eventor, og noen stafetter mangler fordi Eventor ikke har Isaks person-id der.
 
 ## Nettsiden (`web/`)
 

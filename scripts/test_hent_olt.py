@@ -130,5 +130,24 @@ class TestCommitData(unittest.TestCase):
             self.assertEqual(kjor.git("commit") + kjor.git("push"), [], feiler)
 
 
+class TestEventor(unittest.TestCase):
+    def test_konkurranser_committes_med_dataene(self):
+        self.assertIn("data/konkurranser.json", DATAFILER)
+
+    def test_feil_i_eventor_stopper_ikke_importen(self):
+        import hent_eventor
+        import sammenlign_eventor
+        with (mock.patch.object(sammenlign_eventor, "OPPSETT", mock.Mock(exists=lambda: True)),
+              mock.patch.object(hent_eventor, "oppdater", side_effect=RuntimeError("Eventor svarte 500")),
+              redirect_stdout(io.StringIO())):
+            self.assertEqual(hent_olt.hent_konkurranser(), "Eventor feilet: Eventor svarte 500")
+
+    def test_uten_oppsett_hoppes_eventor_over(self):
+        import sammenlign_eventor
+        with (mock.patch.object(sammenlign_eventor, "OPPSETT", mock.Mock(exists=lambda: False)),
+              redirect_stdout(io.StringIO())):
+            self.assertIn("ikke satt opp", hent_olt.hent_konkurranser())
+
+
 if __name__ == "__main__":
     unittest.main()

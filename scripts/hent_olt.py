@@ -47,9 +47,10 @@ ADMIN = "https://dagbok.olympiatoppen.no/minside?tab=admin"
 INNLOGGINGSFRIST = 10 * 60  # sekunder du har på deg til å logge inn
 LOGG = RAW / "hent_olt.log"
 VARSEL = RAW / "varsel.json"
-# Filene konverter.py og hent_intervals.py skriver. Bare disse committes av en planlagt kjøring.
+# Filene konverter.py, hent_intervals.py og hent_eventor.py skriver. Bare disse committes av en
+# planlagt kjøring.
 DATAFILER = ["data/okter.json", "data/blokker.csv", "data/dager.json", "data/uker.json", "data/profil.json",
-             "data/garmin_aktiviteter.json", "data/garmin_helse.json"]
+             "data/garmin_aktiviteter.json", "data/garmin_helse.json", "data/konkurranser.json"]
 NODE = r"C:\Program Files\nodejs"
 
 
@@ -275,6 +276,24 @@ def hent_garmin() -> str:
     return resultat
 
 
+# ── Resultater fra Eventor ──────────────────────────────
+
+def hent_konkurranser() -> str:
+    """Henter nye resultater fra Eventor etter Garmin, så løpene kan kobles til nye økter.
+    En feil her stopper ikke importen; den står i loggen og i varselet."""
+    try:
+        import hent_eventor
+        import sammenlign_eventor
+        if not sammenlign_eventor.OPPSETT.exists():
+            return "Eventor: ikke satt opp (data/raw/eventor.json)"
+        print("\nHenter resultater fra Eventor …")
+        resultat = hent_eventor.oppdater()
+    except Exception as e:
+        resultat = f"Eventor feilet: {str(e).splitlines()[0] if str(e) else type(e).__name__}"
+    print(resultat)
+    return resultat
+
+
 # ── Varsel, tester og commit (planlagt kjøring) ─────────
 
 def varsle(tittel: str, tekst: str, viktig: bool = False) -> None:
@@ -339,7 +358,7 @@ def commit_data(siste: str, nye: int) -> bool:
     if not kjor(["git", "status", "--porcelain", "--", *DATAFILER]).strip():
         return False
     kontroller()
-    melding = (f"Data: import fra OLT og Garmin til {siste}\n\n"
+    melding = (f"Data: import fra OLT, Garmin og Eventor til {siste}\n\n"
                f"{nye:+} økter i eksporten. Kjørt automatisk av scripts/hent_olt.py --planlagt.")
     # Med stiene etter -- tas bare datafilene med, selv om noe annet er endret eller lagt til.
     kjor(["git", "commit", "-m", melding, "--", *DATAFILER])
@@ -399,16 +418,18 @@ def main() -> int:
     print("De forrige filene ligger i data/raw/forrige/.\n")
     konverter(RAW, a.fra)
     garmin = hent_garmin()
-    garmin_feil = garmin.startswith("Garmin feilet")
+    eventor = hent_konkurranser()
+    feil_i_tillegg = garmin.startswith("Garmin feilet") or eventor.startswith("Eventor feilet")
+    tillegg = f"{garmin}. {eventor}"
 
     if a.planlagt:
         try:
             if commit_data(ny["siste"], nye):
                 varsle("Treningsdagbok oppdatert",
-                       f"{nye:+} økter, siste økt {ny['siste']}. {garmin}. Pushet til main.", viktig=garmin_feil)
+                       f"{nye:+} økter, siste økt {ny['siste']}. {tillegg}. Pushet til main.", viktig=feil_i_tillegg)
             else:
-                varsle("Treningsdagbok: ingen nye data", f"Siste økt er fortsatt {ny['siste']}. {garmin}.",
-                       viktig=garmin_feil)
+                varsle("Treningsdagbok: ingen nye data", f"Siste økt er fortsatt {ny['siste']}. {tillegg}.",
+                       viktig=feil_i_tillegg)
         except Exception as e:
             print(f"Ikke committet: {e}")
             varsle("Treningsdagbok: ikke committet",
