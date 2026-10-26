@@ -83263,7 +83263,7 @@
   "anaerob_te": 0.0,
   "belastning": 19,
   "har_spor": true,
-  "okt_id": null
+  "okt_id": "ee9ccc90-8bd0-f111-bf5b-002248dcdf59"
  },
  {
   "garmin_id": 24800712599,
@@ -83280,6 +83280,57 @@
   "anaerob_te": 0.0,
   "belastning": 43,
   "har_spor": true,
-  "okt_id": null
+  "okt_id": "e3fe7ead-8bd0-f111-bf5b-002248dcdf59"
+ },
+ {
+  "garmin_id": 24823644578,
+  "navn": "Falun Multisport",
+  "start_lokal": "2026-10-23T10:59:46",
+  "type": "multi_sport",
+  "varighet_min": 84.5,
+  "distanse_km": 8.8,
+  "snittpuls": null,
+  "makspuls": 152,
+  "hoydemeter": 73,
+  "kadens": null,
+  "aerob_te": 2.1,
+  "anaerob_te": 0.0,
+  "belastning": 32,
+  "har_spor": true,
+  "okt_id": "d30ef00c-8cd0-f111-bf5b-002248dcdf59"
+ },
+ {
+  "garmin_id": 24836321090,
+  "navn": "Falun Løping",
+  "start_lokal": "2026-10-24T14:22:56",
+  "type": "running",
+  "varighet_min": 83.0,
+  "distanse_km": 16.01,
+  "snittpuls": 135,
+  "makspuls": 161,
+  "hoydemeter": 181,
+  "kadens": 160,
+  "aerob_te": 2.8,
+  "anaerob_te": 0.0,
+  "belastning": 63,
+  "har_spor": true,
+  "okt_id": "bac34b2b-8cd0-f111-bf5b-002248dcdf59"
+ },
+ {
+  "garmin_id": 24846176131,
+  "navn": "Falun Løping",
+  "start_lokal": "2026-10-25T11:29:54",
+  "type": "running",
+  "varighet_min": 101.0,
+  "distanse_km": 19.51,
+  "snittpuls": 133,
+  "makspuls": 148,
+  "hoydemeter": 342,
+  "kadens": 161,
+  "aerob_te": 3.0,
+  "anaerob_te": 0.0,
+  "belastning": 80,
+  "har_spor": true,
+  "okt_id": "b329f24e-8cd0-f111-bf5b-002248dcdf59"
  }
 ]

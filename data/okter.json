@@ -184101,5 +184101,195 @@
     "minutter": 30
    }
   ]
+ },
+ {
+  "id": "ee9ccc90-8bd0-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-20",
+  "rekkefolge": 0,
+  "navn": "Stijogg",
+  "beskrivelse": null,
+  "kommentar": "Kort og rolig stijogg. Sliten i dag også så kun kort og rolig treningstur i skumringen.",
+  "kommentarer_andre": [],
+  "varighet_min": 35,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 35
+  },
+  "distanse_km": 5.5,
+  "loping_min": 35,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 35
+    },
+    "distanse_km": 5.5,
+    "minutter": 35
+   }
+  ]
+ },
+ {
+  "id": "e3fe7ead-8bd0-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-21",
+  "rekkefolge": 0,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Litt lenger treningstur i dag. Fortsatt sliten, men litt bedre enn siste dagene.",
+  "kommentarer_andre": [],
+  "varighet_min": 63,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 63
+  },
+  "distanse_km": 11.9,
+  "loping_min": 63,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 63
+    },
+    "distanse_km": 11.9,
+    "minutter": 63
+   }
+  ]
+ },
+ {
+  "id": "d30ef00c-8cd0-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-23",
+  "rekkefolge": 0,
+  "navn": "Løp + styrke",
+  "beskrivelse": null,
+  "kommentar": "Rolig økt med løp + styrke. Synes følelsen er bedre og bra for beina å få gjort litt styrke igjen. Litt skulderøvelser som jeg gjør til vanlig ellers også.",
+  "kommentarer_andre": [],
+  "varighet_min": 84,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 43
+  },
+  "distanse_km": 8.8,
+  "loping_min": 43,
+  "otek_min": 0,
+  "styrke_min": 41,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 36
+    },
+    "distanse_km": 7.3,
+    "minutter": 36
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 12,
+    "aktivitet": "Generell styrke",
+    "kategori": "styrke",
+    "soner": {},
+    "distanse_km": null,
+    "minutter": 41
+   },
+   {
+    "posisjon": 2,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 7
+    },
+    "distanse_km": 1.5,
+    "minutter": 7
+   }
+  ]
+ },
+ {
+  "id": "bac34b2b-8cd0-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-24",
+  "rekkefolge": 0,
+  "navn": "Løp",
+  "beskrivelse": null,
+  "kommentar": "Rolig løpetur på grus til Stångtjärn. Fint og rolig litt utpå ettermiddagen.",
+  "kommentarer_andre": [],
+  "varighet_min": 83,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 83
+  },
+  "distanse_km": 16.0,
+  "loping_min": 83,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 4,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 83
+    },
+    "distanse_km": 16,
+    "minutter": 83
+   }
+  ]
+ },
+ {
+  "id": "b329f24e-8cd0-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-25",
+  "rekkefolge": 0,
+  "navn": "Grus",
+  "beskrivelse": null,
+  "kommentar": "Fin og rolig grustur på militærområdet. Synes kroppen virker ganske normal nå og bihulene kjennes betydelig bedre enn de gjorde i starten av uka. Deilig og bra.",
+  "kommentarer_andre": [],
+  "varighet_min": 101,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 101
+  },
+  "distanse_km": 19.5,
+  "loping_min": 101,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 4,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 101
+    },
+    "distanse_km": 19.5,
+    "minutter": 101
+   }
+  ]
  }
 ]

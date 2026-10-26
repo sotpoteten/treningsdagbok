@@ -12588,5 +12588,31 @@
   "hrv_natt": 112,
   "sovn_min": 518,
   "sovnscore": 90
+ },
+ {
+  "dato": "2026-10-22",
+  "hvilepuls": 46,
+  "hrv_natt": 104
+ },
+ {
+  "dato": "2026-10-23",
+  "hvilepuls": 43,
+  "hrv_natt": 116,
+  "sovn_min": 595,
+  "sovnscore": 89
+ },
+ {
+  "dato": "2026-10-24",
+  "hvilepuls": 44,
+  "hrv_natt": 107,
+  "sovn_min": 535,
+  "sovnscore": 76
+ },
+ {
+  "dato": "2026-10-25",
+  "hvilepuls": 47,
+  "hrv_natt": 109,
+  "sovn_min": 510,
+  "sovnscore": 86
  }
 ]
