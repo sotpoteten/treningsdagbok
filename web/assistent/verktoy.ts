@@ -184,7 +184,9 @@ export function finnOkter(
 
 export const MAKS_RUNDER = 60
 
-function runderad(r: Runde) {
+/** Uten GPS (mølle, innendørs) er klokkas distanse og fart for upresise, så de utelates. */
+function runderad(r: Runde, gps: boolean) {
+  if (!gps) return { tid_s: Math.round(r.tid_s), snittpuls: r.puls, makspuls: r.makspuls }
   return {
     tid_s: Math.round(r.tid_s),
     dist_m: r.dist_m,
@@ -222,7 +224,7 @@ export function okt(dagbok: Dagbok, a: { id: string }, lesRunder: (garminId: num
       km: b.distanse_km ?? undefined,
     })),
     garmin: (dagbok.garminPerOkt.get(o.id) ?? []).map((g) => {
-      const runder = g.har_spor ? lesRunder(g.garmin_id) : null
+      const runder = g.har_spor || g.har_kurver ? lesRunder(g.garmin_id) : null
       return {
         start: g.start_lokal,
         type: g.type,
@@ -235,7 +237,7 @@ export function okt(dagbok: Dagbok, a: { id: string }, lesRunder: (garminId: num
         aerob_te: g.aerob_te,
         anaerob_te: g.anaerob_te,
         belastning: g.belastning,
-        runder: runder?.slice(0, MAKS_RUNDER).map(runderad),
+        runder: runder?.slice(0, MAKS_RUNDER).map((r) => runderad(r, g.har_spor)),
       }
     }),
   }

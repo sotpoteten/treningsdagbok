@@ -370,9 +370,21 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
   - Én serie i blekk, med enheten i tittelen («Puls (slag/min)», «Tempo (min/km)»).
   - Tette serier (1 punkt per 5 s eller per dag) tegnes 1,5 px. Det er et uttalt unntak
     fra linjeregelen på 2–2,5 px. Snittlinjer er 2,5 px.
-  - Kurvene glattes med median over 3 punkter. Verdier utenfor aksen blir hull, aldri
-    loddrette vegger.
-  - Tempoaksen er snudd, så raskere er høyere.
+  - Kurvene glattes med glidende median: puls over 3 punkter (ca. 15 s), tempo over 7
+    (ca. 35 s), siden GPS-farten er mer støyete. Vinduet går aldri over en pause. Verdier
+    utenfor aksen blir hull, aldri loddrette vegger.
+  - Tempo tegnes som fart (m/s) med tempoetiketter (m:ss): raskere er høyere uten at aksen
+    snus. Aksen går fra 0,5. til 99,5. persentil av farten i bevegelse, klemt til
+    2:30–20:00 min/km, så gåing og rolige pauser får plass. Etikettene er runde tempo
+    (3:00, 4:00, 5:00, 10:00 …) som ikke står for tett. Stillstand mens klokka går
+    (under 0,8 m/s) er hull.
+  - I øktpanelet er x tid i bevegelse (`data/bevegelsestid.ts`): pauser på klokka (hull
+    i sporet over 10 s) tas ut, linja brytes der, og en fotnote sier hvor mange pauser og
+    hvor mye tid som er tatt ut. Rundegrensene er svake loddrette rutelinjer, omregnet fra
+    klokketid. Rundetabellen viser klokkas egne rundetider.
+  - Uten GPS (mølle, innendørs; `har_kurver` uten `har_spor`) vises bare pulskurven, ingen
+    tempokurve og intet kart, og rundetabellen er uten km og tempo. En fotnote forklarer
+    at klokkas distanse og fart ikke er presise nok uten GPS.
 - **Bånd og merker:**
   - Normalområder (HRV-normalområdet, ACWR 0,8–1,3) er et flatt bånd i blekk med 8 % opasitet.
   - Syke og skadde dager markeres med en 2 px loddrett strek i stempelrødt (skadet

@@ -304,7 +304,7 @@ blokkerte innloggingen. De er fjernet, men ligger i git-historikken.
 
 | Fil | Innhold | Git |
 |---|---|---|
-| `data/garmin_aktiviteter.json` | Én post per Garmin-aktivitet fra 1.11.2019: tid, type, varighet, distanse, puls, høydemeter, kadens, Training Effect, belastning, `har_spor` og `okt_id` (koblet dagbokøkt). Ingen koordinater. | ja |
+| `data/garmin_aktiviteter.json` | Én post per Garmin-aktivitet fra 1.11.2019: tid, type, varighet, distanse, puls, høydemeter, kadens, Training Effect, belastning, `har_spor` (GPS), `har_kurver` (sporfila har puls, også mølle og andre økter uten GPS; settes på nytt uten FIT-dekoding med `konverter_garmin.py --sporflagg`) og `okt_id` (koblet dagbokøkt). Ingen koordinater. | ja |
 | `data/garmin_helse.json` | Én post per dag med det som er målt: `hvilepuls`, `hrv_natt`, `sovn_min` og `sovnscore`. | ja |
 | `data/garmin_spor/<garmin_id>.json` | GPS-spor, puls, fart, høyde og distanse, tynnet til hvert 5. sekund (kolonnevis), samt runder. Avslører hvor Isak bor. | **nei**, bare i utgivelsen «spor» |
 

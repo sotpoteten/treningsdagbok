@@ -16,6 +16,7 @@ Lager:
 
 Bruk (fra prosjektmappen, krever .venv med fitdecode og tzdata):
     .venv\\Scripts\\python scripts/konverter_garmin.py
+    .venv\\Scripts\\python scripts/konverter_garmin.py --sporflagg   # bare har_spor/har_kurver fra sporfilene
 
 Første kjøring dekoder rundt 5 000 aktivitetsfiler og tar en stund. Senere kjøringer
 bruker bufferen og går raskt.
@@ -101,6 +102,7 @@ def les_aktiviteter():
                 "anaerob_te": rund(a.get("anaerobicTrainingEffect")),
                 "belastning": a.get("activityTrainingLoad") and round(a["activityTrainingLoad"]),
                 "har_spor": False,
+                "har_kurver": False,
                 "okt_id": None,
             }
         )
@@ -289,9 +291,6 @@ def gaa_gjennom_fit(aktiviteter):
         if post.get("hrv"):
             hrv[post["hrv"]["dato"]] = post["hrv"]
 
-    for a in aktiviteter:
-        f = SPOR / f"{a['garmin_id']}.json"
-        a["har_spor"] = f.exists() and '"lat":' in f.read_text(encoding="utf-8")
     typer = Counter(p["type"] for p in indeks.values())
     print("  FIT-filer etter type:", dict(typer.most_common(8)))
     return hrv
@@ -377,6 +376,44 @@ def koble_okter(aktiviteter):
     print("  Garmin-aktiviteter uten økt, etter type:", dict(ukoblet.most_common(6)))
 
 
+# ── Flagg fra sporfilene ────────────────────────────────
+
+
+def sporflagg(spor):
+    """(har_spor, har_kurver) for en sporfil (eller None). har_spor betyr GPS-spor (kart);
+    har_kurver betyr at fila har puls, så kurvene kan vises også uten GPS (mølle, innendørs)."""
+    p = (spor or {}).get("punkter") or {}
+    har_spor = any(v is not None for v in p.get("lat") or [])
+    har_kurver = any(v is not None for v in p.get("puls") or [])
+    return har_spor, har_kurver
+
+
+def med_sporflagg(a, har_spor, har_kurver):
+    """Kopi av aktiviteten med flaggene satt, alltid i samme feltrekkefølge (har_kurver rett
+    etter har_spor), så en full konvertering og --sporflagg gir like filer."""
+    ut = {}
+    for k, v in a.items():
+        if k == "har_kurver":
+            continue
+        if k == "har_spor":
+            ut["har_spor"] = har_spor
+            ut["har_kurver"] = har_kurver
+        else:
+            ut[k] = v
+    return ut
+
+
+def sett_sporflagg(aktiviteter, mappe=None):
+    """Setter har_spor og har_kurver ut fra sporfilene i mappa (standard data/garmin_spor/)."""
+    mappe = mappe or SPOR
+    ut = []
+    for a in aktiviteter:
+        f = mappe / f"{a['garmin_id']}.json"
+        spor = json.loads(f.read_text(encoding="utf-8")) if f.exists() else None
+        ut.append(med_sporflagg(a, *sporflagg(spor)))
+    return ut
+
+
 # ── Hovedprogram ────────────────────────────────────────
 
 
@@ -396,7 +433,16 @@ def behold_nyere(aktiviteter, helse):
 
 
 def main():
-    argparse.ArgumentParser(description="Konverterer Garmin-eksporten i data/raw/garmin/").parse_args()
+    parser = argparse.ArgumentParser(description="Konverterer Garmin-eksporten i data/raw/garmin/")
+    parser.add_argument("--sporflagg", action="store_true",
+                        help="bare sett har_spor og har_kurver i garmin_aktiviteter.json på nytt fra sporfilene")
+    if parser.parse_args().sporflagg:
+        aktiviteter = sett_sporflagg(les_json(UT / "garmin_aktiviteter.json"))
+        skriv_json(UT / "garmin_aktiviteter.json", aktiviteter)
+        print(f"garmin_aktiviteter.json: {len(aktiviteter)} aktiviteter, "
+              f"{sum(a['har_spor'] for a in aktiviteter)} med GPS-spor, "
+              f"{sum(a['har_kurver'] for a in aktiviteter)} med kurver")
+        return
 
     if not (RAW / "DI-Connect-Fitness").exists():
         sys.exit("Fant ikke data/raw/garmin/DI-Connect-Fitness. Kopier DI_CONNECT/ fra eksporten til data/raw/garmin/.")
@@ -414,6 +460,7 @@ def main():
     for a in aktiviteter:
         del a["start_gmt_ms"]
     aktiviteter, helse = behold_nyere(aktiviteter, helse)
+    aktiviteter = sett_sporflagg(aktiviteter)
     koble_okter(aktiviteter)
 
     skriv_json(UT / "garmin_aktiviteter.json", aktiviteter)
@@ -424,7 +471,9 @@ def main():
 
     print("\nSkrev:")
     med_spor = sum(a['har_spor'] for a in aktiviteter)
-    print(f"  garmin_aktiviteter.json: {len(aktiviteter)} aktiviteter, {med_spor} med GPS-spor")
+    med_kurver = sum(a['har_kurver'] for a in aktiviteter)
+    print(f"  garmin_aktiviteter.json: {len(aktiviteter)} aktiviteter, {med_spor} med GPS-spor, "
+          f"{med_kurver} med kurver")
     print(f"  garmin_helse.json: {len(helse)} dager – hvilepuls {antall('hvilepuls')}, HRV {antall('hrv_natt')}, "
           f"søvn {antall('sovn_min')}, søvnscore {antall('sovnscore')}")
     print(f"  garmin_spor/: {len(list(SPOR.glob('*.json')))} filer")

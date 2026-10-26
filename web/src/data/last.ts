@@ -48,6 +48,16 @@ export function harSpor(dagbok: Dagbok, a: GarminAktivitet): boolean {
   return a.har_spor && (!dagbok.sporFinnes || dagbok.sporFinnes.has(a.garmin_id))
 }
 
+/** Om sporfila kan hentes her: GPS-spor, eller bare puls (mølle og innendørs). */
+export function harSporfil(sporFinnes: Set<number> | null, a: GarminAktivitet): boolean {
+  return (a.har_spor || !!a.har_kurver) && (!sporFinnes || sporFinnes.has(a.garmin_id))
+}
+
+/** Om aktiviteten har kurver (puls) som kan vises her, med eller uten GPS. */
+export function harKurver(dagbok: Dagbok, a: GarminAktivitet): boolean {
+  return !!a.har_kurver && harSporfil(dagbok.sporFinnes, a)
+}
+
 /** Valgfri fil: gir null hvis den mangler (Vite kan svare med index.html i stedet for 404). */
 async function hentValgfri<T>(fil: string): Promise<T | null> {
   try {

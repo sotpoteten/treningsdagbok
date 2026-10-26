@@ -113,6 +113,44 @@ class SporFraFit(unittest.TestCase):
         self.assertEqual(spor["runder"], [])
 
 
+class Sporflagg(unittest.TestCase):
+    """har_spor = GPS (kart), har_kurver = puls i sporfila (kurver også uten GPS)."""
+
+    def test_flagg(self):
+        self.assertEqual(kg.sporflagg(None), (False, False))
+        self.assertEqual(kg.sporflagg({"punkter": {"t": [0, 5], "puls": [120, 121]}, "runder": []}), (False, True))
+        gps = {"t": [0], "lat": [63.4], "lon": [10.4]}
+        self.assertEqual(kg.sporflagg({"punkter": {**gps, "puls": [130]}}), (True, True))
+        self.assertEqual(kg.sporflagg({"punkter": {"t": [0], "lat": [63.4], "lon": [10.4]}}), (True, False))
+        self.assertEqual(kg.sporflagg({"punkter": {"t": [0, 5], "puls": [None, None]}}), (False, False))
+
+    def test_sett_fra_mappe_i_fast_rekkefolge(self):
+        with tempfile.TemporaryDirectory() as d:
+            mappe = Path(d)
+            def skriv(navn, punkter):
+                (mappe / navn).write_text(json.dumps({"punkter": punkter}), encoding="utf-8")
+            skriv("1.json", {"t": [0], "puls": [100]})
+            skriv("2.json", {"t": [0], "lat": [1.0], "lon": [2.0], "puls": [100]})
+            gamle = [
+                {"garmin_id": 1, "har_spor": True, "okt_id": None},
+                {"garmin_id": 2, "har_spor": False, "har_kurver": False, "okt_id": "x"},
+                {"garmin_id": 3, "okt_id": None, "har_spor": True, "har_kurver": True},
+            ]
+            nye = kg.sett_sporflagg(gamle, mappe)
+        self.assertEqual([(a["har_spor"], a["har_kurver"]) for a in nye], [(False, True), (True, True), (False, False)])
+        self.assertEqual(list(nye[0]), ["garmin_id", "har_spor", "har_kurver", "okt_id"])
+        self.assertEqual(list(nye[1]), ["garmin_id", "har_spor", "har_kurver", "okt_id"])
+        self.assertEqual(gamle[0]["har_spor"], True)  # originalen endres ikke
+
+    def test_aktivitetsfila_har_flaggene(self):
+        fil = ROT / "data" / "garmin_aktiviteter.json"
+        if not fil.exists():
+            self.skipTest("data/garmin_aktiviteter.json finnes ikke")
+        for a in json.loads(fil.read_text(encoding="utf-8")):
+            self.assertIsInstance(a.get("har_kurver"), bool, a["garmin_id"])
+            self.assertIsInstance(a.get("har_spor"), bool, a["garmin_id"])
+
+
 class IngenKoordinater(unittest.TestCase):
     """garmin_aktiviteter.json er offentlig og skal aldri inneholde posisjoner."""
 

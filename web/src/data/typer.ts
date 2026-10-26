@@ -104,7 +104,10 @@ export interface GarminAktivitet {
   aerob_te: number | null
   anaerob_te: number | null
   belastning: number | null
+  /** GPS-spor (kart). */
   har_spor: boolean
+  /** Sporfila har puls, så kurvene kan vises også uten GPS (mølle, innendørs). */
+  har_kurver?: boolean
   okt_id: string | null
 }
 

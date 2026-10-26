@@ -1,6 +1,9 @@
 import { Maximize2, Minimize2 } from 'lucide-react'
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import { bevegelsestid, glidendeMedian } from '../data/bevegelsestid'
+import { bevegelsesfart, fartsdomene, tempomerker, tilFart, tilMinPerKm } from '../data/fartsakse'
 import { km, tempo, varighetLang } from '../data/format'
+import { harSporfil } from '../data/last'
 import type { GarminAktivitet, GarminSpor } from '../data/typer'
 import { Segment } from './graf/felles'
 import { iNorge, midtpunkt } from './kart/omrade'
@@ -37,29 +40,23 @@ function klokke(sekunder: number) {
   return `${t ? `${t}:` : ''}${mm}:${String(sek).padStart(2, '0')}`
 }
 
+/** Merker for tid i bevegelse: «m:ss» under en time, ellers «t:mm». */
 function tidsmerker([fra, til]: [number, number]) {
   const lengde = til - fra
   const steg = [300, 600, 900, 1800, 3600, 7200].find((s) => lengde / s <= 6) ?? 7200
+  const timer = til >= 3600
   const ut = []
-  for (let s = Math.ceil(fra / steg) * steg; s <= til; s += steg) ut.push({ x: s, etikett: s ? `${Math.round(s / 60)}′` : '0' })
+  for (let s = Math.ceil(fra / steg) * steg; s <= til; s += steg) {
+    const m = Math.round(s / 60)
+    ut.push({ x: s, etikett: timer ? `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}` : `${m}:00` })
+  }
   return ut
 }
 
 /** m/s → min/km, eller null når farten er så lav at det er stopp. */
-const minPerKm = (v: number | null) => (v != null && v > 0.8 ? 1000 / 60 / v : null)
-
-/**
- * Glidende median over `n` punkter (oddetall), så GPS-støy ikke skjuler forløpet.
- * Puls bruker 3 punkter (ca. 15 s), tempo 7 (ca. 35 s), siden GPS-farten er mer støyete.
- */
-function median(v: (number | null)[], n: number): (number | null)[] {
-  const h = (n - 1) / 2
-  return v.map((x, i) => {
-    if (x == null) return null
-    const vindu = v.slice(Math.max(0, i - h), i + h + 1).filter((y): y is number => y != null)
-    vindu.sort((a, b) => a - b)
-    return vindu[Math.floor(vindu.length / 2)]
-  })
+const minPerKm = (v: number | null) => {
+  const f = bevegelsesfart(v)
+  return f != null ? tilMinPerKm(f) : null
 }
 
 /**
@@ -91,7 +88,8 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
 
   // Sporfilene ligger ikke i repoet. Den publiserte siden har dem bare når utgivelsen «spor»
   // finnes; lista sporFinnes sier hvilke som er med.
-  const kanHente = a.har_spor && (!sporFinnes || sporFinnes.has(a.garmin_id))
+  // Uten GPS (mølle, innendørs) har sporfila bare puls, og den hentes for pulskurven.
+  const kanHente = harSporfil(sporFinnes, a)
   const [hentet, setHentet] = useState<{ id: number; spor: GarminSpor | null } | null>(null)
   const ferdig = hentet?.id === a.garmin_id
   const spor = kanHente && ferdig ? hentet.spor : null
@@ -120,14 +118,28 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   }, [stor])
 
   const p = spor?.punkter
-  // Tempo og puls glattes litt; tempo utenfor aksen blir hull i stedet for loddrette vegger.
-  const { temposerie, tempoakse } = useMemo(() => {
-    const t = p?.fart ? median(p.fart.map(minPerKm), 7) : null
-    if (!t) return { temposerie: null, tempoakse: [3, 7] as [number, number] }
-    const akse = tempodomene(t)
-    return { temposerie: t.map((v) => (v != null && v >= akse[0] && v <= akse[1] ? v : null)), tempoakse: akse }
-  }, [p])
-  const pulsserie = useMemo(() => (p?.puls ? median(p.puls, 3) : null), [p])
+  // Uten GPS er klokkas distanse og fart for upresise: ingen tempokurve, og runder uten km og tempo.
+  const gps = a.har_spor
+  // Pausene på klokka tas ut av tidsaksen; x er tid i bevegelse, med samme indeks som sporet.
+  const bev = useMemo(() => (p ? bevegelsestid(p.t) : null), [p])
+  const brudd = useMemo(() => bev?.pauser.map((q) => q.indeks) ?? [], [bev])
+  // Farten glattes over 7 punkter (ca. 35 s) i bevegelse, aldri over en pause. Stillstand og
+  // fart utenfor aksen blir hull i stedet for loddrette vegger.
+  const { fartserie, fartsakse } = useMemo(() => {
+    const f = gps && p?.fart ? glidendeMedian(p.fart.map(bevegelsesfart), 7, brudd) : null
+    if (!f) return { fartserie: null, fartsakse: [tilFart(7), tilFart(3)] as [number, number] }
+    const akse = fartsdomene(f)
+    return { fartserie: f.map((v) => (v != null && v >= akse[0] && v <= akse[1] ? v : null)), fartsakse: akse }
+  }, [p, brudd, gps])
+  const tempoMerker = useMemo(() => tempomerker(fartsakse).map(tilFart), [fartsakse])
+  // Puls glattes over 3 punkter (ca. 15 s), heller ikke over en pause.
+  const pulsserie = useMemo(() => (p?.puls ? glidendeMedian(p.puls, 3, brudd) : null), [p, brudd])
+  // Rundegrensene står i klokketid og regnes om til tid i bevegelse.
+  const rundelinjer = useMemo(
+    () => (bev && spor && spor.runder.length > 1 ? spor.runder.slice(1).map((r) => bev.tilBevegelse(r.start_s)) : undefined),
+    [bev, spor],
+  )
+  const tempoTekst = (i: number) => (fartserie?.[i] != null ? `${tempo(tilMinPerKm(fartserie[i]!))} /km` : null)
   const rundetempoMedian = useMemo(() => {
     const v = (spor?.runder ?? [])
       .map((r) => minPerKm(r.fart ?? (r.dist_m && r.tid_s ? r.dist_m / r.tid_s : null)))
@@ -183,13 +195,20 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
       {laster && <p className="fotnote">Laster spor …</p>}
       {!laster && !spor && (
         <p className="fotnote">
-          {!a.har_spor
+          {!a.har_spor && !a.har_kurver
             ? 'GPS-spor og kurver er ikke tilgjengelige for denne økta.'
             : !kanHente
-              ? // Aktiviteten har spor, men sporfila finnes ikke her.
-                'GPS-sporet mangler for denne økta.'
-              : 'GPS-sporet kunne ikke lastes.'}
+              ? // Aktiviteten har spor eller puls, men sporfila finnes ikke her.
+                a.har_spor
+                ? 'GPS-sporet mangler for denne økta.'
+                : 'Pulskurven mangler for denne økta.'
+              : a.har_spor
+                ? 'GPS-sporet kunne ikke lastes.'
+                : 'Pulskurven kunne ikke lastes.'}
         </p>
+      )}
+      {spor && !gps && (
+        <p className="fotnote">Uten GPS er ikke klokkas distanse og fart presise nok til å vises. Farten står ofte i dagboknotatet.</p>
       )}
 
       {harKart && p && (
@@ -214,48 +233,60 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
         </div>
       )}
 
-      {pulsserie && pulsserie.some((v) => v != null) && p && (
+      {bev && ((pulsserie && pulsserie.some((v) => v != null)) || (erLop && fartserie && fartserie.some((v) => v != null))) && (
+        <p className="fotnote kurveforklaring">
+          Kurvene viser tid i bevegelse.
+          {bev.pauser.length > 0 &&
+            ` ${bev.pauser.length === 1 ? 'Én pause' : `${bev.pauser.length} pauser`} på klokka er tatt ut (${klokke(bev.tattUt_s)}).`}
+        </p>
+      )}
+
+      {pulsserie && pulsserie.some((v) => v != null) && p && bev && (
         <>
           <h4 className="kurvetittel">Puls (slag/min)</h4>
           <Tidsserie
-            x={p.t}
+            x={bev.x}
             serier={[{ id: 'puls', navn: 'Puls', verdier: pulsserie, klasse: 'ts-puls', form: 'linje' }]}
             hoyde={150}
+            brudd={brudd}
+            xLinjer={rundelinjer}
             xMerker={tidsmerker}
             yFormat={(v) => `${v}`}
             aktiv={aktiv}
             onAktiv={setAktiv}
-            beskrivelse="Puls gjennom økta"
+            beskrivelse="Puls gjennom økta, mot tid i bevegelse"
             tips={(i) => (
               <>
-                <b>{klokke(p.t[i])}</b>
+                <b>{klokke(bev.x[i])}</b>
                 <span className="tips-tall">{p.puls?.[i] ?? '–'} slag/min</span>
-                {temposerie?.[i] != null && <span className="tips-rad">{tempo(temposerie[i]!)} /km</span>}
-                {p.dist?.[i] != null && <span className="tips-rad dempet">{km(p.dist[i]! / 1000)} km</span>}
+                {tempoTekst(i) && <span className="tips-rad">{tempoTekst(i)}</span>}
+                {gps && p.dist?.[i] != null && <span className="tips-rad dempet">{km(p.dist[i]! / 1000)} km</span>}
               </>
             )}
           />
         </>
       )}
 
-      {erLop && temposerie && temposerie.some((v) => v != null) && p && (
+      {erLop && fartserie && fartserie.some((v) => v != null) && p && bev && (
         <>
           <h4 className="kurvetittel">Tempo (min/km)</h4>
           <Tidsserie
-            x={p.t}
-            serier={[{ id: 'tempo', navn: 'Tempo', verdier: temposerie, klasse: 'ts-tempo', form: 'linje' }]}
+            x={bev.x}
+            serier={[{ id: 'tempo', navn: 'Tempo', verdier: fartserie, klasse: 'ts-tempo', form: 'linje' }]}
             hoyde={150}
-            snuY
-            yDomene={tempoakse}
+            yDomene={fartsakse}
+            yMerker={tempoMerker}
+            brudd={brudd}
+            xLinjer={rundelinjer}
             xMerker={tidsmerker}
-            yFormat={(v) => tempo(v)}
+            yFormat={(v) => tempo(tilMinPerKm(v))}
             aktiv={aktiv}
             onAktiv={setAktiv}
-            beskrivelse="Tempo i min/km gjennom økta"
+            beskrivelse="Tempo i min/km gjennom økta, mot tid i bevegelse. Raskere er høyere"
             tips={(i) => (
               <>
-                <b>{klokke(p.t[i])}</b>
-                <span className="tips-tall">{temposerie[i] != null ? `${tempo(temposerie[i]!)} /km` : 'stopp'}</span>
+                <b>{klokke(bev.x[i])}</b>
+                <span className="tips-tall">{tempoTekst(i) ?? 'stopp'}</span>
                 {p.puls?.[i] != null && <span className="tips-rad">{p.puls[i]} slag/min</span>}
               </>
             )}
@@ -264,7 +295,9 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
       )}
 
       {spor && spor.runder.length > 1 && (
-        <p className="fotnote">Runder i grått er pauser eller rolige drag.</p>
+        <p className="fotnote">
+          {gps && 'Runder i grått er pauser eller rolige drag. '}De tynne loddrette strekene i kurvene er rundegrensene.
+        </p>
       )}
       {spor && spor.runder.length > 1 && (
         <table className="blokktabell runder">
@@ -272,8 +305,8 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
             <tr>
               <th scope="col">Runde</th>
               <th scope="col">Tid</th>
-              <th scope="col">Km</th>
-              <th scope="col">Tempo</th>
+              {gps && <th scope="col">Km</th>}
+              {gps && <th scope="col">Tempo</th>}
               <th scope="col">Puls (maks)</th>
             </tr>
           </thead>
@@ -281,13 +314,14 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
             {spor.runder.map((r, i) => {
               // Noen klokker lagrer ikke snittfart per runde; regn den ut fra distanse og tid.
               const tp = minPerKm(r.fart ?? (r.dist_m && r.tid_s ? r.dist_m / r.tid_s : null))
-              const hvile = erHvilerunde(r, tp, rundetempoMedian)
+              // Uten GPS er distanse og fart for usikre til å si hvilke runder som er hvile.
+              const hvile = gps && erHvilerunde(r, tp, rundetempoMedian)
               return (
                 <tr key={i} className={hvile ? 'hvile' : undefined} onMouseEnter={() => setAktiv(nermesteIndeks(p!.t, r.start_s + r.tid_s / 2))} onMouseLeave={() => setAktiv(null)}>
                   <td>{i + 1}</td>
                   <td>{klokke(r.tid_s)}</td>
-                  <td>{r.dist_m ? km(r.dist_m / 1000) : ''}</td>
-                  <td>{erLop && tp ? tempo(tp) : ''}</td>
+                  {gps && <td>{r.dist_m ? km(r.dist_m / 1000) : ''}</td>}
+                  {gps && <td>{erLop && tp ? tempo(tp) : ''}</td>}
                   <td>
                     {r.puls ?? ''}
                     {r.makspuls ? <span className="dempet-tall"> ({r.makspuls})</span> : null}
@@ -303,18 +337,6 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
       </p>
     </section>
   )
-}
-
-/**
- * Y-område for tempo: fra 2. persentil, og maks 70 % tregere enn det,
- * så gåpauser mellom intervaller ikke strekker aksen.
- */
-function tempodomene(v: (number | null)[]): [number, number] {
-  const s = v.filter((x): x is number => x != null).sort((a, b) => a - b)
-  if (!s.length) return [3, 7]
-  const rask = s[Math.floor(s.length * 0.02)]
-  const treg = Math.min(s[Math.floor(s.length * 0.95)], rask * 1.7)
-  return [rask - 0.15, treg + 0.15]
 }
 
 /** Pause eller rolig drag: nesten ingen distanse, eller mye tregere enn midtrunden. */

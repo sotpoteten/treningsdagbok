@@ -77,6 +77,14 @@ describe('okt', () => {
     expect(svar.garmin.find((g) => g.runder)?.runder?.[0]).toMatchObject({ tid_s: 300, tempo_min_km: 5 })
   })
 
+  it('gir runder uten distanse og tempo når økta mangler GPS', () => {
+    const utenGps = dagbok.garmin.find((g) => g.okt_id && !g.har_spor && g.har_kurver)
+    if (!utenGps) return
+    const svar = okt(dagbok, { id: utenGps.okt_id! }, () => [{ start_s: 0, tid_s: 300, dist_m: 1000, puls: 150, makspuls: 160, fart: 1000 / 300 }])
+    const runde = svar.garmin.find((g) => g.start === utenGps.start_lokal)?.runder?.[0]
+    expect(runde).toEqual({ tid_s: 300, snittpuls: 150, makspuls: 160 })
+  })
+
   it('sier fra om ukjent id', () => {
     expect(() => okt(dagbok, { id: 'finnes-ikke' })).toThrow(Verktoyfeil)
   })

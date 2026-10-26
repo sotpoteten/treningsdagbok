@@ -29,7 +29,7 @@ from io import BytesIO
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from konverter_garmin import SPOR, UT, dekod, koble_okter, les_json, rund, skriv_json, spor_fra_fit
+from konverter_garmin import SPOR, UT, dekod, koble_okter, les_json, rund, skriv_json, spor_fra_fit, sporflagg
 
 ROOT = Path(__file__).resolve().parent.parent
 NOKKEL = ROOT / "data/raw/intervals.json"
@@ -115,6 +115,7 @@ def aktivitet_fra_fit(garmin_id: int, navn: str | None, start_lokal: str, data: 
         raise Feil(f"aktivitet {garmin_id} har ingen økt i FIT-fila")
     okt = okter[0]
     _, spor = spor_fra_fit(data)
+    har_spor, har_kurver = sporflagg(spor)
     typ = "multi_sport" if len(okter) > 1 else aktivitetstype(okt.get("sport"), okt.get("sub_sport"))
     kadens = okt.get("avg_running_cadence") or okt.get("avg_cadence")
     if kadens is not None and typ.endswith("running"):
@@ -140,7 +141,8 @@ def aktivitet_fra_fit(garmin_id: int, navn: str | None, start_lokal: str, data: 
         "aerob_te": rund(okt.get("total_training_effect")),
         "anaerob_te": rund(okt.get("total_anaerobic_training_effect")),
         "belastning": round(last) if last else None,
-        "har_spor": bool(spor and "lat" in spor["punkter"]),
+        "har_spor": har_spor,
+        "har_kurver": har_kurver,
         "okt_id": None,
     }
     return post, spor
