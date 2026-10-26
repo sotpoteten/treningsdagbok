@@ -12,10 +12,12 @@ import sys
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hent_eventor
 import personvern
 from hent_eventor import (
     disiplin,
@@ -370,6 +372,75 @@ class TestBuffer(unittest.TestCase):
         rot = ET.fromstring(flett_person(gammel, ny))
         self.assertEqual(sorted(rl.findtext("Event/EventId") for rl in rot), ["1", "2", "3"])
         self.assertEqual([rl.findtext("Event/Name") for rl in rot if rl.findtext("Event/EventId") == "1"], ["ny"])
+
+
+class TestOppdater(unittest.TestCase):
+    """oppdater() med hent() byttet ut, så ingen kall går ut på nettet."""
+
+    def setUp(self):
+        mappe = tempfile.TemporaryDirectory()
+        self.addCleanup(mappe.cleanup)
+        ra = Path(mappe.name) / "eventor"
+        ra.mkdir()
+        (ra / "person.xml").write_bytes(PERSON_XML)
+        for eid in ("100", "200", "300", "400"):  # bufret og endelig (hentet lenge etter løpet)
+            (ra / f"info_{eid}.xml").write_text(f"<Event><EventId>{eid}</EventId></Event>")
+        for eid in ("200", "400"):
+            (ra / f"event_{eid}.xml").write_text("<ResultList/>")
+        (ra / "event_100.xml").write_bytes(EVENT_XML)
+        okter = Path(mappe.name) / "okter.json"
+        okter.write_text("[]")
+        self.ra, self.ut = ra, Path(mappe.name) / "konkurranser.json"
+        # Nytt løp for 30 dager siden: innenfor de 60 dagene, men alt endelig.
+        self.dato = (date.today() - timedelta(days=30)).isoformat()
+        self.kall = []
+        for navn, verdi in {"RA": ra, "PERSON": ra / "person.xml", "PERSON_START": ra / "finnes_ikke.xml",
+                            "OKTER": okter, "UT": self.ut, "LIVELOX_RA": Path(mappe.name) / "livelox",
+                            "PAUSE": 0, "hent": self.falsk_hent,
+                            "les_oppsett": lambda: ("nokkel", MEG)}.items():
+            patcher = mock.patch.object(hent_eventor, navn, verdi)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        patcher = mock.patch.object(hent_eventor, "hent_livelox_side", side_effect=AssertionError("Livelox"))
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def nytt_lop(self) -> str:
+        return (lop("500", "Nyløpet", race("501", self.dato))
+                + klasse("1", "H 21-", f"<PersonResult>{person(MEG, 'Isak', 'Eksempel')}{EGET}</PersonResult>"))
+
+    def falsk_hent(self, sti, nokkel, **param):
+        self.kall.append((sti, param))
+        if sti == "/results/person":
+            return ("<ResultListList><ResultList>" + lop("100", "Testløpet", race("101", "2025-06-14"))
+                    + "</ResultList><ResultList>" + self.nytt_lop() + "</ResultList></ResultListList>").encode()
+        if sti == "/events":
+            return f"<EventList><Event><EventId>{param['eventIds']}</EventId></Event></EventList>".encode()
+        if sti == "/results/event":
+            return ("<ResultList>" + self.nytt_lop() + "</ResultList>").encode()
+        raise AssertionError(sti)
+
+    def test_henter_egne_resultater_hver_gang(self):
+        forste = hent_eventor.oppdater()
+        self.assertEqual([k[0] for k in self.kall], ["/results/person", "/events", "/results/event"])
+        param = self.kall[0][1]
+        self.assertEqual(param["fromDate"], (date.today() - timedelta(days=60)).isoformat())
+        self.assertEqual(param["personId"], MEG)
+        self.assertIn("hentet egne resultater (1 kall: 2 løp siste 60 dager, 1 nye)", forste)
+        self.assertIn("2 kall for løpsdata (1 løpsinfo, 1 resultatlister)", forste)
+        flettet = {rl.findtext("Event/EventId") for rl in ET.fromstring((self.ra / "person.xml").read_bytes())}
+        self.assertEqual(flettet, {"100", "200", "300", "400", "500"})
+        self.assertIn(500, {p["eventor_id"] for p in json.loads(self.ut.read_text("utf-8"))["individuelle"]})
+
+        self.kall.clear()
+        andre = hent_eventor.oppdater()
+        self.assertEqual([k[0] for k in self.kall], ["/results/person"])  # bufret løp gir ingen kall
+        self.assertIn("(1 kall: 2 løp siste 60 dager, 0 nye), 0 kall for løpsdata", andre)
+
+    def test_lagret_gir_ingen_kall(self):
+        svar = hent_eventor.oppdater(hent_person_pa_nytt=False)
+        self.assertEqual(self.kall, [])
+        self.assertIn("egne resultater fra bufferen (0 kall), 0 kall for løpsdata", svar)
 
 
 if __name__ == "__main__":

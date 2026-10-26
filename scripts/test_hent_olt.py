@@ -46,10 +46,14 @@ class FalskKjor:
         self.gren, self.endret, self.feiler = gren, endret, feiler
         self.kommandoer = []
 
-    def __call__(self, kommando, mappe=None):
+    def __call__(self, kommando, mappe=None, med_stderr=False):
         self.kommandoer.append(list(kommando))
         if self.feiler and self.feiler in kommando:
             raise Avbrutt(f"«{' '.join(kommando)}» feilet")
+        if "unittest" in kommando:
+            return "....\n" + "-" * 70 + "\nRan 42 tests in 1.2s\n\nOK\n"
+        if kommando == ["npm.cmd", "test"]:
+            return " Test Files  12 passed (12)\n      Tests  \x1b[32m187 passed\x1b[39m (187)\n"
         if kommando[:2] == ["git", "rev-parse"]:
             return self.gren + "\n"
         if kommando[:2] == ["git", "status"]:
@@ -121,6 +125,20 @@ class TestCommitData(unittest.TestCase):
         with self.assertRaises(Avbrutt):
             self.kjor_commit(kjor, problemer=["data/okter.json: koordinat i feltet «lat»"])
         self.assertEqual(kjor.git("commit") + kjor.git("push"), [])
+
+    def test_kontrollene_logger_en_linje_hver(self):
+        utskrift = io.StringIO()
+        with (mock.patch.object(hent_olt, "kjor", FalskKjor()),
+              mock.patch.object(hent_olt.personvern, "sjekk", return_value=[]),
+              redirect_stdout(utskrift)):
+            hent_olt.kontroller()
+        linjer = utskrift.getvalue().splitlines()
+        for forventet in ("Personvernsjekken: OK", "Python-tester: OK (42 tester)", "Vitest: OK (187 tester)",
+                          "Bygg: OK"):
+            self.assertIn(forventet, linjer)
+
+    def test_antall_tester_uten_treff(self):
+        self.assertEqual(hent_olt.antall_tester("ingenting her", r"Ran (\d+) tests?"), "")
 
     def test_feilende_kontroll_stopper_commiten(self):
         for feiler in ("unittest", "test", "build"):

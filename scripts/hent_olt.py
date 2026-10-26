@@ -315,15 +315,23 @@ def varsle(tittel: str, tekst: str, viktig: bool = False) -> None:
         print(f"Varselet ble ikke sendt: {e}")
 
 
-def kjor(kommando: list[str], mappe: Path = ROOT) -> str:
-    env = {**os.environ, "PATH": NODE + os.pathsep + os.environ.get("PATH", "")}
+def kjor(kommando: list[str], mappe: Path = ROOT, med_stderr: bool = False) -> str:
+    """Kjører kommandoen og gir stdout (med stderr etter, med med_stderr). Kaster Avbrutt hvis
+    den feiler."""
+    env ={**os.environ, "PATH": NODE + os.pathsep + os.environ.get("PATH", "")}
     r = subprocess.run(kommando, cwd=mappe, env=env, capture_output=True, text=True, encoding="utf-8",
                        errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode:
         print(r.stdout[-3000:], r.stderr[-3000:])
         siste = (r.stderr.strip() or r.stdout.strip()).splitlines()[-1:] or ["ingen utskrift"]
         raise Avbrutt(f"«{' '.join(kommando)}» feilet: {siste[0]}")
-    return r.stdout
+    return r.stdout + r.stderr if med_stderr else r.stdout
+
+
+def antall_tester(utskrift: str, monster: str) -> str:
+    """« (N tester)» hvis monster finner antallet i utskriften, ellers ingenting."""
+    funn = re.findall(monster, re.sub(r"\x1b\[[0-9;]*m", "", utskrift))
+    return f" ({funn[-1]} tester)" if funn else ""
 
 
 def _python() -> str:
@@ -342,12 +350,16 @@ def kontroller() -> None:
     if problemer:
         print("\n".join(problemer))
         raise Avbrutt(f"personvernsjekken fant {len(problemer)} problem(er), først: {problemer[0]}")
+    print("Personvernsjekken: OK")
     print("Kjører testene …")
     tester = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / "scripts").glob("test_*.py"))
-    kjor([_python(), "-m", "unittest", *tester])
-    kjor(["npm.cmd", "test"], ROOT / "web")
+    ut = kjor([_python(), "-m", "unittest", *tester], med_stderr=True)
+    print("Python-tester: OK" + antall_tester(ut, r"Ran (\d+) tests?"))
+    ut = kjor(["npm.cmd", "test"], ROOT / "web", med_stderr=True)
+    print("Vitest: OK" + antall_tester(ut, r"Tests\s+(\d+) passed"))
     print("Bygger nettsiden …")
     kjor(["npm.cmd", "run", "build"], ROOT / "web")
+    print("Bygg: OK")
 
 
 def commit_data(siste: str, nye: int) -> bool:

@@ -575,7 +575,9 @@ def _vent():
     time.sleep(PAUSE)
 
 
-def hent_person(nokkel: str, person_id: str, i_dag: date) -> bytes:
+def hent_person(nokkel: str, person_id: str, i_dag: date) -> tuple[bytes, list[str], str]:
+    """Henter results/person for de siste OPPDATER_DAGER dagene (alt fra FRA første gang) og
+    fletter svaret inn i person.xml per løp. Gir (flettet XML, EventId-ene i svaret, fra-dato)."""
     RA.mkdir(parents=True, exist_ok=True)
     if not PERSON.exists() and PERSON_START.exists():
         shutil.copyfile(PERSON_START, PERSON)
@@ -584,13 +586,14 @@ def hent_person(nokkel: str, person_id: str, i_dag: date) -> bytes:
               includeSplitTimes="true")
     data = flett_person(PERSON.read_bytes(), ny) if PERSON.exists() else ny
     PERSON.write_bytes(data)
-    return data
+    return data, [eid for eid, _, _ in lop_i(ny)], fra
 
 
 def lop_i(person_xml: bytes) -> list[tuple[str, str, bool]]:
     """(EventId, siste dato, er_stafett) for hvert løp i results/person."""
     ut = []
-    for rl in ET.fromstring(person_xml).findall("ResultList"):
+    rot = ET.fromstring(person_xml)
+    for rl in [rot] if rot.tag == "ResultList" else rot.findall("ResultList"):
         ev = rl.find("Event")
         datoer = [t(r, "RaceDate/Date") for r in ev.findall("EventRace")] + [t(ev, "StartDate/Date")]
         stafett_ = ev.get("eventForm", "").startswith("Relay") or rl.find("ClassResult/TeamResult") is not None
@@ -691,16 +694,23 @@ def skriv(data: dict) -> None:
 
 def oppdater(hent_person_pa_nytt: bool = True) -> str:
     """Henter det som mangler, konverterer og skriver data/konkurranser.json. Gir en kort
-    oppsummering til logg og varsel."""
+    oppsummering til logg og varsel: om egne resultater ble hentet (alltid ett kall), hvor
+    mange løp svaret hadde og hvor mange av dem som var nye, og kallene for løpsdata."""
     nokkel, person_id = les_oppsett()
     i_dag = date.today()
     if hent_person_pa_nytt:
-        person = hent_person(nokkel, person_id, i_dag)
+        forrige = next((f for f in (PERSON, PERSON_START) if f.exists()), None)
+        kjente = {eid for eid, _, _ in lop_i(forrige.read_bytes())} if forrige else set()
+        person, i_svaret, fra = hent_person(nokkel, person_id, i_dag)
+        periode = f"siste {OPPDATER_DAGER} dager" if fra != FRA else f"fra {FRA}"
+        nye = len(set(i_svaret) - kjente)
+        egne = f"hentet egne resultater (1 kall: {len(i_svaret)} løp {periode}, {nye} nye)"
     else:
         kilde = PERSON if PERSON.exists() else PERSON_START
         if not kilde.exists():
             raise Feil("fant ingen bufret results/person i data/raw/eventor/")
         person = kilde.read_bytes()
+        egne = "egne resultater fra bufferen (0 kall)"
     lop = lop_i(person)
     kall_info, kall_event = hent_buffer(nokkel, lop, i_dag)
     infoer, eventer = les_buffer(lop)
@@ -710,8 +720,10 @@ def oppdater(hent_person_pa_nytt: bool = True) -> str:
     koble_okter(data, json.loads(OKTER.read_text(encoding="utf-8")))
     skriv(data)
     ind = data["individuelle"]
-    return (f"Eventor: {len(ind)} individuelle løp ({sum(1 for p in ind if p['strekk'])} med strekk), "
-            f"{len(data['stafett'])} stafetter, {kall_info + kall_event} kall, "
+    return (f"Eventor: {egne}, {kall_info + kall_event} kall for løpsdata "
+            f"({kall_info} løpsinfo, {kall_event} resultatlister); "
+            f"{len(ind)} individuelle løp ({sum(1 for p in ind if p['strekk'])} med strekk), "
+            f"{len(data['stafett'])} stafetter. "
             f"Livelox: {sum(1 for p in ind if '/Viewer/' in p['lenker'].get('livelox', ''))} klasselenker, "
             f"{kall_lx} kall" + (f", {len(feil_lx)} feilet" if feil_lx else ""))
 
