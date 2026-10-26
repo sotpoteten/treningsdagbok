@@ -26,6 +26,12 @@ interface Props {
   hoyde?: number
   xMerker: (domene: [number, number]) => { x: number; etikett: string }[]
   yFormat: (v: number) => string
+  /** Faste y-etiketter (i y-enheter) i stedet for d3-ticks; da rundes ikke domenet av. */
+  yMerker?: number[]
+  /** Indekser der linja brytes før punktet, f.eks. etter en pause på klokka. */
+  brudd?: number[]
+  /** Svake loddrette hjelpelinjer ved x-verdier, f.eks. rundegrenser. */
+  xLinjer?: number[]
   /** Lavere er bedre (f.eks. tempo): snur y-aksen. */
   snuY?: boolean
   yDomene?: [number, number]
@@ -49,7 +55,7 @@ const finnX = bisector<number, number>((d) => d).center
 
 /** Tidsserie med felles x-akse, trådkors, tastatur og berøring. Aldri to y-akser. */
 export function Tidsserie(p: Props) {
-  const { x: xs, serier, band, markorer, hoyde = 180, xMerker, yFormat, snuY, tips, beskrivelse, punktRadius = 1.6, onKlikk, valgt } = p
+  const { x: xs, serier, band, markorer, hoyde = 180, xMerker, yFormat, yMerker, brudd, xLinjer, snuY, tips, beskrivelse, punktRadius = 1.6, onKlikk, valgt } = p
   const [ref, bredde] = useBredde<HTMLDivElement>()
   const [egenAktiv, setEgenAktiv] = useState<number | null>(null)
   const aktiv = p.aktiv !== undefined ? p.aktiv : egenAktiv
@@ -65,14 +71,18 @@ export function Tidsserie(p: Props) {
   const x = scaleLinear().domain(xd).range([0, indre])
   const y = scaleLinear()
     .domain([ymin ?? 0, ymaks ?? 1])
-    .nice(4)
     .range(snuY ? [0, hoydeIndre] : [hoydeIndre, 0])
+  if (!yMerker) y.nice(4)
+  const yTicks = yMerker ?? y.ticks(4)
 
+  // Indeksene som tegnes, med -1 der linja skal brytes.
+  const bruddSett = new Set(brudd ?? [])
+  const indekser = xs.flatMap((_, i) => (bruddSett.has(i) ? [-1, i] : [i]))
   const sti = (v: (number | null)[]) =>
-    line<number | null>()
-      .defined((d) => d != null)
-      .x((_, i) => x(xs[i]))
-      .y((d) => y(d as number))(v) ?? undefined
+    line<number>()
+      .defined((i) => i >= 0 && v[i] != null)
+      .x((i) => x(xs[i]))
+      .y((i) => y(v[i] as number))(indekser) ?? undefined
 
   const bandSti = band
     ? area<number>()
@@ -131,7 +141,7 @@ export function Tidsserie(p: Props) {
             </clipPath>
           </defs>
           <g transform={`translate(${MARG.venstre},${MARG.topp})`}>
-            {y.ticks(4).map((t) => (
+            {yTicks.map((t) => (
               <g key={t} transform={`translate(0,${y(t)})`}>
                 <line className="akse-rute" x1={0} x2={indre} />
                 <text className="akse-tekst" x={-8} dy="0.32em" textAnchor="end">
@@ -147,6 +157,9 @@ export function Tidsserie(p: Props) {
             ))}
 
             <g clipPath={`url(#${klipp})`}>
+            {xLinjer?.map((v) => (
+              <line key={`xl-${v}`} className="akse-rute ts-xlinje" x1={x(v)} x2={x(v)} y1={0} y2={hoydeIndre} />
+            ))}
             {bandSti && <path className="ts-band" d={bandSti} />}
             {markorer?.map((m) => (
               <rect key={m.indeks} className={`ts-markor ${m.klasse}`} x={x(xs[m.indeks]) - 1} y={0} width={2} height={hoydeIndre} />
