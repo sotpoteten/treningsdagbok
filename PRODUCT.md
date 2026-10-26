@@ -13,7 +13,7 @@ Unntaket er «Spør», en AI-assistent (Claude Agent SDK) som kjører i utviklin
 Siden har egne SVG-grafer med d3 og kart med MapLibre. Dataene konverteres med
 Python-skript i `scripts/`. Siden kjøres lokalt (`npm run dev`, port 5180). Koden og
 dataene ligger offentlig på GitHub (sotpoteten/treningsdagbok), og en statisk utgave uten
-GPS-spor og assistent publiseres på GitHub Pages.
+assistenten publiseres på GitHub Pages. GPS-sporene hentes fra GitHub-utgivelsen «spor».
 
 ## Users
 
@@ -75,7 +75,8 @@ historikken samlet, med både notater og tall.
 - All tekst på siden er norsk (bokmål).
 - Dagboknotatene kan vises. Det har Isak bekreftet. Kommentarer fra andre (trener)
   skal ikke presenteres som Isaks tekst.
-- GPS-sporene viser hvor Isak bor. De lagres bare lokalt og legges aldri i git.
+- GPS-sporene viser hvor Isak bor. De legges aldri i git. Siden 2026-10-26 vises de i
+  demoen via utgivelsen «spor», fordi øktene uansett er åpne på Strava.
   Rådataene (e-post, fødselsdato) holdes også utenfor git.
 - Garmin-aktiviteter kobles til dagbokøkter ut fra dato, varighet og distanse (94 %
   koblet). Dagboka er fasit for soner og varighet, og Garmin supplerer med puls, spor og

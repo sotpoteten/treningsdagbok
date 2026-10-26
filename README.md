@@ -150,7 +150,17 @@ Skriptet lager:
 - `data/garmin_aktiviteter.json`: aktivitetene, koblet til dagbokøktene
 - `data/garmin_helse.json`: hvilepuls, HRV, søvntid og søvnscore per dag. HRV-normalområdet
   og belastningen regnes ut på nettsiden, likt for alle data.
-- `data/garmin_spor/`: GPS-spor, bare lokalt
+- `data/garmin_spor/`: GPS-spor, holdt utenfor git
+
+GPS-sporene publiseres til demoen som en zip i GitHub-utgivelsen
+[`spor`](https://github.com/sotpoteten/treningsdagbok/releases/tag/spor), ikke i git:
+
+```
+.venv\Scripts\python scripts/publiser_spor.py
+```
+
+Skriptet laster bare opp når sporene er endret, og mandagskjøringen kjører det selv etter
+Garmin. Pages-bygget henter zip-fila og tar sporene med.
 
 Det skriver også ut hvor stor andel av øktene som ble koblet. Ved forrige eksport var det
 94 %.
@@ -181,13 +191,14 @@ uten strekk.
 ```
 data/                 ryddige data (kilden for nettsiden)
   raw/                rå eksporter – holdt utenfor git
-  garmin_spor/        GPS-spor per aktivitet – holdt utenfor git
+  garmin_spor/        GPS-spor per aktivitet – holdt utenfor git, publisert i utgivelsen «spor»
 scripts/
   hent_olt.py         henter eksporten fra Olympiatoppen og kjører konverter.py
   konverter.py        Olympiatoppen-eksport → data/*.json
   konverter_garmin.py Garmin-eksport → data/garmin_*.json og spor
   hent_intervals.py   nye Garmin-data fra intervals.icu hver uke
   hent_eventor.py     resultater og strekktider fra Eventor → data/konkurranser.json
+  publiser_spor.py    GPS-sporene → GitHub-utgivelsen «spor», til demoen
   garmin_kobling.py   kobler Garmin-aktiviteter til dagbokøkter (+ test_garmin_kobling.py)
 web/                  nettsiden (Vite + React + TypeScript)
   assistent/          «Spør»: Vite-tillegg, agent, systemprompt og dagbokverktøy
@@ -218,8 +229,10 @@ Repoet er offentlig. Dagboknotatene, ukeskommentarene og helsedataene i `data/` 
 - **Eventor-svarene** (`data/raw/eventor/`), fordi de har navn og fødselsdato for andre
   løpere. `data/konkurranser.json` har bare Isaks egne resultater og avledede tall, og
   `personvern.py` stopper alle felt som ikke står på hvitelista.
-- **GPS-sporene** (`data/garmin_spor/`), fordi de viser hvor Isak bor. Den publiserte
-  siden har derfor ikke kart og kurver per økt. De vises når siden kjøres lokalt.
+- **GPS-sporene** (`data/garmin_spor/`). Siden 2026-10-26 vises de også i demoen, fordi
+  øktene uansett er åpne på Strava. De ligger likevel ikke i git-historikken, men som en zip i
+  utgivelsen `spor`, som Pages-bygget henter. Slettes utgivelsen, bygges demoen uten spor
+  ved neste kjøring.
 
 ## Lisens
 

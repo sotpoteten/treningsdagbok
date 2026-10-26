@@ -89,7 +89,8 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   const [lagValg, setLagValg] = useTilstandPer<Kartlag | null>(a.garmin_id, null)
   const [stor, setStor] = useState(false)
 
-  // Sporfilene ligger ikke i repoet, så den publiserte siden har dem ikke.
+  // Sporfilene ligger ikke i repoet. Den publiserte siden har dem bare når utgivelsen «spor»
+  // finnes; lista sporFinnes sier hvilke som er med.
   const kanHente = a.har_spor && (!sporFinnes || sporFinnes.has(a.garmin_id))
   const [hentet, setHentet] = useState<{ id: number; spor: GarminSpor | null } | null>(null)
   const ferdig = hentet?.id === a.garmin_id
@@ -182,10 +183,12 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
       {laster && <p className="fotnote">Laster spor …</p>}
       {!laster && !spor && (
         <p className="fotnote">
-          {a.har_spor
-            ? // Sporfilene ligger ikke i repoet, så den publiserte siden har dem ikke.
-              'GPS-sporet og kurvene vises bare i den lokale utgaven av siden.'
-            : 'GPS-spor og kurver er ikke tilgjengelige for denne økta.'}
+          {!a.har_spor
+            ? 'GPS-spor og kurver er ikke tilgjengelige for denne økta.'
+            : !kanHente
+              ? // Aktiviteten har spor, men sporfila finnes ikke her.
+                'GPS-sporet mangler for denne økta.'
+              : 'GPS-sporet kunne ikke lastes.'}
         </p>
       )}
 

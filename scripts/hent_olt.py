@@ -13,9 +13,10 @@ Bruk (fra prosjektmappen):
     .venv\\Scripts\\pythonw scripts/hent_olt.py --planlagt  # ukentlig, fra Oppgaveplanleggeren
 
 --planlagt kjører uten vindu, logger til data/raw/hent_olt.log og varsler på mobilen
-med ntfy (data/raw/varsel.json). Går importen gjennom, og personvernsjekken, testene og
-bygget er i orden, committes og pushes datafilene i data/, og ingenting annet. Har
-innloggingen gått ut, kommer et varsel.
+med ntfy (data/raw/varsel.json). Etter Garmin-hentingen lastes nye GPS-spor opp til
+utgivelsen «spor» (publiser_spor.py), så demoen får dem. Går importen gjennom, og
+personvernsjekken, testene og bygget er i orden, committes og pushes datafilene i data/,
+og ingenting annet. Har innloggingen gått ut, kommer et varsel.
 
 Innloggingen gjør du selv, med Idrettens ID, i vinduet som åpnes første gang eller når
 innloggingen har gått ut. Skriptet lagrer aldri passord, bare innloggingsøkten
@@ -276,6 +277,20 @@ def hent_garmin() -> str:
     return resultat
 
 
+def publiser_spor() -> str:
+    """Laster opp GPS-sporene til utgivelsen «spor» hvis de er endret, før datacommiten
+    pusher og Pages bygger demoen. En feil her stopper ikke importen; den står i loggen og
+    i varselet. Sporene committes aldri."""
+    try:
+        import publiser_spor as ps
+        print("\nPubliserer GPS-sporene …")
+        resultat = ps.oppdater()
+    except Exception as e:
+        resultat = f"GPS-spor feilet: {str(e).splitlines()[0] if str(e) else type(e).__name__}"
+    print(resultat)
+    return resultat
+
+
 # ── Resultater fra Eventor ──────────────────────────────
 
 def hent_konkurranser() -> str:
@@ -430,9 +445,12 @@ def main() -> int:
     print("De forrige filene ligger i data/raw/forrige/.\n")
     konverter(RAW, a.fra)
     garmin = hent_garmin()
+    # Bare i den planlagte kjøringen, som pusher. Kjører du for hånd, gjør du det selv.
+    spor = publiser_spor() if a.planlagt else ""
     eventor = hent_konkurranser()
-    feil_i_tillegg = garmin.startswith("Garmin feilet") or eventor.startswith("Eventor feilet")
-    tillegg = f"{garmin}. {eventor}"
+    feil_i_tillegg = any(x.startswith(("Garmin feilet", "GPS-spor feilet", "Eventor feilet"))
+                         for x in (garmin, spor, eventor))
+    tillegg = ". ".join(x for x in (garmin, spor, eventor) if x)
 
     if a.planlagt:
         try:

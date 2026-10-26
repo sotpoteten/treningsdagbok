@@ -9,8 +9,8 @@ orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tek
   `../CLAUDE.md`. **Alt som committes, publiseres**, så se «Personvern» før nye filer
   legges til.
 - **Demo:** sotpoteten.github.io/treningsdagbok. `.github/workflows/pages.yml` kjører
-  testene, bygger og publiserer ved hver push til `main`. Demoen har ikke GPS-spor, og
-  «Spør» virker bare lokalt.
+  testene, bygger og publiserer ved hver push til `main`. GPS-sporene hentes fra
+  utgivelsen «spor» (se «Personvern»), og «Spør» virker bare lokalt.
 - **Brukerdokumentasjon:** `README.md` beskriver oppstart, dataoppdatering og struktur.
 - **Design og produkt:** `DESIGN.md` er designsystemet, `PRODUCT.md` er produktfaktaene.
 
@@ -67,6 +67,9 @@ koder, eller hvis varighetsregelen under ikke stemmer.
   pusher selv, men bare `DATAFILER` (de fem filene `konverter.py` skriver), og bare når
   testene er grønne. Kodeendringer skal Isak fortsatt godkjenne. Varselet inneholder bare
   status, aldri notater eller helsedata.
+- **GPS-spor:** Etter Garmin-hentingen laster den planlagte kjøringen opp nye spor til
+  utgivelsen «spor» med `scripts/publiser_spor.py`, før pushen. En feil der stopper ikke
+  datacommiten, men står i varselet.
 
 ## Avgrensning
 
@@ -247,8 +250,8 @@ og helsedataene i `data/` skal ligge åpent.
 Dette skal aldri committes:
 - **Rådata** (`data/raw/`): `userData.json` inneholder e-post og fødselsdato, og
   Garmin-eksporten inneholder mye mer.
-- **GPS-spor** (`data/garmin_spor/`, `web/public/garmin_spor/`): de viser hvor Isak bor.
-  `garmin_aktiviteter.json` har ingen koordinater.
+- **GPS-spor** (`data/garmin_spor/`, `web/public/garmin_spor/`): de publiseres i demoen,
+  men aldri i git (se under). `garmin_aktiviteter.json` har ingen koordinater.
 - **Nøkler og innstillinger** (`web/.env.local`, `data/raw/eventor.json`).
 - **Andre løpere:** `data/konkurranser.json` har bare Isaks egne resultater og avledede tall.
   `personvern.py` har en hviteliste over feltene der og stopper alt annet.
@@ -259,6 +262,20 @@ nøkler i `data/`. Den kjøres av GitHub-kjøringen og før den automatiske comm
 `hent_olt.py`, og den er testet i `scripts/test_personvern.py`. Kjør den før nye filer
 legges til. Innholdet i skjermbildene sjekkes ikke, så se over dem selv. Skjermbilder med
 kart tas av konkurranser, ikke av turer som starter hjemme.
+
+**GPS-sporene i demoen (fra 2026-10-26):** Sporene viser hvor Isak bor, og demoen var derfor
+uten dem. 2026-10-26 valgte Isak å publisere alle sporene uendret, fordi øktene hans uansett
+er helt åpne på Strava, uten personvernsoner. De ligger likevel ikke i git, for det som
+committes, kan ikke trekkes tilbake:
+- `scripts/publiser_spor.py` pakker `data/garmin_spor/<id>.json` i
+  `data/raw/garmin_spor.zip` og laster den opp til GitHub-utgivelsen `spor` (forhåndsutgivelse,
+  aldri «latest»), bare når hashen i `garmin_spor.sha256` har endret seg.
+- Pages-bygget laster ned zip-fila, pakker den ut i `data/garmin_spor/` og tar sporene med.
+  Uten utgivelsen bygges demoen uten spor.
+- **Trekke tilbake:** `gh release delete spor --cleanup-tag --yes`, og så kjør Pages på nytt
+  (`gh workflow run pages.yml`). Slå da av opplastingen i `hent_olt.py`, ellers lager
+  mandagskjøringen utgivelsen på nytt.
+- `personvern.py` stopper fortsatt sporfiler i git.
 
 ## Garmin-data
 
@@ -289,7 +306,7 @@ blokkerte innloggingen. De er fjernet, men ligger i git-historikken.
 |---|---|---|
 | `data/garmin_aktiviteter.json` | Én post per Garmin-aktivitet fra 1.11.2019: tid, type, varighet, distanse, puls, høydemeter, kadens, Training Effect, belastning, `har_spor` og `okt_id` (koblet dagbokøkt). Ingen koordinater. | ja |
 | `data/garmin_helse.json` | Én post per dag med det som er målt: `hvilepuls`, `hrv_natt`, `sovn_min` og `sovnscore`. | ja |
-| `data/garmin_spor/<garmin_id>.json` | GPS-spor, puls, fart, høyde og distanse, tynnet til hvert 5. sekund (kolonnevis), samt runder. Avslører hvor Isak bor. | **nei** |
+| `data/garmin_spor/<garmin_id>.json` | GPS-spor, puls, fart, høyde og distanse, tynnet til hvert 5. sekund (kolonnevis), samt runder. Avslører hvor Isak bor. | **nei**, bare i utgivelsen «spor» |
 
 **Kilder og enheter i eksporten**
 
@@ -452,7 +469,8 @@ når en advarsel ikke kan rettes, som `useVirtualizer` i `Dagbok.tsx`.
   - **Helsesiden:** `#/analyse/helse` viser hvilepuls, HRV, søvn og belastning.
   - **Sporfilene:** `npm run data` kopierer dem til `web/public/garmin_spor/`
     (gitignored) og skriver lista `public/data/garmin_spor.json`. Siden viser GPS-ikon og
-    kart bare for spor som står i lista, så demoen (tom liste) ber aldri om sporfiler.
+    kart bare for spor som står i lista. Pages-bygget får sporene fra utgivelsen «spor».
+    Uten den er lista tom, og demoen ber aldri om sporfiler.
 
 ## Assistenten («Spør», `web/assistent/`)
 

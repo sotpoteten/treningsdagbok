@@ -42,7 +42,19 @@ jobs:
       - name: Tester
         working-directory: web
         run: npm test
-      # GPS-sporene ligger ikke i repoet, så siden bygges uten kart og kurver per økt.
+      # GPS-sporene ligger ikke i repoet, men i utgivelsen «spor» (scripts/publiser_spor.py).
+      # Finnes den, pakkes de ut i data/garmin_spor/, og kopier-data.mjs tar dem med i bygget.
+      # Uten utgivelsen bygges siden uten kart og kurver per økt.
+      - name: Hent GPS-spor
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view spor --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release download spor --repo "$GITHUB_REPOSITORY" --pattern garmin_spor.zip --dir "$RUNNER_TEMP"
+            python scripts/publiser_spor.py --pakk-ut "$RUNNER_TEMP/garmin_spor.zip"
+          else
+            echo "Ingen utgivelse «spor». Bygger uten GPS-spor."
+          fi
       - name: Bygg
         working-directory: web
         run: npm run build

@@ -167,5 +167,16 @@ class TestEventor(unittest.TestCase):
             self.assertIn("ikke satt opp", hent_olt.hent_konkurranser())
 
 
+class TestPubliserSpor(unittest.TestCase):
+    def test_sporene_committes_aldri(self):
+        self.assertFalse([f for f in DATAFILER if "garmin_spor" in f])
+
+    def test_feil_i_publiseringen_stopper_ikke_importen(self):
+        import publiser_spor
+        with (mock.patch.object(publiser_spor, "oppdater", side_effect=publiser_spor.Feil("gh release upload feilet")),
+              redirect_stdout(io.StringIO())):
+            self.assertEqual(hent_olt.publiser_spor(), "GPS-spor feilet: gh release upload feilet")
+
+
 if __name__ == "__main__":
     unittest.main()
