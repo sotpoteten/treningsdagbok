@@ -16,10 +16,14 @@ export interface Analysekontekst {
   sesonger: Sesong[] // eldste først
   valgt: Sesong
   forrige: Sesong | null
-  /** Dag i sesongen som sammenlignes «på samme dato»: siste importerte økt for sesongen som pågår, ellers siste dag. */
-  sammenligningsdag: number
-  /** Siste dag i valgt sesong som dagboka dekker (siste importerte økt eller sesongslutt). */
+  /**
+   * Siste dag i valgt sesong som dagboka dekker (siste importerte økt eller sesongslutt).
+   * Andre sesonger sammenlignes til samme kalenderdato (`sammeDatoI`), så en ferdig sesong
+   * sammenlignes med hele sesongen før.
+   */
   sluttdato: string
+  /** Valgt sesong pågår: dagboka slutter før 31. oktober. */
+  pagaende: boolean
 }
 
 const UNDERSIDER = [
@@ -42,14 +46,14 @@ export function Analyse({ dagbok }: { dagbok: Dagbok }) {
     const i = onsket ? alle.findIndex((s) => s.navn === sesongFraUrl(onsket)) : -1
     const indeks = i >= 0 ? i : alle.length - 1
     const valgt = alle[indeks]
-    const { sammenligningsdag, sluttdato } = analyseperiode(valgt, dagbok.sisteDato)
+    const { sluttdato, pagaende } = analyseperiode(valgt, dagbok.sisteDato)
     return {
       dagbok,
       sesonger: alle,
       valgt,
       forrige: indeks > 0 ? alle[indeks - 1] : null,
-      sammenligningsdag,
       sluttdato,
+      pagaende,
     }
   }, [alle, params, dagbok])
 

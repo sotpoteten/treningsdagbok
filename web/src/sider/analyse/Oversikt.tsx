@@ -2,14 +2,12 @@ import { useMemo } from 'react'
 import { summerEtter } from '../../data/aggregat'
 import { dato, km, tall, timer } from '../../data/format'
 import {
-  datoISesong,
   endring,
   erKvalitet,
   helsePerSesong,
   okterISesong,
   perSesong,
-  snitt,
-  tilSammeDato,
+  nokkeltallTilSammeDato,
   type Sesong,
 } from '../../data/statistikk'
 import { SONER } from '../../data/typer'
@@ -25,40 +23,13 @@ interface Rad {
   telling?: boolean
 }
 
-function nokkeltall(k: Analysekontekst, s: Sesong) {
-  const til = datoISesong(s, Math.min(k.sammenligningsdag, s.dager - 1))
-  const okter = k.dagbok.okter.filter((o) => o.dato >= s.fra && o.dato <= til)
-  const sum = tilSammeDato(k.dagbok.okter, s, k.sammenligningsdag)
-  let syk = 0
-  let skadet = 0
-  let konk = 0
-  for (const [d, r] of k.dagbok.dagerPerDato) {
-    if (d < s.fra || d > til) continue
-    if (r.syk) syk++
-    if (r.skadet) skadet++
-    if (r.konkurranse) konk++
-  }
-  // Snitt av Garmin-målinger i samme periode (null uten data)
-  const helse = [...k.dagbok.helsePerDato.values()].filter((d) => d.dato >= s.fra && d.dato <= til)
-  return {
-    sum,
-    kvalitet: okter.filter(erKvalitet).length,
-    syk,
-    skadet,
-    konk,
-    hvilepuls: snitt(helse.map((d) => d.hvilepuls)),
-    hrv: snitt(helse.map((d) => d.hrv_natt)),
-    sovn: snitt(helse.map((d) => d.sovn_min)),
-  }
-}
-
 const desimal = (v: number) => v.toLocaleString('nb-NO', { maximumFractionDigits: 1 })
 
 export function Oversikt({ k }: { k: Analysekontekst }) {
-  const na = useMemo(() => nokkeltall(k, k.valgt), [k])
-  const for_ = useMemo(() => (k.forrige ? nokkeltall(k, k.forrige) : null), [k])
-  const sluttDag = datoISesong(k.valgt, k.sammenligningsdag)
-  const helt = k.sammenligningsdag >= k.valgt.dager - 1
+  const na = useMemo(() => nokkeltallTilSammeDato(k.dagbok, k.valgt, k.sluttdato), [k])
+  const for_ = useMemo(() => (k.forrige ? nokkeltallTilSammeDato(k.dagbok, k.forrige, k.sluttdato) : null), [k])
+  // Når sesongen pågår, merkes kolonnene med perioden, så de ikke forveksles med hele sesonger.
+  const kolonne = (s: Sesong, til: string) => (k.pagaende ? `${s.navn} til ${dato(til, 'd. MMM')}` : s.navn)
 
   const rader: Rad[] = [
     { navn: 'Timer', na: na.sum.minutter, forrige: for_?.sum.minutter ?? null, vis: timer },
@@ -84,17 +55,18 @@ export function Oversikt({ k }: { k: Analysekontekst }) {
       <section className="analyse-del">
         <h1>Sesongen {k.valgt.navn}</h1>
         <p className="ingress">
-          {helt
-            ? `Hele sesongen, 1. nov. ${k.valgt.fra.slice(0, 4)}–31. okt. ${k.valgt.til.slice(0, 4)}.`
-            : `Fra 1. november til og med ${dato(sluttDag, 'd. MMMM yyyy')}, siste økt i dagboka.`}{' '}
-          {k.forrige && `Sammenlignet med samme periode i ${k.forrige.navn}.`}
+          {k.pagaende
+            ? `Fra 1. november til og med ${dato(k.sluttdato, 'd. MMMM yyyy')}, siste økt i dagboka.`
+            : `Hele sesongen, 1. nov. ${k.valgt.fra.slice(0, 4)}–31. okt. ${k.valgt.til.slice(0, 4)}.`}{' '}
+          {k.forrige &&
+            (k.pagaende ? `Sammenlignet med samme periode i ${k.forrige.navn}.` : `Sammenlignet med hele ${k.forrige.navn}.`)}
         </p>
         <table className="nokkeltabell">
           <thead>
             <tr>
               <th scope="col" />
-              <th scope="col">{k.valgt.navn}</th>
-              {k.forrige && <th scope="col">{k.forrige.navn}</th>}
+              <th scope="col">{kolonne(k.valgt, na.til)}</th>
+              {k.forrige && for_ && <th scope="col">{kolonne(k.forrige, for_.til)}</th>}
               {k.forrige && <th scope="col">Endring</th>}
             </tr>
           </thead>
@@ -166,7 +138,7 @@ function Sesongtabell({ k }: { k: Analysekontekst }) {
               if (!x) return null
               const kvalitet = okterISesong(k.dagbok.okter, s).filter(erKvalitet).length
               const h = helse.get(s.navn)
-              const pagaende = s.navn === k.sesonger[k.sesonger.length - 1].navn && k.sluttdato < s.til
+              const pagaende = s.navn === k.sesonger[k.sesonger.length - 1].navn && k.dagbok.sisteDato < s.til
               return (
                 <tr key={s.navn} className={s.navn === k.valgt.navn ? 'valgt' : undefined}>
                   <th scope="row">
@@ -193,6 +165,7 @@ function Sesongtabell({ k }: { k: Analysekontekst }) {
           </tbody>
         </table>
       </div>
+      {k.pagaende && k.forrige && <p className="fotnote">Hele sesonger. Sammenligningen over går til samme dato.</p>}
     </section>
   )
 }

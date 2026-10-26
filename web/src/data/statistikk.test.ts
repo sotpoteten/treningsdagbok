@@ -15,8 +15,10 @@ import {
   lagSesong,
   lengsteRekke,
   manedspunkter,
+  nokkeltallTilSammeDato,
   okterISesong,
   perSesong,
+  sammeDatoI,
   sesong,
   sesongDag,
   sesonger,
@@ -47,9 +49,9 @@ describe('sesonger', () => {
   it('analysen går til siste importerte økt, ikke til i dag', () => {
     expect(dagbok.sisteDato).toBe(dagbok.okter.at(-1)!.dato)
     const s = lagSesong(2025)
-    expect(analyseperiode(s, '2026-10-05')).toEqual({ sammenligningsdag: sesongDag('2026-10-05'), sluttdato: '2026-10-05', pagaende: true })
+    expect(analyseperiode(s, '2026-10-05')).toEqual({ sluttdato: '2026-10-05', pagaende: true })
     // En ferdig sesong dekkes hele, også når dagboka har gått videre.
-    expect(analyseperiode(lagSesong(2024), '2026-10-05')).toEqual({ sammenligningsdag: lagSesong(2024).dager - 1, sluttdato: '2025-10-31', pagaende: false })
+    expect(analyseperiode(lagSesong(2024), '2026-10-05')).toEqual({ sluttdato: '2025-10-31', pagaende: false })
     // Siste økt på siste dag i sesongen regnes som en hel sesong.
     expect(analyseperiode(s, '2026-10-31').pagaende).toBe(false)
   })
@@ -77,7 +79,48 @@ describe('kumulativt', () => {
   it('til samme dato stemmer med kurven', () => {
     const s = lagSesong(2024)
     const t = kumulativ(dagbok.okter, s, 'timer')
-    expect(tilSammeDato(dagbok.okter, s, 100).minutter / 60).toBeCloseTo(t[100], 6)
+    expect(tilSammeDato(dagbok.okter, s, '2025-02-08').minutter / 60).toBeCloseTo(t[sesongDag('2025-02-08')], 6)
+  })
+})
+
+describe('samme dato', () => {
+  it('følger kalenderdatoen, ikke dag nr. i sesongen', () => {
+    // 23/24 har 366 dager. Dag nr. 364 er 30. okt., men samme dato er 31. okt.
+    expect(sammeDatoI(lagSesong(2023), '2025-10-31')).toBe('2024-10-31')
+    expect(sammeDatoI(lagSesong(2023), '2025-11-15')).toBe('2023-11-15')
+    // 29. feb. blir 28. feb. i år uten skuddag, og står urørt i et skuddår.
+    expect(sammeDatoI(lagSesong(2026), '2028-02-29')).toBe('2027-02-28')
+    expect(sammeDatoI(lagSesong(2027), '2028-02-29')).toBe('2028-02-29')
+    expect(sammeDatoI(lagSesong(2099), '2028-02-29')).toBe('2100-02-28') // 2100 er ikke skuddår
+    expect(sammeDatoI(lagSesong(2399), '2028-02-29')).toBe('2400-02-29')
+  })
+
+  it('en ferdig sesong sammenlignes med hele sesongen før, med samme tall som tabellen', () => {
+    const alle = sesonger(dagbok)
+    const per = summerEtter(dagbok.okter, perSesong)
+    const helse = helsePerSesong(dagbok.dagerPerDato.values())
+    for (let i = 1; i < alle.length; i++) {
+      const { sluttdato, pagaende } = analyseperiode(alle[i], dagbok.sisteDato)
+      if (pagaende) continue
+      const forrige = alle[i - 1]
+      const n = nokkeltallTilSammeDato(dagbok, forrige, sluttdato)
+      const full = per.get(forrige.navn)!
+      expect(n.til, forrige.navn).toBe(forrige.til)
+      expect(n.sum.okter, forrige.navn).toBe(full.okter)
+      expect(n.sum.minutter, forrige.navn).toBe(full.minutter)
+      expect(n.sum.km, forrige.navn).toBeCloseTo(full.km, 6)
+      expect(n.sum.styrke, forrige.navn).toBe(full.styrke)
+      expect(n.kvalitet, forrige.navn).toBe(okterISesong(dagbok.okter, forrige).filter(erKvalitet).length)
+      expect(n.syk, forrige.navn).toBe(helse.get(forrige.navn)?.syk ?? 0)
+      expect(n.skadet, forrige.navn).toBe(helse.get(forrige.navn)?.skadet ?? 0)
+    }
+  })
+
+  it('med 2024/25 valgt gir 2023/24 hele sesongen, også 31. okt. 2024', () => {
+    const { sluttdato } = analyseperiode(lagSesong(2024), dagbok.sisteDato)
+    const n = nokkeltallTilSammeDato(dagbok, lagSesong(2023), sluttdato)
+    expect(n.sum.okter).toBe(578)
+    expect(n.sum.minutter).toBe(654 * 60 + 13)
   })
 })
 

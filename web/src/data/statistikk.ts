@@ -49,6 +49,19 @@ export function datoISesong(s: Sesong, dag: number): string {
   return fraUtc(utc(s.fra) + dag * DAG_MS)
 }
 
+const erSkuddar = (ar: number) => (ar % 4 === 0 && ar % 100 !== 0) || ar % 400 === 0
+
+/**
+ * Samme kalenderdato som `dato`, men i sesongen `s`. Sammenligninger «til samme dato» går
+ * etter kalenderen, ikke etter dag nr. i sesongen, fordi skuddåret ellers flytter datoen.
+ * 29. februar blir 28. februar i år uten skuddag.
+ */
+export function sammeDatoI(s: Sesong, dato: string): string {
+  const md = dato.slice(5)
+  const ar = md >= '11-01' ? +s.fra.slice(0, 4) : +s.til.slice(0, 4)
+  return `${ar}-${md === '02-29' && !erSkuddar(ar) ? '02-28' : md}`
+}
+
 /** Alle sesonger med data, eldste først. */
 export function sesonger(dagbok: Dagbok): Sesong[] {
   if (!dagbok.okter.length) return []
@@ -63,11 +76,9 @@ export function sesonger(dagbok: Dagbok): Sesong[] {
  * Hvor langt analysen av en sesong rekker. Dagboka går til siste importerte økt, så en
  * sesong som ikke er ferdig sammenlignes fram til den datoen, ikke til i dag.
  */
-export function analyseperiode(s: Sesong, sisteOkt: string): { sammenligningsdag: number; sluttdato: string; pagaende: boolean } {
+export function analyseperiode(s: Sesong, sisteOkt: string): { sluttdato: string; pagaende: boolean } {
   const pagaende = sisteOkt >= s.fra && sisteOkt < s.til
-  return pagaende
-    ? { sammenligningsdag: sesongDag(sisteOkt), sluttdato: sisteOkt, pagaende }
-    : { sammenligningsdag: s.dager - 1, sluttdato: s.til, pagaende }
+  return { sluttdato: pagaende ? sisteOkt : s.til, pagaende }
 }
 
 export function okterISesong(okter: Okt[], s: Sesong): Okt[] {
@@ -88,10 +99,42 @@ export function kumulativ(okter: Okt[], s: Sesong, mal: Mal): number[] {
   return perDag.map((v) => (sum += v))
 }
 
-/** Summen for sesongen fra 1. nov. til og med dag `dag` (samme dato som i dag, et annet år). */
-export function tilSammeDato(okter: Okt[], s: Sesong, dag: number): Sum {
-  const til = datoISesong(s, Math.min(dag, s.dager - 1))
+/** Summen for sesongen `s` fra 1. nov. til og med samme kalenderdato som `dato`. */
+export function tilSammeDato(okter: Okt[], s: Sesong, dato: string): Sum {
+  const til = sammeDatoI(s, dato)
   return summer(okter.filter((o) => o.dato >= s.fra && o.dato <= til))
+}
+
+/**
+ * Nøkkeltall for sesongen `s` fra 1. nov. til samme kalenderdato som `sluttdato` (slutten av
+ * analysen). Med en ferdig sesong valgt er `sluttdato` 31. okt., og da blir tallene hele sesongen.
+ */
+export function nokkeltallTilSammeDato(dagbok: Dagbok, s: Sesong, sluttdato: string) {
+  const til = sammeDatoI(s, sluttdato)
+  const okter = dagbok.okter.filter((o) => o.dato >= s.fra && o.dato <= til)
+  const sum = tilSammeDato(dagbok.okter, s, sluttdato)
+  let syk = 0
+  let skadet = 0
+  let konk = 0
+  for (const [d, r] of dagbok.dagerPerDato) {
+    if (d < s.fra || d > til) continue
+    if (r.syk) syk++
+    if (r.skadet) skadet++
+    if (r.konkurranse) konk++
+  }
+  // Snitt av Garmin-målinger i samme periode (null uten data)
+  const helse = [...dagbok.helsePerDato.values()].filter((d) => d.dato >= s.fra && d.dato <= til)
+  return {
+    til,
+    sum,
+    kvalitet: okter.filter(erKvalitet).length,
+    syk,
+    skadet,
+    konk,
+    hvilepuls: snitt(helse.map((d) => d.hvilepuls)),
+    hrv: snitt(helse.map((d) => d.hrv_natt)),
+    sovn: snitt(helse.map((d) => d.sovn_min)),
+  }
 }
 
 // ── Glidende snitt ──────────────────────────────────────

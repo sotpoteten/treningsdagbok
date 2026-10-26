@@ -52,23 +52,27 @@ export function Verktoytips({ tips, bredde }: { tips: Tips | null; bredde: numbe
 export function Grafkort({
   tittel,
   forklaring,
+  forklaringTabell,
   valg,
   tabell,
   children,
 }: {
   tittel: string
   forklaring?: ReactNode
+  /** Forklaring i tabellvisning, når `forklaring` handler om grafen (streker, punkter, klikk). Ellers brukes `forklaring`. */
+  forklaringTabell?: ReactNode
   valg?: ReactNode
   tabell: () => ReactNode
   children: ReactNode
 }) {
   const [visTabell, setVisTabell] = useState(false)
+  const tekst = visTabell && forklaringTabell !== undefined ? forklaringTabell : forklaring
   return (
     <section className="grafkort">
       <header className="grafkort-hode">
         <div>
           <h2>{tittel}</h2>
-          {forklaring && <p className="grafkort-forklaring">{forklaring}</p>}
+          {tekst && <p className="grafkort-forklaring">{tekst}</p>}
         </div>
         <div className="grafkort-valg">
           {valg}
