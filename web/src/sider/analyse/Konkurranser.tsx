@@ -206,6 +206,12 @@ function KonkurranserInnhold({ k }: { k: Analysekontekst }) {
             {type === 'pre-o' && ' I tempO er avstanden til vinneren ofte stor og kan ikke sammenlignes med o-løp.'}
           </>
         }
+        forklaringTabell={
+          <>
+            Alle løp i utvalget, nyeste først, også de som ikke ble fullført. Velg et løp for å se oppkjøringen, eller datoen for å åpne uka i dagboka.
+            {type === 'pre-o' && ' I tempO er avstanden til vinneren ofte stor og kan ikke sammenlignes med o-løp.'}
+          </>
+        }
         tabell={tabell}
       >
         {utvalg.length === 0 ? (

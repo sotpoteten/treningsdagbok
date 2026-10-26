@@ -145,6 +145,7 @@ function Kvalitet({ k }: { k: Analysekontekst }) {
     <Grafkort
       tittel={`Kvalitetsøkter per uke, ${k.valgt.navn}`}
       forklaring={`En kvalitetsøkt har minst ${KVALITET_TERSKEL_MIN} min i I3–I5. Pokalene viser konkurransedager, med antallet når det er flere. Klikk for å åpne uka.`}
+      forklaringTabell={`En kvalitetsøkt har minst ${KVALITET_TERSKEL_MIN} min i I3–I5. Én rad per uke, nyeste først. Klikk en uke for å åpne den i dagboka.`}
       tabell={tabell}
     >
       <Stolper
@@ -221,6 +222,7 @@ function Aktivitet({ k }: { k: Analysekontekst }) {
     <Grafkort
       tittel="Timer per aktivitet og sesong"
       forklaring="Én rad per aktivitet med egen skala, så endringene innen hver aktivitet synes. O-teknikk er en del av løpetiden."
+      forklaringTabell="Timer per aktivitet, én rad per sesong. O-teknikk er en del av løpetiden og er ikke med i de andre kolonnene."
       tabell={tabell}
     >
       <div className="multipler" style={{ gridTemplateColumns: `130px repeat(${per.length}, minmax(0, 1fr))` }}>
@@ -369,6 +371,7 @@ function Intensitetstid({ k }: { k: Analysekontekst }) {
     <Grafkort
       tittel={`Tid med intensitet per ${enhet}, ${k.valgt.navn}`}
       forklaring={`Timer i I3–I5, stablet etter sone. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}, og pokalene viser konkurransedager. Sesongen har ${timer(sum)} t i I3–I5 så langt. Klikk for å åpne i dagboka.`}
+      forklaringTabell={`Timer i I3–I5 per ${enhet}, fordelt på sone, med kvalitetsøkter og konkurransedager. Sesongen har ${timer(sum)} t i I3–I5 så langt. Klikk en ${enhet} for å åpne den i dagboka.`}
       valg={<Segment etikett="Oppløsning" verdi={opplosning} onEndre={setOpplosning} valg={[{ id: 'uke', navn: 'Uke' }, { id: 'maned', navn: 'Måned' }]} />}
       tabell={tabell}
     >

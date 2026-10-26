@@ -167,6 +167,7 @@ function HelseInnhold({
   )
 
   const sykForklaring = 'Loddrette streker markerer syke og skadde dager.'
+  const helseTabell = 'Snitt per uke for hvilepuls, HRV, søvn og akutt belastning, med ukas timer og km, nyeste uke først. Tabellen er den samme for alle grafene på siden. Klikk en uke for å åpne den i dagboka.'
 
   return (
     <div className="helse-nokler">
@@ -175,7 +176,7 @@ function HelseInnhold({
         {periodevalg}
       </div>
 
-      <Grafkort tittel="Hvilepuls" forklaring={`Slag/min hver morgen, med snitt over ${SNITT_DAGER} dager. ${sykForklaring}`} tabell={tabell}>
+      <Grafkort tittel="Hvilepuls" forklaring={`Slag/min hver morgen, med snitt over ${SNITT_DAGER} dager. ${sykForklaring}`} forklaringTabell={helseTabell} tabell={tabell}>
         <Tidsserie
           x={x}
           serier={[
@@ -210,6 +211,7 @@ function HelseInnhold({
             ? `Snitt-HRV (ms) per natt. Det grå båndet er normalområdet: snittet ± ett standardavvik av de ${HRV_VINDU} foregående nettene, regnet på samme måte for hele dagboka. ${sykForklaring}`
             : 'HRV finnes fra høsten 2023 (Forerunner 255). Velg en senere sesong.'
         }
+        forklaringTabell={harHrv ? helseTabell : undefined}
         tabell={tabell}
       >
         {harHrv && (
@@ -250,7 +252,7 @@ function HelseInnhold({
         )}
       </Grafkort>
 
-      <Grafkort tittel="Søvn per natt, snitt per uke" forklaring="Timer søvn. Søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den." tabell={tabell}>
+      <Grafkort tittel="Søvn per natt, snitt per uke" forklaring="Timer søvn. Søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den." forklaringTabell={helseTabell} tabell={tabell}>
         <Stolper
           punkter={uker.map((u) => ({ nokkel: u.p.uke.nokkel, verdier: { sovn: (u.sovn ?? 0) / 60 } }))}
           serier={[{ id: 'sovn', navn: 'Søvn', klasse: 'fyll-sovn' }]}
@@ -314,6 +316,7 @@ function HelseInnhold({
             ? `Ut fra klokkas belastning per økt: akutt er summen de siste ${AKUTT_DAGER} dagene, kronisk er snittet per uke de siste ${KRONISK_DAGER / 7} ukene. Under: ACWR, forholdet mellom dem, med området 0,8–1,3 som ofte regnes som trygt (Gabbett 2016), og ukas timer fra dagboka.`
             : 'Belastning finnes fra august 2023. Velg en senere sesong.'
         }
+        forklaringTabell={harBelastning ? helseTabell : undefined}
         tabell={tabell}
       >
         {harBelastning && (

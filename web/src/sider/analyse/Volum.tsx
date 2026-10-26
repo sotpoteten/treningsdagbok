@@ -150,6 +150,7 @@ export function Volum({ k }: { k: Analysekontekst }) {
       <Grafkort
         tittel={`Timer per ${enhet}`}
         forklaring={`Fordelt på sone og styrke. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}. Termometeret viser syke dager og korset skadedager, med antallet når det er flere. Klikk (eller Enter) for å åpne i dagboka.`}
+        forklaringTabell={`Timer per ${enhet}, fordelt på sone og styrke, med km og antall økter. Klikk en ${enhet} for å åpne den i dagboka.`}
         valg={valg}
         tabell={tabell}
       >
