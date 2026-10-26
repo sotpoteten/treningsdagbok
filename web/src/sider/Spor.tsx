@@ -187,7 +187,7 @@ export function Spor() {
           </button>
         )}
       </Topplinje>
-      <main className="spor" ref={rull} onScroll={vedRull}>
+      <main className="spor" ref={rull} onScroll={vedRull} data-husk-rull="spor">
         <div className="spor-spalte">
           {tom ? (
             <div className="spor-start">

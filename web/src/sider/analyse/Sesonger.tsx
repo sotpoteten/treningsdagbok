@@ -1,14 +1,15 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { dato, km, timer } from '../../data/format'
 import { datoISesong, endring, kumulativ, sammeDatoI, sesongDag, type Mal, type Sesong } from '../../data/statistikk'
 import { Grafkort, Segment } from '../../komponenter/graf/felles'
 import { Linjer, type Linjeserie } from '../../komponenter/graf/Linjer'
+import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
 import type { Analysekontekst } from '../Analyse'
 
 const MANEDER = ['11', '12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10']
 
 export function Sesonger({ k }: { k: Analysekontekst }) {
-  const [mal, setMal] = useState<Mal>('timer')
+  const [mal, setMal] = useUrlTilstand<Mal>('mal', 'timer', ['timer', 'km'])
   const vis = (v: number) => (mal === 'timer' ? `${timer(v * 60)} t` : `${km(v)} km`)
 
   const serier = useMemo<Linjeserie[]>(
@@ -114,6 +115,7 @@ export function Sesonger({ k }: { k: Analysekontekst }) {
 
   return (
     <Grafkort
+      id="akkumulert"
       tittel={mal === 'timer' ? 'Akkumulerte timer gjennom sesongen' : 'Akkumulerte km gjennom sesongen'}
       forklaring={`Fra 1. november. ${k.valgt.navn} er den blå linja og ${k.forrige?.navn ?? 'sesongen før'} den kraftige nøytrale. De andre sesongene står dempet. Hold over et navn under grafen for å fremheve sesongen.`}
       forklaringTabell={`Akkumulert ${mal === 'timer' ? 'tid' : 'distanse'} fra 1. november til utgangen av hver måned, én kolonne per sesong. Februar slutter 29. i skuddår. Sesongen som pågår, står tom etter siste hele måned.`}

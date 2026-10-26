@@ -1,5 +1,5 @@
 import { Cross, Thermometer } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { dato, km, tall, timer, ukespenn } from '../../data/format'
 import { glidendeSnitt, manedspunkter, ukepunkter } from '../../data/statistikk'
@@ -8,10 +8,13 @@ import { SONER } from '../../data/typer'
 import { ukeForDato } from '../../data/uker'
 import { Grafkort, Segment, Tegnforklaring, type Seriedef } from '../../komponenter/graf/felles'
 import { Stolper, type Stolpepunkt } from '../../komponenter/graf/Stolper'
+import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
 import type { Analysekontekst } from '../Analyse'
 
-type Opplosning = 'uke' | 'maned'
-type Periode = 'sesong' | 'alle'
+const OPPLOSNINGER = ['uke', 'maned'] as const
+type Opplosning = (typeof OPPLOSNINGER)[number]
+const PERIODER = ['sesong', 'alle'] as const
+type Periode = (typeof PERIODER)[number]
 
 const SONESERIER: Seriedef[] = [
   ...SONER.map((s) => ({ id: s, navn: s, klasse: `seg-${s.toLowerCase()}` })),
@@ -32,8 +35,8 @@ interface Punkt {
 }
 
 export function Volum({ k }: { k: Analysekontekst }) {
-  const [opplosning, setOpplosning] = useState<Opplosning>('uke')
-  const [periode, setPeriode] = useState<Periode>('sesong')
+  const [opplosning, setOpplosning] = useUrlTilstand<Opplosning>('opplosning', 'uke', OPPLOSNINGER)
+  const [periode, setPeriode] = useUrlTilstand<Periode>('periode', 'sesong', PERIODER)
   const navigate = useNavigate()
 
   const fra = periode === 'sesong' ? k.valgt.fra : k.sesonger[0].fra
@@ -148,6 +151,7 @@ export function Volum({ k }: { k: Analysekontekst }) {
   return (
     <>
       <Grafkort
+        id="timer"
         tittel={`Timer per ${enhet}`}
         forklaring={`Fordelt på sone og styrke. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}. Termometeret viser syke dager og korset skadedager, med antallet når det er flere. Klikk (eller Enter) for å åpne i dagboka.`}
         forklaringTabell={`Timer per ${enhet}, fordelt på sone og styrke, med km og antall økter. Klikk en ${enhet} for å åpne den i dagboka.`}
@@ -175,6 +179,7 @@ export function Volum({ k }: { k: Analysekontekst }) {
       </Grafkort>
 
       <Grafkort
+        id="km"
         tittel={`Km løping per ${enhet}`}
         forklaring="Distanse finnes bare for løping."
         tabell={tabell}

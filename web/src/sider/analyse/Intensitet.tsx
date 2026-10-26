@@ -1,5 +1,5 @@
 import { Trophy } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { summer } from '../../data/aggregat'
 import { dato, pulsomrade, tall, timer, ukespenn } from '../../data/format'
@@ -20,6 +20,7 @@ import { ukeForDato } from '../../data/uker'
 import { Grafkort, Segment, Tegnforklaring, type Seriedef } from '../../komponenter/graf/felles'
 import { Stolper, type Stolpepunkt } from '../../komponenter/graf/Stolper'
 import { Sonestolpe } from '../../komponenter/Sonestolpe'
+import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
 import type { Analysekontekst } from '../Analyse'
 
 const pst = (del: number, hel: number) => (hel ? `${Math.round((del / hel) * 100)} %` : '–')
@@ -80,6 +81,7 @@ function Sonefordeling({ k }: { k: Analysekontekst }) {
   )
   return (
     <Grafkort
+      id="sonefordeling"
       tittel="Intensitetsfordeling per sesong"
       forklaring="Andel av tiden i hver sone (styrke er ikke med). I3–I5 er tiden over terskel."
       tabell={tabell}
@@ -143,6 +145,7 @@ function Kvalitet({ k }: { k: Analysekontekst }) {
   )
   return (
     <Grafkort
+      id="kvalitetsokter"
       tittel={`Kvalitetsøkter per uke, ${k.valgt.navn}`}
       forklaring={`En kvalitetsøkt har minst ${KVALITET_TERSKEL_MIN} min i I3–I5. Pokalene viser konkurransedager, med antallet når det er flere. Klikk for å åpne uka.`}
       forklaringTabell={`En kvalitetsøkt har minst ${KVALITET_TERSKEL_MIN} min i I3–I5. Én rad per uke, nyeste først. Klikk en uke for å åpne den i dagboka.`}
@@ -220,6 +223,7 @@ function Aktivitet({ k }: { k: Analysekontekst }) {
   )
   return (
     <Grafkort
+      id="aktiviteter"
       tittel="Timer per aktivitet og sesong"
       forklaring="Én rad per aktivitet med egen skala, så endringene innen hver aktivitet synes. O-teknikk er en del av løpetiden."
       forklaringTabell="Timer per aktivitet, én rad per sesong. O-teknikk er en del av løpetiden og er ikke med i de andre kolonnene."
@@ -257,7 +261,8 @@ function Aktivitet({ k }: { k: Analysekontekst }) {
 
 // ── Tid med intensitet per uke eller måned ─────────────
 
-type Opplosning = 'uke' | 'maned'
+const OPPLOSNINGER = ['uke', 'maned'] as const
+type Opplosning = (typeof OPPLOSNINGER)[number]
 const INTENSITETSSONER = ['I3', 'I4', 'I5'] as const
 const INTENSITETSSERIER: Seriedef[] = INTENSITETSSONER.map((s) => ({ id: s, navn: s, klasse: `seg-${s.toLowerCase()}` }))
 
@@ -281,7 +286,7 @@ function Celle({ verdi, vis = String }: { verdi: number; vis?: (v: number) => st
 }
 
 function Intensitetstid({ k }: { k: Analysekontekst }) {
-  const [opplosning, setOpplosning] = useState<Opplosning>('uke')
+  const [opplosning, setOpplosning] = useUrlTilstand<Opplosning>('opplosning', 'uke', OPPLOSNINGER)
   const navigate = useNavigate()
   const til = k.valgt.til < k.sluttdato ? k.valgt.til : k.sluttdato
 
@@ -369,6 +374,7 @@ function Intensitetstid({ k }: { k: Analysekontekst }) {
 
   return (
     <Grafkort
+      id="intensitetstid"
       tittel={`Tid med intensitet per ${enhet}, ${k.valgt.navn}`}
       forklaring={`Timer i I3–I5, stablet etter sone. Streken er snittet av de siste ${snittLengde} ${opplosning === 'uke' ? 'ukene' : 'månedene'}, og pokalene viser konkurransedager. Sesongen har ${timer(sum)} t i I3–I5 så langt. Klikk for å åpne i dagboka.`}
       forklaringTabell={`Timer i I3–I5 per ${enhet}, fordelt på sone, med kvalitetsøkter og konkurransedager. Sesongen har ${timer(sum)} t i I3–I5 så langt. Klikk en ${enhet} for å åpne den i dagboka.`}

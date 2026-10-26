@@ -417,6 +417,16 @@ når en advarsel ikke kan rettes, som `useVirtualizer` i `Dagbok.tsx`.
 - **Ruter:** Hash-ruting (`#/`, `#/okt/<id>`, `#/analyse/...`, `#/spor`). Søket ligger i URL-en
   (`?q=…&type=loping,konk`), så visninger kan lenkes. `#/?uke=2025-14` åpner dagboka på
   en bestemt uke. Analysegrafene bruker dette når du klikker på en uke.
+- **Tilbake-knappen gjenoppretter siden:** Analyse og Spør skal se like ut etter Tilbake.
+  - **Valgene i URL-en:** Valg på siden som periode, filtre, oppløsning og graf eller tabell
+    lagres i URL-en med `useUrlTilstand(nokkel, standard)` (`komponenter/useUrlTilstand.ts`),
+    ikke i `useState`. Standardverdier skrives ikke.
+  - **Grafkort:** Hvert `Grafkort` trenger en fast `id`. Tabellvisningen lagres som
+    `?tabell=<id>,…`.
+  - **Rulling:** Rulleflater merkes `data-husk-rull="<navn>"`, og `HuskRulling.tsx` lagrer
+    posisjonen per historikkoppføring i sessionStorage. Dagboka har sin egen rulling og er
+    ikke merket.
+  - **Undermenyen** i Analyse tar bare med `?sesong=` videre.
 - **Treningsår:** Analysen regner sesonger fra 1. november til 31. oktober. «Samme dato»
   betyr at sesongen som pågår sammenlignes med sesongen før, fram til samme dag. Sluttdatoen
   er **siste importerte økt** (`Dagbok.sisteDato`, `analyseperiode()` i `statistikk.ts`), ikke

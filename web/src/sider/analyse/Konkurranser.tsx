@@ -14,6 +14,8 @@ import {
   prosent,
   snittOppkjoring,
   TYPE_NAVN,
+  TYPER,
+  DISIPLINER,
   typerIBruk,
   type Oppkjoring,
 } from '../../data/konkurranser'
@@ -23,9 +25,12 @@ import { ukeForDato } from '../../data/uker'
 import { Grafkort, Segment, Tegnforklaring } from '../../komponenter/graf/felles'
 import { Tidsserie } from '../../komponenter/graf/Tidsserie'
 import { Eksternlenker as Lenker, UGYLDIGE_STREKK } from '../../komponenter/Resultat'
+import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
 import type { Analysekontekst } from '../Analyse'
 
-type Periode = 'sesong' | 'alle'
+const PERIODER = ['sesong', 'alle'] as const
+type Periode = (typeof PERIODER)[number]
+const DISIPLINVALG = ['alle', ...DISIPLINER] as const
 const en = (v: number | null | undefined, d = 0) => (v == null ? '–' : v.toLocaleString('nb-NO', { maximumFractionDigits: d }))
 
 export function Konkurranser({ k }: { k: Analysekontekst }) {
@@ -57,9 +62,9 @@ function lagXMerker(fra: string, til: string, alle: boolean) {
 }
 
 function KonkurranserInnhold({ k }: { k: Analysekontekst }) {
-  const [periode, setPeriode] = useState<Periode>('sesong')
-  const [type, setType] = useState<Konkurransetype>('o-løp')
-  const [disiplinOnsket, setDisiplin] = useState<Disiplin | 'alle'>('alle')
+  const [periode, setPeriode] = useUrlTilstand<Periode>('periode', 'sesong', PERIODER)
+  const [type, setType] = useUrlTilstand<Konkurransetype>('type', 'o-løp', TYPER)
+  const [disiplinOnsket, setDisiplin] = useUrlTilstand<Disiplin | 'alle'>('disiplin', 'alle', DISIPLINVALG)
   const [aktiv, setAktiv] = useState<number | null>(null)
   const [params, setParams] = useSearchParams()
   const { dagbok } = k
@@ -198,6 +203,7 @@ function KonkurranserInnhold({ k }: { k: Analysekontekst }) {
       </div>
 
       <Grafkort
+        id="resultater"
         tittel="Prosent bak vinner"
         forklaring={
           <>

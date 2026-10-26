@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { dato, km, tall, timer, ukespenn } from '../../data/format'
 import { AKUTT_DAGER, HRV_VINDU, KRONISK_DAGER } from '../../data/helse'
@@ -7,15 +7,17 @@ import type { GarminDag } from '../../data/typer'
 import { Grafkort, Segment, Tegnforklaring } from '../../komponenter/graf/felles'
 import { Stolper } from '../../komponenter/graf/Stolper'
 import { Tidsserie } from '../../komponenter/graf/Tidsserie'
+import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
 import type { Analysekontekst } from '../Analyse'
 import { SykeOgSkade } from './Rekorder'
 
-type Periode = 'sesong' | 'alle'
+const PERIODER = ['sesong', 'alle'] as const
+type Periode = (typeof PERIODER)[number]
 const SNITT_DAGER = 7
 const en = (v: number | null | undefined, d = 0) => (v == null ? '–' : v.toLocaleString('nb-NO', { maximumFractionDigits: d }))
 
 export function Helse({ k }: { k: Analysekontekst }) {
-  const [periode, setPeriode] = useState<Periode>('sesong')
+  const [periode, setPeriode] = useUrlTilstand<Periode>('periode', 'sesong', PERIODER)
   const navigate = useNavigate()
   const helse = k.dagbok.helsePerDato
 
@@ -176,7 +178,7 @@ function HelseInnhold({
         {periodevalg}
       </div>
 
-      <Grafkort tittel="Hvilepuls" forklaring={`Slag/min hver morgen, med snitt over ${SNITT_DAGER} dager. ${sykForklaring}`} forklaringTabell={helseTabell} tabell={tabell}>
+      <Grafkort id="hvilepuls" tittel="Hvilepuls" forklaring={`Slag/min hver morgen, med snitt over ${SNITT_DAGER} dager. ${sykForklaring}`} forklaringTabell={helseTabell} tabell={tabell}>
         <Tidsserie
           x={x}
           serier={[
@@ -205,6 +207,7 @@ function HelseInnhold({
       </Grafkort>
 
       <Grafkort
+        id="hrv"
         tittel="HRV om natta"
         forklaring={
           harHrv
@@ -252,7 +255,7 @@ function HelseInnhold({
         )}
       </Grafkort>
 
-      <Grafkort tittel="Søvn per natt, snitt per uke" forklaring="Timer søvn. Søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den." forklaringTabell={helseTabell} tabell={tabell}>
+      <Grafkort id="sovn" tittel="Søvn per natt, snitt per uke" forklaring="Timer søvn. Søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den." forklaringTabell={helseTabell} tabell={tabell}>
         <Stolper
           punkter={uker.map((u) => ({ nokkel: u.p.uke.nokkel, verdier: { sovn: (u.sovn ?? 0) / 60 } }))}
           serier={[{ id: 'sovn', navn: 'Søvn', klasse: 'fyll-sovn' }]}
@@ -310,6 +313,7 @@ function HelseInnhold({
       </Grafkort>
 
       <Grafkort
+        id="belastning"
         tittel="Treningsbelastning"
         forklaring={
           harBelastning

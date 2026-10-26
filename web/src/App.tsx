@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { HashRouter, Route, Routes } from 'react-router'
 import { lastDagbok, type Dagbok as DagbokData } from './data/last'
 import { SisteOkt } from './komponenter/DagbokPeriode'
+import { HuskRulling } from './komponenter/HuskRulling'
 import { Analyse } from './sider/Analyse'
 import { Dagbok } from './sider/Dagbok'
 import { Spor } from './sider/Spor'
@@ -37,6 +38,7 @@ export function App() {
           <Route path="/analyse/*" element={<Analyse dagbok={dagbok} />} />
           <Route path="/spor" element={<Spor />} />
         </Routes>
+        <HuskRulling />
       </HashRouter>
     </SisteOkt>
   )

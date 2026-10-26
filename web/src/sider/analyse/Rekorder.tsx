@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { dato, km, tall, timer, ukespenn, varighetLang } from '../../data/format'
 import {
@@ -13,13 +13,15 @@ import {
 import { Grafkort, Segment, Tegnforklaring } from '../../komponenter/graf/felles'
 import { Stolper } from '../../komponenter/graf/Stolper'
 import { ukeForDato } from '../../data/uker'
+import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
 import type { Analysekontekst } from '../Analyse'
 
-type Omfang = 'alle' | 'sesong'
+const OMFANG = ['alle', 'sesong'] as const
+type Omfang = (typeof OMFANG)[number]
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 export function Rekorder({ k }: { k: Analysekontekst }) {
-  const [omfang, setOmfang] = useState<Omfang>('alle')
+  const [omfang, setOmfang] = useUrlTilstand<Omfang>('omfang', 'alle', OMFANG)
   const fra = omfang === 'alle' ? k.sesonger[0].fra : k.valgt.fra
   const til = omfang === 'alle' ? k.sluttdato : k.valgt.til < k.sluttdato ? k.valgt.til : k.sluttdato
 
@@ -195,6 +197,7 @@ export function SykeOgSkade({ k }: { k: Analysekontekst }) {
   )
   return (
     <Grafkort
+      id="syke-skadedager"
       tittel="Syke- og skadedager per sesong"
       forklaring="Dager markert som syk eller skadet i dagboka. En dag kan være begge deler. Detaljerte sykdoms- og skadeskjemaer finnes bare fra 2025."
       tabell={tabell}

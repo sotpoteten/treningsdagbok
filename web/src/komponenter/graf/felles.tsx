@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { useUrlFlagg } from '../useUrlTilstand'
 
 export interface Seriedef {
   id: string
@@ -50,6 +51,7 @@ export function Verktoytips({ tips, bredde }: { tips: Tips | null; bredde: numbe
 
 /** Ramme rundt en graf med tittel, valg og bytte mellom graf og tabell. */
 export function Grafkort({
+  id,
   tittel,
   forklaring,
   forklaringTabell,
@@ -57,6 +59,8 @@ export function Grafkort({
   tabell,
   children,
 }: {
+  /** Stabil id på siden. Tabellvisningen huskes i URL-en (`?tabell=<id>`), og rullingen i tabellen per historikkoppføring. */
+  id: string
   tittel: string
   forklaring?: ReactNode
   /** Forklaring i tabellvisning, når `forklaring` handler om grafen (streker, punkter, klikk). Ellers brukes `forklaring`. */
@@ -65,7 +69,7 @@ export function Grafkort({
   tabell: () => ReactNode
   children: ReactNode
 }) {
-  const [visTabell, setVisTabell] = useState(false)
+  const [visTabell, setVisTabell] = useUrlFlagg('tabell', id)
   const tekst = visTabell && forklaringTabell !== undefined ? forklaringTabell : forklaring
   return (
     <section className="grafkort">
@@ -86,7 +90,9 @@ export function Grafkort({
           </div>
         </div>
       </header>
-      {visTabell ? <div className="grafkort-tabell">{tabell()}</div> : children}
+      {visTabell ? <div className="grafkort-tabell" data-husk-rull={`tabell-${id}`}>
+          {tabell()}
+        </div> : children}
     </section>
   )
 }

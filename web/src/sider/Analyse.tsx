@@ -38,7 +38,9 @@ const UNDERSIDER = [
 
 export function Analyse({ dagbok }: { dagbok: Dagbok }) {
   const [params, setParams] = useSearchParams()
-  const { search } = useLocation()
+  // Undersidene deler bare sesongen. Visningsvalgene (periode, filter, tabell) hører til hver side.
+  const sesongParam = params.get('sesong')
+  const search = sesongParam ? `?${new URLSearchParams({ sesong: sesongParam })}` : ''
   const alle = useMemo(() => sesonger(dagbok), [dagbok])
 
   const kontekst = useMemo<Analysekontekst>(() => {
@@ -81,7 +83,7 @@ export function Analyse({ dagbok }: { dagbok: Dagbok }) {
   return (
     <>
       <Topplinje />
-      <main className="analyse">
+      <main className="analyse" data-husk-rull="analyse">
         <div className="analyse-hode">
           <nav className="undermeny" aria-label="Analyse" ref={meny} onScroll={oppdaterKanter}>
             {UNDERSIDER.map((u) => (
