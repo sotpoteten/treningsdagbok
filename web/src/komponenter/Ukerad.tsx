@@ -22,7 +22,7 @@ export const Ukerad = memo(function Ukerad({ uke, treff, valgtId, idag, medSpor 
   const tomme = tommeRekker(uke.dager)
   const harTreff = !treff || uke.okter.some(treff)
   return (
-    <article className={harTreff ? 'uke' : 'uke uten-treff'} aria-labelledby={`uke-${uke.nokkel}`}>
+    <article className={['uke', treff && 'filtrert', !harTreff && 'uten-treff'].filter(Boolean).join(' ')} aria-labelledby={`uke-${uke.nokkel}`}>
       <span className="koordinat" aria-hidden>
         {uke.ar} · {String(uke.uke).padStart(2, '0')}
       </span>
@@ -98,7 +98,8 @@ interface DagProps {
 
 function Dagcelle({ dag, ukedag, tom, treff, valgtId, idag, medSpor }: DagProps) {
   const r = dag.rapport
-  const klasser = ['dag', r?.syk && 'syk', r?.skadet && 'skadet', dag.dato === idag && 'idag', tom && 'tom', tom && !tom.start && 'tom-fortsatt']
+  // Med filter eller søk dempes dagsinformasjonen som øktene som ikke treffer (se app.css).
+  const klasser = ['dag', r?.syk && 'syk', r?.skadet && 'skadet', dag.dato === idag && 'idag', tom && 'tom', tom && !tom.start && 'tom-fortsatt', treff && 'filtrert']
     .filter(Boolean)
     .join(' ')
   const sykdom = r?.sykdom ? r.sykdom.kommentar?.trim() || r.sykdom.symptomer.join(', ') : null

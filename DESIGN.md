@@ -292,6 +292,8 @@ Kortet er en rad på kartet, ikke en boks: blekkstrek over, ingen ramme rundt.
 - **Innhold:** Navn (600 14px, maks to linjer), varighet · km i Barlow Condensed blekk-2 med kompass- og manualikon for o-teknikk og styrke, og en 4 px sonestolpe.
 - **Hover:** Rutenettflate. **Valgt:** rutenettflate og 2 px blå ring innenfor kanten.
 - **Filtrert bort:** Opasitet 0,25. En uke uten treff dempes til 0,5 som helhet.
+  Dagsinformasjonen (markører, stempler, dagsnotat og «ingen økter») og ukekommentaren kan
+  ikke treffe et filter eller søk, så de dempes til 0,25 i uker med treff. Datoen står urørt.
 - **Rulling til treff:** Når en typebrikke slås på eller av, ruller kalenderen til uka med den
   nyeste økta som treffer, så den alltid er i vinduet. Står den der allerede, står lista
   stille. Søkefeltet ruller ikke for hvert tastetrykk: der går Enter og pilene til neste treff.

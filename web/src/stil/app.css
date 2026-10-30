@@ -325,8 +325,15 @@ button {
 .uke.uten-treff {
   opacity: 0.5;
 }
-/* Uka er allerede dempet; ikke demp kortene en gang til. */
-.uke.uten-treff .oktkort.dempet {
+/* Dagsinformasjonen og ukekommentaren treffer aldri et filter eller søk, så de dempes som kortene. */
+.dag.filtrert :is(.markorer, .stempler, .dag-notat, .dag-mer, .tom-spenn),
+.uke.filtrert .ukekommentar {
+  opacity: 0.25;
+}
+/* Uka er allerede dempet; ikke demp kortene, dagsinformasjonen og kommentaren en gang til. */
+.uke.uten-treff .oktkort.dempet,
+.uke.uten-treff .dag.filtrert :is(.markorer, .stempler, .dag-notat, .dag-mer, .tom-spenn),
+.uke.uten-treff .ukekommentar {
   opacity: 1;
 }
 
