@@ -7,13 +7,28 @@ import { useEffect, useEffectEvent, useMemo, useRef } from 'react'
 
 setWorkerUrl(workerUrl)
 
-export type Kartlag = 'topo' | 'osm'
+export type Kartlag = 'topo' | 'mapant' | 'mapantfi' | 'osm'
 
 const KILDER: Record<Kartlag, { fliser: string[]; attribusjon: string; maks: number }> = {
   topo: {
     fliser: ['https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png'],
     attribusjon: '© <a href="https://www.kartverket.no/">Kartverket</a>',
     maks: 18,
+  },
+  // Orienteringskart generert fra laserdata, bare Norge. Fliser til zoom 16, så MapLibre
+  // forstørrer over det. Lisens CC BY-NC-ND 4.0: flisene vises uendret og med kreditering.
+  mapant: {
+    fliser: ['https://mapant.no/tiles/osm/{z}/{x}/{y}.png'],
+    attribusjon: '© <a href="https://mapant.no/">MapAnt.no</a> (CC BY-NC-ND 4.0)',
+    maks: 16,
+  },
+  // Samme slags kart for Finland. Webmercator-flisene regnes om fra TM35FIN på tjeneren,
+  // og kartet har rundt 0,7 piksler per meter, så over zoom 17 blir det bare forstørret.
+  // Lisens CC BY 4.0.
+  mapantfi: {
+    fliser: ['https://www.mapant.fi/wmts//wmts_EPSG3857.php?z={z}&y={y}&x={x}'],
+    attribusjon: '© <a href="https://www.mapant.fi/">MapAnt.fi</a> (CC BY 4.0)',
+    maks: 17,
   },
   osm: {
     fliser: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],

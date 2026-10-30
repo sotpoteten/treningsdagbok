@@ -464,8 +464,15 @@ når en advarsel ikke kan rettes, som `useVirtualizer` i `Dagbok.tsx`.
   - **Øktpanelet:** Det viser Garmin-delen (`Garminokt.tsx`) med nøkkeltall, kart, puls-
     og tempokurve og runder.
   - **Kartet:** `komponenter/kart/Kart.tsx` bruker MapLibre, lastes dynamisk og har
-    Kartverket topo og OSM. Kartverket dekker bare Norge, så spor utenfor Norge starter
-    på OSM (`kart/omrade.ts`). Å bytte lag bytter bare flisene, ikke sporet.
+    kartlag etter hvor sporet er (`KARTLAG` i `Garminokt.tsx`, landet fra `kart/omrade.ts`):
+    - **Norge:** Kartverket topo, MapAnt.no (orienteringskart fra laserdata, CC BY-NC-ND 4.0,
+      fliser til zoom 16) og OSM.
+    - **Finland:** MapAnt.fi (CC BY 4.0, Webmercator regnet om på tjeneren) og OSM.
+    - **Andre steder:** bare OSM, uten valg av lag.
+    - **Sveits:** MapAnt.ch finnes bare i LV95 (EPSG:2056) og slipper ikke flisene til andre
+      nettsider (CORS), så det går ikke med MapLibre. Lantmäteriets kart for Sverige krever
+      betalt nøkkel. Begge er droppet (okt. 2026).
+    - Å bytte lag bytter bare flisene, ikke sporet.
   - **Helsesiden:** `#/analyse/helse` viser hvilepuls, HRV, søvn og belastning.
   - **Sporfilene:** `npm run data` kopierer dem til `web/public/garmin_spor/`
     (gitignored) og skriver lista `public/data/garmin_spor.json`. Siden viser GPS-ikon og

@@ -36,7 +36,7 @@ det arbeidet.
   ukeskommentarer og dagsmarkører (syk, skadet, reise, høydedøgn, konkurranse) og en
   årsnavigasjon som viser treningsvolum per uke.
 - **Øktpanel:** Blokker, soner, notat og Garmin-data. Garmin-dataene er kart med
-  GPS-spor (Kartverket topo/OSM), puls- og tempokurve og runder.
+  GPS-spor (Kartverket topo, MapAnt i Norge og Finland, eller OSM), puls- og tempokurve og runder.
 - **Analyse:** Oversikt mot forrige sesong, volum over tid, sesongsammenligning,
   intensitet og aktivitet, rekorder, og helse og belastning (hvilepuls, HRV, søvn og
   Garmins treningsbelastning).

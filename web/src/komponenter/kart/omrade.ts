@@ -1,6 +1,6 @@
-// Kartverkets topografiske kart dekker bare Norge. Utenfor blir bakgrunnen blank, så
-// kartet starter på OSM der. Omrisset er grovt (riksgrensa og et stykke ut i havet),
-// men skiller godt mellom Norge og stedene rundt, som Falun, Älvdalen og Finland.
+// Kartverket og MapAnt dekker bare hvert sitt land. Utenfor blir bakgrunnen blank, så
+// kartvalgene avhenger av hvor sporet er. Omrissene er grove (riksgrensene og et stykke ut
+// i havet), men skiller godt mellom landene og stedene rundt, som Falun, Älvdalen og Tallinn.
 
 /** [lengdegrad, breddegrad], med klokka fra sørspissen. */
 const NORGE: [number, number][] = [
@@ -37,15 +37,56 @@ const NORGE: [number, number][] = [
   [8.5, 57.9],
 ]
 
-/** Om et punkt ligger innenfor Norge (strålekasting mot omrisset). */
-export function iNorge(lat: number, lon: number): boolean {
+/** Med klokka fra sørvest for Åland. Grensa mot Norge følger samme punkter som NORGE. */
+const FINLAND: [number, number][] = [
+  [19.2, 59.7],
+  [19.3, 60.6],
+  [21.0, 63.6],
+  [22.5, 64.6],
+  [24.15, 65.8],
+  [23.65, 67.2],
+  [22.4, 68.45],
+  [20.5, 69.06],
+  [21.0, 69.2],
+  [24.9, 68.6],
+  [26.0, 69.9],
+  [28.9, 69.05],
+  [30.0, 67.7],
+  [29.1, 66.9],
+  [30.1, 65.7],
+  [29.7, 64.8],
+  [30.6, 64.2],
+  [31.6, 62.9],
+  [28.8, 61.2],
+  [27.8, 60.5],
+  [24.5, 59.85],
+  [22.5, 59.6],
+  [20.5, 59.45],
+]
+
+/** Strålekasting mot et omriss. */
+function innenfor(omriss: [number, number][], lat: number, lon: number): boolean {
   let inne = false
-  for (let i = 0, j = NORGE.length - 1; i < NORGE.length; j = i++) {
-    const [xi, yi] = NORGE[i]
-    const [xj, yj] = NORGE[j]
+  for (let i = 0, j = omriss.length - 1; i < omriss.length; j = i++) {
+    const [xi, yi] = omriss[i]
+    const [xj, yj] = omriss[j]
     if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inne = !inne
   }
   return inne
+}
+
+/** Om et punkt ligger innenfor Norge. */
+export function iNorge(lat: number, lon: number): boolean {
+  return innenfor(NORGE, lat, lon)
+}
+
+export type Land = 'norge' | 'finland'
+
+/** Landet punktet ligger i, når det er et land med egne kartlag. */
+export function land(lat: number, lon: number): Land | null {
+  if (iNorge(lat, lon)) return 'norge'
+  if (innenfor(FINLAND, lat, lon)) return 'finland'
+  return null
 }
 
 /** Midtpunktet i sporet (punktet halvveis i serien), eller null uten posisjoner. */

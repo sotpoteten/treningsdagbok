@@ -6,11 +6,25 @@ import { km, tempo, varighetLang } from '../data/format'
 import { harSporfil } from '../data/last'
 import type { GarminAktivitet, GarminSpor } from '../data/typer'
 import { Segment } from './graf/felles'
-import { iNorge, midtpunkt } from './kart/omrade'
+import { land, midtpunkt, type Land } from './kart/omrade'
 import { Tidsserie } from './graf/Tidsserie'
 import type { Kartlag } from './kart/Kart'
 
 const Kart = lazy(() => import('./kart/Kart'))
+
+/** Kartlagene som finnes der sporet er. Det første er standard. */
+const KARTLAG: Record<Land | 'annet', { id: Kartlag; navn: string }[]> = {
+  norge: [
+    { id: 'topo', navn: 'Topo' },
+    { id: 'mapant', navn: 'MapAnt' },
+    { id: 'osm', navn: 'OSM' },
+  ],
+  finland: [
+    { id: 'mapantfi', navn: 'MapAnt' },
+    { id: 'osm', navn: 'OSM' },
+  ],
+  annet: [{ id: 'osm', navn: 'OSM' }],
+}
 
 const TYPENAVN: Record<string, string> = {
   running: 'Løping',
@@ -82,7 +96,7 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   const [valgt, setValgt] = useTilstandPer(aktiviteter, 0)
   const a = aktiviteter[Math.min(valgt, aktiviteter.length - 1)]
   const [aktiv, setAktiv] = useTilstandPer<number | null>(a.garmin_id, null)
-  // Null til Isak velger selv: da avgjør sporet om det er Kartverket (Norge) eller OSM.
+  // Null til Isak velger selv: da er det første lag for landet (se KARTLAG).
   const [lagValg, setLagValg] = useTilstandPer<Kartlag | null>(a.garmin_id, null)
   const [stor, setStor] = useState(false)
 
@@ -149,7 +163,10 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   }, [spor])
   const harKart = !!(p?.lat && p.lon && p.lat.some((v) => v != null))
   const midt = useMemo(() => (p?.lat && p.lon ? midtpunkt(p.lat, p.lon) : null), [p])
-  const lag: Kartlag = lagValg ?? (midt && !iNorge(...midt) ? 'osm' : 'topo')
+  // Kartverket og MapAnt dekker bare hvert sitt land. Andre steder finnes det ikke noe valg:
+  // der er det alltid OSM.
+  const lagvalg = midt ? KARTLAG[land(...midt) ?? 'annet'] : KARTLAG.norge
+  const lag: Kartlag = lagValg && lagvalg.some((v) => v.id === lagValg) ? lagValg : lagvalg[0].id
   const erLop = (a.distanse_km ?? 0) > 0 && /running|run/.test(a.type)
 
   return (
@@ -214,15 +231,7 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
       {harKart && p && (
         <div className={stor ? 'kartramme stor' : 'kartramme'}>
           <div className="kartvalg">
-            <Segment
-              etikett="Kart"
-              verdi={lag}
-              onEndre={setLagValg}
-              valg={[
-                { id: 'topo', navn: 'Topo' },
-                { id: 'osm', navn: 'OSM' },
-              ]}
-            />
+            {lagvalg.length > 1 && <Segment etikett="Kart" verdi={lag} onEndre={setLagValg} valg={lagvalg} />}
             <button type="button" className="ikonknapp" onClick={() => setStor(!stor)} aria-label={stor ? 'Lukk stort kart (Esc)' : 'Vis stort kart'}>
               {stor ? <Minimize2 /> : <Maximize2 />}
             </button>
