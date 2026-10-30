@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { erAktivt, lagTreff, lesFilter, type Filter } from '../data/filter'
 import { dato } from '../data/format'
@@ -123,21 +123,44 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
     const p = new URLSearchParams()
     if (f.sok) p.set('q', f.sok)
     if (f.typer.size) p.set('type', [...f.typer].join(','))
+    if ([...f.typer].join() !== [...filter.typer].join()) rullTilTreff.current = true
     setParams(p, { replace: true })
   }
 
-  function nesteTreff(retning: 1 | -1) {
-    if (!treff) return
-    const forste = elementer.find((it) => rader[it.index].type === 'uke' && it.end > topp + 40)
-    const start = forste ? forste.index : 0
-    for (let i = start + retning; i >= 0 && i < rader.length; i += retning) {
-      const r = rader[i]
-      if (r.type === 'uke' && r.uke.okter.some(treff)) {
-        v.scrollToIndex(i, { align: 'start' })
-        return
-      }
-    }
+  function harTreff(i: number) {
+    const r = rader[i]
+    return !!treff && r.type === 'uke' && r.uke.okter.some(treff)
   }
+
+  /** Første uke med treff fra og med rad `fra` i retningen, eller null. */
+  function finnTreff(fra: number, retning: 1 | -1) {
+    for (let i = fra; i >= 0 && i < rader.length; i += retning) if (harTreff(i)) return i
+    return null
+  }
+
+  function forsteSynlige() {
+    const forste = elementer.find((it) => rader[it.index].type === 'uke' && it.end > topp + 40)
+    return forste ? forste.index : 0
+  }
+
+  function nesteTreff(retning: 1 | -1) {
+    const i = finnTreff(forsteSynlige() + retning, retning)
+    if (i != null) v.scrollToIndex(i, { align: 'start' })
+  }
+
+  // Når en kategori velges eller tas bort: rull til uka med den nyeste økta som treffer, med
+  // mindre den alt står i vinduet. Søkefeltet ruller ikke, så lista ikke hopper for hvert
+  // tastetrykk. Der brukes Enter og pilene.
+  const rullTilTreff = useRef(false)
+  const rullVedNyttFilter = useEffectEvent(() => {
+    const i = finnTreff(0, 1)
+    if (i != null && !synlige.has(rader[i].nokkel)) v.scrollToIndex(i, { align: 'start' })
+  })
+  useEffect(() => {
+    if (!rullTilTreff.current) return
+    rullTilTreff.current = false
+    rullVedNyttFilter()
+  }, [treff])
 
   const sok = params.toString()
   const lukk = useCallback(() => navigate({ pathname: '/', search: sok }), [navigate, sok])
