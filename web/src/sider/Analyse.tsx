@@ -3,6 +3,7 @@ import { NavLink, Route, Routes, useLocation, useSearchParams } from 'react-rout
 import type { Dagbok } from '../data/last'
 import { analyseperiode, sesonger, sesongFraUrl, sesongTilUrl, type Sesong } from '../data/statistikk'
 import { Topplinje } from '../komponenter/Topplinje'
+import { Bevegelsesformer } from './analyse/Bevegelsesformer'
 import { Helse } from './analyse/Helse'
 import { Intensitet } from './analyse/Intensitet'
 import { Konkurranser } from './analyse/Konkurranser'
@@ -30,7 +31,8 @@ const UNDERSIDER = [
   { sti: '/analyse', navn: 'Oversikt', end: true },
   { sti: '/analyse/volum', navn: 'Volum' },
   { sti: '/analyse/sesonger', navn: 'Sesonger' },
-  { sti: '/analyse/intensitet', navn: 'Intensitet og aktivitet' },
+  { sti: '/analyse/intensitet', navn: 'Intensitet' },
+  { sti: '/analyse/bevegelsesformer', navn: 'Bevegelsesformer' },
   { sti: '/analyse/rekorder', navn: 'Rekorder' },
   { sti: '/analyse/helse', navn: 'Helse og belastning' },
   { sti: '/analyse/konkurranser', navn: 'Konkurranser' },
@@ -108,6 +110,7 @@ export function Analyse({ dagbok }: { dagbok: Dagbok }) {
           <Route path="volum" element={<Volum k={kontekst} />} />
           <Route path="sesonger" element={<Sesonger k={kontekst} />} />
           <Route path="intensitet" element={<Intensitet k={kontekst} />} />
+          <Route path="bevegelsesformer" element={<Bevegelsesformer k={kontekst} />} />
           <Route path="rekorder" element={<Rekorder k={kontekst} />} />
           <Route path="helse" element={<Helse k={kontekst} />} />
           <Route path="konkurranser" element={<Konkurranser k={kontekst} />} />

@@ -26,6 +26,8 @@ interface Props {
   tips: (p: Stolpepunkt, i: number) => ReactNode
   onKlikk?: (p: Stolpepunkt) => void
   beskrivelse: string
+  /** Felles toppverdi for y-aksen, så små multipler kan sammenlignes. */
+  yMaks?: number
 }
 
 /** Seriene som tegnes skravert med 1 px kant (se analyse.css). */
@@ -68,7 +70,7 @@ export function Skravur() {
 }
 
 /** Stablede stolper med 2 px mellomrom mellom segmentene. Rette hjørner (Kartbladet). */
-export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, xEtikett, tips, onKlikk, beskrivelse }: Props) {
+export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, xEtikett, tips, onKlikk, beskrivelse, yMaks }: Props) {
   const [ref, bredde] = useBredde<HTMLDivElement>()
   const [aktiv, setAktiv] = useState<number | null>(null)
   // Siste peker var berøring: første trykk viser verktøytipset, andre trykk åpner.
@@ -99,7 +101,7 @@ export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, x
   const indre = Math.max(0, bredde - MARG.venstre - MARG.hoyre)
   const hoydeIndre = hoyde - MARG.topp - MARG.bunn
   const totaler = punkter.map((p) => serier.reduce((a, s) => a + (p.verdier[s.id] ?? 0), 0))
-  const maks = Math.max(1, ...totaler, ...(snitt?.verdier ?? []))
+  const maks = yMaks ?? Math.max(1, ...totaler, ...(snitt?.verdier ?? []))
 
   const x = scaleBand<number>()
     .domain(punkter.map((_, i) => i))

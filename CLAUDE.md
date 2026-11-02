@@ -18,7 +18,7 @@ orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tek
 
 1. **Dagbok:** ukeskalender med søk, filter og øktpanel.
 2. **Analyse** med sesonger fra 1. nov. til 31. okt.: Oversikt, Volum, Sesonger,
-   Intensitet og aktivitet, Rekorder, og Helse og belastning.
+   Intensitet, Bevegelsesformer, Rekorder, Helse og belastning, og Konkurranser.
 3. **Garmin:** Aktivitetene er koblet til øktene. Øktpanelet har kart, kurver og runder.
    Hvilepuls, HRV, søvn og belastning brukes i analysen.
 4. **Spør:** AI-assistent som svarer på spørsmål om dataene, med nettsøk etter kilder.
@@ -425,8 +425,8 @@ når en advarsel ikke kan rettes, som `useVirtualizer` i `Dagbok.tsx`.
 | `src/sider/Analyse.tsx` | Ramme for analysesiden: undermeny, sesongvelger (`?sesong=2025-26`) og felles `Analysekontekst` |
 | `src/sider/Spor.tsx` | «Spør»: samtalen med assistenten, strømmet svar som Markdown, lagret i `localStorage` |
 | `assistent/` | Tjenersiden av «Spør», se «Assistenten» under |
-| `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (sonefordeling per sesong, tid i I3–I5 per uke eller måned, kvalitetsøkter og aktivitet), Rekorder, Helse (hvilepuls, HRV, søvn, belastning, syke- og skadedager) |
-| `src/data/statistikk.ts` | Sesonger (1. nov.–31. okt.), kumulative kurver, glidende snitt (også med hull), dagserier, kvalitetsøkter (≥ 10 min i I3–I5), aktivitetsfordeling, rekorder og rekker, syke- og skadedager per sesong |
+| `src/sider/analyse/` | Oversikt, Volum, Sesonger, Intensitet (sonefordeling per sesong, tid i I3–I5 per uke eller måned, kvalitetsøkter), Bevegelsesformer (timer per form og uke eller måned stablet, timer per form og sesong, årshjul, underlaget i løpingen, intensitet per form og o-teknikk per terrengtype), Rekorder, Helse (hvilepuls, HRV, søvn, belastning, syke- og skadedager) |
+| `src/data/statistikk.ts` | Sesonger (1. nov.–31. okt.), kumulative kurver, glidende snitt (også med hull), dagserier, kvalitetsøkter (≥ 10 min i I3–I5), aktivitetsfordeling, underlag, o-teknikk og soner per form, årshjul (bare hele måneder), rekorder og rekker, syke- og skadedager per sesong |
 | `src/komponenter/graf/` | Egne SVG-grafer (`Stolper`, `Linjer`, `Tidsserie`) med d3, verktøytips, tastatur (piltaster, Enter), berøring og tabellvisning (`Grafkort`) |
 | `src/komponenter/` | Ukerad, Oktkort, Oktpanel, Garminokt, Hoydelag (årsnavigasjonen), Sok, Topplinje, Sonestolpe, Dagsmarkorer, `kart/Kart.tsx` (MapLibre) |
 | `src/stil/` | `tokens.css` (farger for lys og mørk modus, sonefargene er validert for fargeblindhet), `app.css` (dagboka), `analyse.css` (analyse og grafer), `garmin.css` (kart, kurver, helse), `spor.css` (Spør) |
@@ -450,7 +450,7 @@ når en advarsel ikke kan rettes, som `useVirtualizer` i `Dagbok.tsx`.
   dagens dato. Dagboka går ikke lenger enn dit, så en uke uten import teller ikke som tom.
   Topplinja viser perioden dagboka dekker.
 - **Farger i grafer:** Det er ingen egen kategoripalett. Valgt sesong er blå, forrige
-  sesong er blekk, og resten er dempet. Aktiviteter vises som små multipler i blekk.
+  sesong er blekk, og resten er dempet. Bevegelsesformer har et unntak med egne farger (`--f-*` i `tokens.css`, se DESIGN.md), bare på siden Bevegelsesformer.
   Kvalitetsøkter bruker I3-fargen, konkurranser kotebrunt, og syk og skadet stempelrødt
   (skadet skravert).
 - **Design:** Den visuelle retningen heter «Kartbladet» og er beskrevet i `DESIGN.md`.

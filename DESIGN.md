@@ -231,7 +231,7 @@ En kartpalett: varmt papir og blekk, rutenettblått som eneste aksent for samhan
 - **Blekk 3** (blekk-3): Etiketter, enheter, plassholdere, pulsverdier.
 
 ### Named Rules
-**The One Meaning Rule.** En farge betyr én ting. Sonefargene brukes bare for intensitet, blått bare for samhandling og ukevolum (som én egen tone), kotebrunt bare for dagsmarkører og konkurranser, rødt bare for syk, skadet og bom.
+**The One Meaning Rule.** En farge betyr én ting. Sonefargene brukes bare for intensitet, formfargene (`--f-*`) bare for bevegelsesformer på siden Bevegelsesformer, blått bare for samhandling og ukevolum (som én egen tone), kotebrunt bare for dagsmarkører og konkurranser, rødt bare for syk, skadet og bom.
 
 **The Hatched Strength Rule.** Styrke er alltid skravert (135°, 2 px strek, 2 px luft) med 1 px kant i styrkefargen, aldri en flat farge. Da kan den aldri forveksles med I5, heller ikke ved fargesvakhet.
 
@@ -345,7 +345,17 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
   (Thermometer) og skadet et medisinsk kors (Cross), begge i stempelrødt. Ikonformen skiller
   syk fra skadet, så fargen aldri bærer det alene.
 - **Ingen ny kategoripalett:**
-  - Aktiviteter vises som små multipler i `blekk-2`, og valgt sesong i rutenettblå.
+  - **Unntak, godkjent av Isak (okt. 2026): bevegelsesformene.** På siden Bevegelsesformer
+    har formene egne farger (`--f-loping` grønn, `--f-ski` turkis, `--f-sykkel` oker,
+    `--f-bevegelighet` plomme, styrke skravert som ellers), fordi stablene per uke viser
+    blandingen bedre enn små multipler. Paletten er validert for lyst og mørkt tema (alle
+    par). Den brukes bare der, aldri som pynt eller for andre data.
+    - Underlaget i løpingen bruker løpegrønn: terreng `--f-loping`, sti/vei `--f-sti`
+      og mølle skravert i løpegrønn.
+    - Per sesong vises formene fortsatt som små multipler i `blekk-2`, og valgt sesong i
+      rutenettblå.
+    - Årshjulet toner cellene med høydelagsblått (h1–h6) etter radens største måned, og
+      tallet står alltid i cellen.
   - Kvalitetsøkter bruker I3.
   - Løpe-km bruker volumtrinnet `h4`.
 - **Grafkort:**

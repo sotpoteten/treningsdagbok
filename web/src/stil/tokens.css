@@ -22,6 +22,15 @@
   /* Styrke tegnes skravert (se .seg-styrke), så den ikke kan forveksles med I5. */
   --styrke: #6b6b64;
 
+  /* Bevegelsesformer: unntak fra «ingen ny kategoripalett», bare for grafene på siden
+     Bevegelsesformer (se DESIGN.md). Validert med dataviz-validatoren, alle par.
+     Styrke bruker --styrke skravert. --f-sti er en lysere løpegrønn for sti/vei. */
+  --f-loping: #3a6e2a;
+  --f-ski: #08a2b4;
+  --f-sykkel: #d6a01e;
+  --f-bevegelighet: #8a3a74;
+  --f-sti: #86b062;
+
   /* Ukevolum i årsnavigasjonen: én blå tone, lys → mørk, som dybdelag.
      Holdes adskilt fra sonefargene, så samme farge aldri betyr to ting. */
   --h0: #f1f1ea;
@@ -59,6 +68,11 @@
     --i4: #bf3350;
     --i5: #a77bda;
     --styrke: #a3a199;
+    --f-loping: #3a7a30;
+    --f-ski: #22a2b6;
+    --f-sykkel: #b08a26;
+    --f-bevegelighet: #a8508f;
+    --f-sti: #86c068;
     --h0: #1e2124;
     --h1: #1d2b38;
     --h2: #24405a;
@@ -87,6 +101,11 @@
   --i4: #bf3350;
   --i5: #a77bda;
   --styrke: #a3a199;
+  --f-loping: #3a7a30;
+  --f-ski: #22a2b6;
+  --f-sykkel: #b08a26;
+  --f-bevegelighet: #a8508f;
+  --f-sti: #86c068;
   --h0: #1e2124;
   --h1: #1d2b38;
   --h2: #24405a;

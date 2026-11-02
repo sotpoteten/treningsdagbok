@@ -1,6 +1,6 @@
 import { summer, summerEtter, tomSum, type Sum } from './aggregat'
 import type { Dagbok } from './last'
-import type { Dag, Okt } from './typer'
+import type { Dag, Okt, Sone } from './typer'
 import type { Uke } from './uker'
 
 // Treningsåret går fra 1. november til 31. oktober («2025/26» = 1.11.2025–31.10.2026).
@@ -197,6 +197,98 @@ export function aktivitetsfordeling(okter: Iterable<Okt>): Aktivitetsfordeling {
     }
   }
   return { min, otek }
+}
+
+/** Underlaget i løpingen, fra ActivityId 1–3. */
+export const UNDERLAG = ['terreng', 'sti', 'molle'] as const
+export type Underlag = (typeof UNDERLAG)[number]
+export const UNDERLAG_NAVN: Record<Underlag, string> = { terreng: 'Terreng', sti: 'Sti/vei', molle: 'Mølle' }
+
+export interface Underlagsfordeling {
+  min: Record<Underlag, number>
+  km: Record<Underlag, number>
+}
+
+export function underlagsfordeling(okter: Iterable<Okt>): Underlagsfordeling {
+  const min: Record<Underlag, number> = { terreng: 0, sti: 0, molle: 0 }
+  const km: Record<Underlag, number> = { terreng: 0, sti: 0, molle: 0 }
+  for (const o of okter)
+    for (const b of o.blokker) {
+      if (b.aktivitet_id < 1 || b.aktivitet_id > 3) continue
+      const u = UNDERLAG[b.aktivitet_id - 1]
+      min[u] += b.minutter
+      km[u] += b.distanse_km ?? 0
+    }
+  return { min, km }
+}
+
+/** O-teknikken etter terrengtype, fra ActivityId 9–11. */
+export const OTEKNIKK = ['nordisk', 'kontinentalt', 'sprint'] as const
+export type Oteknikk = (typeof OTEKNIKK)[number]
+export const OTEKNIKK_NAVN: Record<Oteknikk, string> = { nordisk: 'Nordisk', kontinentalt: 'Kontinentalt', sprint: 'Sprint' }
+
+export function otekfordeling(okter: Iterable<Okt>): Record<Oteknikk, number> {
+  const min: Record<Oteknikk, number> = { nordisk: 0, kontinentalt: 0, sprint: 0 }
+  for (const o of okter) for (const b of o.blokker) if (b.aktivitet_id >= 9 && b.aktivitet_id <= 11) min[OTEKNIKK[b.aktivitet_id - 9]] += b.minutter
+  return min
+}
+
+/** Bevegelsesformene som har tid i soner (styrke og bevegelighet har ikke det). */
+export const SONEFORMER = ['loping', 'ski', 'sykkel'] as const
+export type Soneform = (typeof SONEFORMER)[number]
+
+/** Minutter per sone for hver bevegelsesform. */
+export function sonerPerForm(okter: Iterable<Okt>): Record<Soneform, Record<Sone, number>> {
+  const tom = () => ({ I1: 0, I2: 0, I3: 0, I4: 0, I5: 0 })
+  const ut: Record<Soneform, Record<Sone, number>> = { loping: tom(), ski: tom(), sykkel: tom() }
+  for (const o of okter)
+    for (const b of o.blokker) {
+      const id = b.aktivitet_id
+      if (id > 8) continue
+      const form: Soneform = id <= 3 ? 'loping' : id <= 6 ? 'ski' : 'sykkel'
+      for (const [s, m] of Object.entries(b.soner) as [Sone, number][]) ut[form][s] += m
+    }
+  return ut
+}
+
+export interface Arshjul {
+  /** Månedene i sesongen som tosifret månedsnummer, november først: «11», «12», «01» … */
+  maneder: string[]
+  /** Snitt minutter per bevegelsesform og måned, over sesongene som har hele måneden. */
+  snitt: Record<Aktivitet, number[]>
+  /** Antall sesonger hver måned bygger på. */
+  antall: number[]
+}
+
+/**
+ * Det typiske året: snittet per kalendermåned over alle sesonger. En måned tas bare med når
+ * den er hel innenfor dagboka (siste dag ≤ sluttdato), så måneden som pågår ikke drar ned snittet.
+ */
+export function arshjul(okter: Okt[], sesonger: Sesong[], sluttdato: string): Arshjul {
+  const maneder = ['11', '12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10']
+  const perManed = new Map<string, Okt[]>()
+  for (const o of okter) {
+    const m = o.dato.slice(0, 7)
+    const l = perManed.get(m)
+    if (l) l.push(o)
+    else perManed.set(m, [o])
+  }
+  const snitt = Object.fromEntries(AKTIVITETER.map((a) => [a, maneder.map(() => 0)])) as Record<Aktivitet, number[]>
+  const antall = maneder.map(() => 0)
+  for (const s of sesonger) {
+    const startAr = +s.fra.slice(0, 4)
+    maneder.forEach((mm, i) => {
+      const ar = i < 2 ? startAr : startAr + 1
+      const nokkel = `${ar}-${mm}`
+      const sisteDag = `${nokkel}-${String(new Date(ar, +mm, 0).getDate()).padStart(2, '0')}`
+      if (sisteDag > sluttdato) return
+      antall[i]++
+      const a = aktivitetsfordeling(perManed.get(nokkel) ?? [])
+      for (const f of AKTIVITETER) snitt[f][i] += a.min[f]
+    })
+  }
+  for (const f of AKTIVITETER) snitt[f] = snitt[f].map((v, i) => (antall[i] ? v / antall[i] : 0))
+  return { maneder, snitt, antall }
 }
 
 // ── Uker og perioder ────────────────────────────────────

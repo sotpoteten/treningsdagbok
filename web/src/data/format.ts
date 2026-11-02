@@ -66,3 +66,9 @@ export function pulsomrade(soner: Profil['pulssoner'], sone: Sone): string {
   const { Min, Max } = soner[sone]
   return sone === SONER[SONER.length - 1] ? `${Min}+` : `${Min}–${Max}`
 }
+
+/** Stor forbokstav, f.eks. til månedsnavn. */
+export const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+
+/** Kort sesongnavn for en dato i november, f.eks. «25/26». */
+export const sesongKort = (iso: string) => `${iso.slice(2, 4)}/${String(+iso.slice(2, 4) + 1).padStart(2, '0')}`

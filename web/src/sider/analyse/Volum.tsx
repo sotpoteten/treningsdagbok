@@ -1,7 +1,7 @@
 import { Cross, Thermometer } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { dato, km, tall, timer, ukespenn } from '../../data/format'
+import { cap, dato, km, sesongKort, tall, timer, ukespenn } from '../../data/format'
 import { glidendeSnitt, manedspunkter, ukepunkter } from '../../data/statistikk'
 import type { Sum } from '../../data/aggregat'
 import { SONER } from '../../data/typer'
@@ -242,6 +242,4 @@ function Volumtips({ p, snitt, snittLengde, enhet }: { p: Punkt; snitt: number; 
   )
 }
 
-const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
-const sesongKort = (iso: string) => `${iso.slice(2, 4)}/${String(+iso.slice(2, 4) + 1).padStart(2, '0')}`
 

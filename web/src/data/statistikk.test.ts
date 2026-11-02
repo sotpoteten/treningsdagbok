@@ -4,8 +4,10 @@ import { describe, expect, it } from 'vitest'
 import { summer, summerEtter } from './aggregat'
 import { byggDagbok } from './last'
 import {
+  AKTIVITETER,
   aktivitetsfordeling,
   analyseperiode,
+  arshjul,
   dagserie,
   erKvalitet,
   glidendeSnitt,
@@ -17,14 +19,17 @@ import {
   manedspunkter,
   nokkeltallTilSammeDato,
   okterISesong,
+  otekfordeling,
   perSesong,
   sammeDatoI,
   sesong,
   sesongDag,
   sesonger,
   snitt,
+  sonerPerForm,
   tilSammeDato,
   ukepunkter,
+  underlagsfordeling,
 } from './statistikk'
 
 const les = (fil: string) => JSON.parse(readFileSync(resolve(__dirname, '../../../data', fil), 'utf-8'))
@@ -130,6 +135,34 @@ describe('aktivitet', () => {
     const sum = Object.values(a.min).reduce((x, y) => x + y, 0)
     expect(sum).toBe(summer(dagbok.okter).minutter)
     expect(a.otek).toBe(summer(dagbok.okter).otek)
+  })
+
+  it('underlaget summerer til løpetiden og løpe-km', () => {
+    const u = underlagsfordeling(dagbok.okter)
+    expect(u.min.terreng + u.min.sti + u.min.molle).toBe(aktivitetsfordeling(dagbok.okter).min.loping)
+    expect(u.km.terreng + u.km.sti + u.km.molle).toBeCloseTo(summer(dagbok.okter).km, 6)
+  })
+
+  it('o-teknikken fordelt summerer til o-teknikken', () => {
+    const t = otekfordeling(dagbok.okter)
+    expect(t.nordisk + t.kontinentalt + t.sprint).toBe(summer(dagbok.okter).otek)
+  })
+
+  it('sonene per form summerer til sonetiden', () => {
+    const f = sonerPerForm(dagbok.okter)
+    const sum = summer(dagbok.okter).sone
+    for (const s of ['I1', 'I2', 'I3', 'I4', 'I5'] as const) expect(f.loping[s] + f.ski[s] + f.sykkel[s]).toBe(sum[s])
+  })
+
+  it('årshjulet tar bare med hele måneder og gir snittet over sesongene', () => {
+    const sesongene = sesonger(dagbok)
+    const h = arshjul(dagbok.okter, sesongene, '2026-10-05')
+    // Oktober 2026 er ikke hel, så oktober bygger på én sesong mindre enn november.
+    expect(h.antall[11]).toBe(h.antall[0] - 1)
+    // Snittet ganger antall sesonger er summen av de hele månedene.
+    const novTotal = dagbok.okter.filter((o) => o.dato.slice(5, 7) === '11').reduce((a, o) => a + o.varighet_min, 0)
+    const novSnitt = AKTIVITETER.reduce((a, f) => a + h.snitt[f][0], 0)
+    expect(novSnitt * h.antall[0]).toBeCloseTo(novTotal, 6)
   })
 })
 

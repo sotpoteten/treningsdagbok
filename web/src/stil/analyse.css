@@ -536,6 +536,79 @@ svg .fyll-skadet {
   color: var(--blekk-3);
 }
 
+/* ── Bevegelsesformer ──────────────────────────────────── */
+
+/* Egen kategoripalett for bevegelsesformene, bare på siden Bevegelsesformer (DESIGN.md).
+   Mølle er løpegrønn skravur, så den skilles fra terreng også uten farge. */
+.seg-f-loping { background: var(--f-loping); }
+.seg-f-ski { background: var(--f-ski); }
+.seg-f-sykkel { background: var(--f-sykkel); }
+.seg-f-bevegelighet { background: var(--f-bevegelighet); }
+.seg-f-sti { background: var(--f-sti); }
+.seg-f-molle {
+  background: repeating-linear-gradient(135deg, var(--f-loping) 0 2px, transparent 2px 4px);
+  box-shadow: inset 0 0 0 1px var(--f-loping);
+}
+svg .seg-f-loping { fill: var(--f-loping); }
+svg .seg-f-ski { fill: var(--f-ski); }
+svg .seg-f-sykkel { fill: var(--f-sykkel); }
+svg .seg-f-bevegelighet { fill: var(--f-bevegelighet); }
+
+/* Navnene på formene er lengre enn sesongnavnene. */
+.formliste .andelsrad {
+  grid-template-columns: 110px minmax(0, 1fr) 64px 64px 110px;
+}
+/* «km terreng» trenger en bredere kolonne. */
+.underlagliste .andelsrad {
+  grid-template-columns: 72px minmax(0, 1fr) 90px 64px 80px;
+}
+.underlagliste .andel-tall small {
+  white-space: nowrap;
+}
+
+/* Årshjulet: celler tonet h1–h6 etter radens største måned, tallet står alltid. */
+.arshjul-ramme {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+.arshjul {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 2px;
+  font: 500 14px var(--font-tall);
+  font-variant-numeric: tabular-nums;
+}
+.arshjul th {
+  font-weight: 600;
+  color: var(--blekk-3);
+  text-align: center;
+  padding: 2px 4px;
+}
+.arshjul tbody th {
+  text-align: left;
+  color: var(--blekk);
+  font: 500 14px var(--font-ui);
+  white-space: nowrap;
+  padding-right: 10px;
+}
+.arshjul td {
+  height: 34px;
+  min-width: 34px;
+  text-align: center;
+  color: var(--blekk);
+}
+.arshjul td.trinn-0 { color: var(--blekk-3); }
+.arshjul td.trinn-1 { background: var(--h1); }
+.arshjul td.trinn-2 { background: var(--h2); }
+.arshjul td.trinn-3 { background: var(--h3); }
+.arshjul td.trinn-4 { background: var(--h4); color: var(--papir); }
+.arshjul td.trinn-5 { background: var(--h5); color: var(--papir); }
+.arshjul td.trinn-6 { background: var(--h6); color: var(--papir); }
+.arshjul .sum {
+  font-weight: 600;
+  border-left: var(--strek);
+}
+
 /* ── Rekorder ──────────────────────────────────────────── */
 
 .topplister {
@@ -628,6 +701,12 @@ svg .fyll-skadet {
   .andelsrad {
     grid-template-columns: 60px minmax(0, 1fr) 52px;
     gap: 10px;
+  }
+  .formliste .andelsrad {
+    grid-template-columns: 90px minmax(0, 1fr) 52px;
+  }
+  .underlagliste .andelsrad {
+    grid-template-columns: 60px minmax(0, 1fr) 52px;
   }
   /* På mobil står andelen over terskel igjen; den er poenget med grafen. */
   .andelsrad .andel-i1,

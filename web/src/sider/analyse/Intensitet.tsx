@@ -4,9 +4,6 @@ import { Link, useNavigate } from 'react-router'
 import { summer } from '../../data/aggregat'
 import { dato, pulsomrade, tall, timer, ukespenn } from '../../data/format'
 import {
-  AKTIVITET_NAVN,
-  AKTIVITETER,
-  aktivitetsfordeling,
   erKvalitet,
   glidendeSnitt,
   hardeMinutter,
@@ -31,7 +28,6 @@ export function Intensitet({ k }: { k: Analysekontekst }) {
       <Sonefordeling k={k} />
       <Intensitetstid k={k} />
       <Kvalitet k={k} />
-      <Aktivitet k={k} />
     </>
   )
 }
@@ -187,74 +183,6 @@ function Kvalitet({ k }: { k: Analysekontekst }) {
           )
         }}
       />
-    </Grafkort>
-  )
-}
-
-function Aktivitet({ k }: { k: Analysekontekst }) {
-  const per = useMemo(() => k.sesonger.map((s) => ({ s, a: aktivitetsfordeling(okterISesong(k.dagbok.okter, s)) })), [k])
-  const rader = [
-    ...AKTIVITETER.map((id) => ({ id, navn: AKTIVITET_NAVN[id], verdi: (x: (typeof per)[number]) => x.a.min[id], del: false })),
-    { id: 'otek', navn: 'O-teknikk', verdi: (x: (typeof per)[number]) => x.a.otek, del: true },
-  ]
-  const tabell = () => (
-    <table className="arstabell">
-      <thead>
-        <tr>
-          <th scope="col">Sesong</th>
-          {rader.map((r) => (
-            <th key={r.id} scope="col">
-              {r.navn}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {[...per].reverse().map((x) => (
-          <tr key={x.s.navn}>
-            <th scope="row">{x.s.navn}</th>
-            {rader.map((r) => (
-              <td key={r.id}>{timer(r.verdi(x))}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
-  return (
-    <Grafkort
-      id="aktiviteter"
-      tittel="Timer per aktivitet og sesong"
-      forklaring="Én rad per aktivitet med egen skala, så endringene innen hver aktivitet synes. O-teknikk er en del av løpetiden."
-      forklaringTabell="Timer per aktivitet, én rad per sesong. O-teknikk er en del av løpetiden og er ikke med i de andre kolonnene."
-      tabell={tabell}
-    >
-      <div className="multipler" style={{ gridTemplateColumns: `130px repeat(${per.length}, minmax(0, 1fr))` }}>
-        <span />
-        {per.map((x) => (
-          <span key={x.s.navn} className={x.s.navn === k.valgt.navn ? 'multippel-kol valgt' : 'multippel-kol'}>
-            {x.s.navn}
-          </span>
-        ))}
-        {rader.map((r) => {
-          const maks = Math.max(1, ...per.map((x) => r.verdi(x)))
-          return [
-            <span key={`${r.id}-navn`} className={r.del ? 'multippel-navn del' : 'multippel-navn'}>
-              {r.navn}
-            </span>,
-            ...per.map((x) => {
-              const v = r.verdi(x)
-              return (
-                <span key={`${r.id}-${x.s.navn}`} className={x.s.navn === k.valgt.navn ? 'multippel valgt' : 'multippel'} title={`${r.navn} ${x.s.navn}: ${timer(v)} t`}>
-                  <i style={{ height: `${(v / maks) * 100}%` }}>
-                    <span className="multippel-verdi">{v ? timer(v) : '–'}</span>
-                  </i>
-                </span>
-              )
-            }),
-          ]
-        })}
-      </div>
     </Grafkort>
   )
 }
