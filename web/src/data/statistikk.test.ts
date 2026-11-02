@@ -45,10 +45,12 @@ describe('sesonger', () => {
     expect(lagSesong(2023).dager).toBe(366) // inneholder 29. feb. 2024
   })
 
-  it('dekker alle data, fra 2019/20 til 2025/26', () => {
+  it('dekker alle data, fra 2019/20 til sesongen med siste økt', () => {
     const s = sesonger(dagbok).map((x) => x.navn)
     expect(s[0]).toBe('2019/20')
-    expect(s.at(-1)).toBe('2025/26')
+    // Siste sesong vokser med importene, så den sjekkes mot dataene.
+    expect(s.at(-1)).toBe(sesong(dagbok.sisteDato))
+    expect(s.length).toBeGreaterThanOrEqual(7)
   })
 
   it('analysen går til siste importerte økt, ikke til i dag', () => {
@@ -159,8 +161,9 @@ describe('aktivitet', () => {
     const h = arshjul(dagbok.okter, sesongene, '2026-10-05')
     // Oktober 2026 er ikke hel, så oktober bygger på én sesong mindre enn november.
     expect(h.antall[11]).toBe(h.antall[0] - 1)
-    // Snittet ganger antall sesonger er summen av de hele månedene.
-    const novTotal = dagbok.okter.filter((o) => o.dato.slice(5, 7) === '11').reduce((a, o) => a + o.varighet_min, 0)
+    // Snittet ganger antall sesonger er summen av de hele månedene. Økter etter sluttdatoen
+    // (f.eks. november 2026 fra en nyere import) er ikke med.
+    const novTotal = dagbok.okter.filter((o) => o.dato.slice(5, 7) === '11' && o.dato <= '2026-10-05').reduce((a, o) => a + o.varighet_min, 0)
     const novSnitt = AKTIVITETER.reduce((a, f) => a + h.snitt[f][0], 0)
     expect(novSnitt * h.antall[0]).toBeCloseTo(novTotal, 6)
   })
