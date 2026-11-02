@@ -28,7 +28,12 @@ interface Props {
   beskrivelse: string
   /** Felles toppverdi for y-aksen, så små multipler kan sammenlignes. */
   yMaks?: number
+  /** Teksten når det ikke er noen punkter, i stedet for tomme akser. */
+  tom?: string
 }
+
+/** Standardteksten for ukegrafer i en sesong som nettopp har begynt. */
+export const INGEN_UKER = 'Ingen uker i sesongen ennå. En uke hører til sesongen som torsdagen ligger i, så første uke kommer med når den har begynt.'
 
 /** Seriene som tegnes skravert med 1 px kant (se analyse.css). */
 const SKRAVERTE = new Set(['seg-styrke', 'fyll-skadet'])
@@ -70,7 +75,7 @@ export function Skravur() {
 }
 
 /** Stablede stolper med 2 px mellomrom mellom segmentene. Rette hjørner (Kartbladet). */
-export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, xEtikett, tips, onKlikk, beskrivelse, yMaks }: Props) {
+export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, xEtikett, tips, onKlikk, beskrivelse, yMaks, tom = INGEN_UKER }: Props) {
   const [ref, bredde] = useBredde<HTMLDivElement>()
   const [aktiv, setAktiv] = useState<number | null>(null)
   // Siste peker var berøring: første trykk viser verktøytipset, andre trykk åpner.
@@ -118,6 +123,8 @@ export function Stolper({ punkter, serier, hoyde = 260, linje: snitt, yFormat, x
     : null
 
   const aktivtPunkt = aktiv != null ? punkter[aktiv] : null
+
+  if (!punkter.length) return <p className="tomt">{tom}</p>
 
   return (
     <div className="graf" ref={ref} onMouseLeave={() => setAktiv(null)}>

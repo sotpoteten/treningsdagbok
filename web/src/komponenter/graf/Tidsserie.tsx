@@ -167,7 +167,16 @@ export function Tidsserie(p: Props) {
 
             {serier.map((s) =>
               s.form === 'linje' ? (
-                <path key={s.id} className={`ts-linje ${s.klasse}`} d={sti(s.verdier)} />
+                <g key={s.id}>
+                  <path className={`ts-linje ${s.klasse}`} d={sti(s.verdier)} />
+                  {/* Et punkt uten naboer gir ingen strek, så det tegnes som en prikk i linjens farge
+                      (f.eks. første dag i en ny sesong). */}
+                  {s.verdier.map((v, i) =>
+                    v != null && s.verdier[i - 1] == null && s.verdier[i + 1] == null ? (
+                      <circle key={i} className={`ts-linje ${s.klasse}`} cx={x(xs[i])} cy={y(v)} r={1.5} />
+                    ) : null,
+                  )}
+                </g>
               ) : (
                 <g key={s.id} className={`ts-punkter ${s.klasse}`}>
                   {s.verdier.map((v, i) => (v == null ? null : <circle key={i} cx={x(xs[i])} cy={y(v)} r={punktRadius} />))}

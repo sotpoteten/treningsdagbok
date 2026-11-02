@@ -155,6 +155,8 @@ function Kvalitet({ k }: { k: Analysekontekst }) {
         }))}
         serier={[{ id: 'kval', navn: 'Kvalitetsøkter', klasse: 'seg-i3' }]}
         hoyde={220}
+        // Hele antall: minst 4 på aksen, så merkene ikke blir desimaler som rundes til samme tall.
+        yMaks={Math.max(4, ...punkter.map((p) => p.kvalitet))}
         yFormat={(v) => tall(v)}
         xEtikett={(_, i) => {
           const t = punkter[i].uke.dager[3].dato

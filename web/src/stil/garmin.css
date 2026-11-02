@@ -24,6 +24,9 @@
   stroke-width: 1.5;
   stroke-linejoin: round;
 }
+circle.ts-linje {
+  fill: currentColor;
+}
 .ts-linje.ts-snitt {
   stroke-width: 2.5;
 }

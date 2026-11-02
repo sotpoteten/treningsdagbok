@@ -1,16 +1,18 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
-/** Bredden til et element, oppdatert ved endring. */
+/**
+ * Bredden til et element, oppdatert ved endring. Refen er en tilbakekalling, så målingen
+ * kobles på hver gang elementet kommer til, også når grafen først har vist en tom tekst.
+ */
 export function useBredde<T extends HTMLElement>() {
-  const ref = useRef<T>(null)
+  const [el, setEl] = useState<T | null>(null)
   const [bredde, setBredde] = useState(0)
   useLayoutEffect(() => {
-    const el = ref.current
     if (!el) return
+    // ResizeObserver melder størrelsen straks elementet observeres, så første måling kommer herfra.
     const ro = new ResizeObserver(([e]) => setBredde(Math.floor(e.contentRect.width)))
     ro.observe(el)
-    setBredde(Math.floor(el.getBoundingClientRect().width))
     return () => ro.disconnect()
-  }, [])
-  return [ref, bredde] as const
+  }, [el])
+  return [setEl, bredde] as const
 }
