@@ -184291,5 +184291,345 @@
     "minutter": 101
    }
   ]
+ },
+ {
+  "id": "67ac3e50-19d6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-26",
+  "rekkefolge": 0,
+  "navn": "Sti",
+  "beskrivelse": null,
+  "kommentar": "Rolig stitur.",
+  "kommentarer_andre": [],
+  "varighet_min": 48,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 48
+  },
+  "distanse_km": 8.2,
+  "loping_min": 48,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 48
+    },
+    "distanse_km": 8.2,
+    "minutter": 48
+   }
+  ]
+ },
+ {
+  "id": "70e67399-19d6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-26",
+  "rekkefolge": 1,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Rolig jogg rundt Tisken til Willys for å hente pakke.",
+  "kommentarer_andre": [],
+  "varighet_min": 46,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 46
+  },
+  "distanse_km": 9.0,
+  "loping_min": 46,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 46
+    },
+    "distanse_km": 9,
+    "minutter": 46
+   }
+  ]
+ },
+ {
+  "id": "6bb77ae8-19d6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-27",
+  "rekkefolge": 0,
+  "navn": "Løp",
+  "beskrivelse": null,
+  "kommentar": "Rolig løp på Elit-15. Deilig og bra.",
+  "kommentarer_andre": [],
+  "varighet_min": 94,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 94
+  },
+  "distanse_km": 16.8,
+  "loping_min": 94,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 94
+    },
+    "distanse_km": 16.8,
+    "minutter": 94
+   }
+  ]
+ },
+ {
+  "id": "e94bc40c-1ad6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-27",
+  "rekkefolge": 1,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Kort jogg før litt skulder rehab",
+  "kommentarer_andre": [],
+  "varighet_min": 31,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 31
+  },
+  "distanse_km": 6.0,
+  "loping_min": 31,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 31
+    },
+    "distanse_km": 6,
+    "minutter": 31
+   }
+  ]
+ },
+ {
+  "id": "05258a52-1ad6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-28",
+  "rekkefolge": 0,
+  "navn": "Langtur",
+  "beskrivelse": null,
+  "kommentar": "Rolig langtur på sti og grus rundt Källslätten. Sol ute så bra å være ute lenge og få en ordentlig fin tur.",
+  "kommentarer_andre": [],
+  "varighet_min": 156,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 156
+  },
+  "distanse_km": 27.4,
+  "loping_min": 156,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 4,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 156
+    },
+    "distanse_km": 27.4,
+    "minutter": 156
+   }
+  ]
+ },
+ {
+  "id": "dcd71d9c-1bd6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-29",
+  "rekkefolge": 0,
+  "navn": "Jogg",
+  "beskrivelse": null,
+  "kommentar": "Rolig jogg på Myran før avreise til Oslo",
+  "kommentarer_andre": [],
+  "varighet_min": 36,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 36
+  },
+  "distanse_km": 7.1,
+  "loping_min": 36,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 36
+    },
+    "distanse_km": 7.1,
+    "minutter": 36
+   }
+  ]
+ },
+ {
+  "id": "39fc2b0b-1cd6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-30",
+  "rekkefolge": 0,
+  "navn": "Grus",
+  "beskrivelse": null,
+  "kommentar": "Grustur rundt Ullevålseter. Fint og bra i Nordmarka.",
+  "kommentarer_andre": [],
+  "varighet_min": 82,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 82
+  },
+  "distanse_km": 15.7,
+  "loping_min": 82,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 82
+    },
+    "distanse_km": 15.7,
+    "minutter": 82
+   }
+  ]
+ },
+ {
+  "id": "8c87956b-1cd6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-30",
+  "rekkefolge": 1,
+  "navn": "Sti",
+  "beskrivelse": null,
+  "kommentar": "Rolig stitur med lykt til Øvre Blanksjø. Veldig forsiktig.",
+  "kommentarer_andre": [],
+  "varighet_min": 56,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 56
+  },
+  "distanse_km": 8.3,
+  "loping_min": 56,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 56
+    },
+    "distanse_km": 8.3,
+    "minutter": 56
+   }
+  ]
+ },
+ {
+  "id": "0d74318e-1dd6-f111-bf5b-002248dcdf59",
+  "dato": "2026-10-31",
+  "rekkefolge": 0,
+  "navn": "Gruslangtur",
+  "beskrivelse": null,
+  "kommentar": "Fin langtur rundt Nordmarkskapellet på grusen. Sliten tidlig, bedre etterhvert.",
+  "kommentarer_andre": [],
+  "varighet_min": 127,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 127
+  },
+  "distanse_km": 24.5,
+  "loping_min": 127,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 4,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 127
+    },
+    "distanse_km": 24.5,
+    "minutter": 127
+   }
+  ]
+ },
+ {
+  "id": "733775b1-1dd6-f111-bf5b-002248dcdf59",
+  "dato": "2026-11-01",
+  "rekkefolge": 0,
+  "navn": "Grus",
+  "beskrivelse": null,
+  "kommentar": "Rolig grustur med Elias. Rundt Maridalsvannet og Nordseter.",
+  "kommentarer_andre": [],
+  "varighet_min": 81,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 81
+  },
+  "distanse_km": 15.7,
+  "loping_min": 81,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 81
+    },
+    "distanse_km": 15.7,
+    "minutter": 81
+   }
+  ]
  }
 ]

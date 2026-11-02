@@ -7688,5 +7688,17 @@
   "notat": "Tok en helt rolig dag for å prøve å få kroppen til å hente seg helt inn igjen. Bihulene har ikke føltes helt topp og litt sliten også, men virker som det er i bedring.",
   "sykdom": null,
   "skade": null
+ },
+ {
+  "dato": "2026-10-29",
+  "syk": false,
+  "skadet": false,
+  "reise": true,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": null
  }
 ]
