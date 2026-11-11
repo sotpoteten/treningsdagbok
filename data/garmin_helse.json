@@ -12663,5 +12663,65 @@
   "hrv_natt": 43,
   "sovn_min": 364,
   "sovnscore": 39
+ },
+ {
+  "dato": "2026-11-02",
+  "hvilepuls": 45,
+  "hrv_natt": 93,
+  "sovn_min": 595,
+  "sovnscore": 89
+ },
+ {
+  "dato": "2026-11-03",
+  "hvilepuls": 47,
+  "hrv_natt": 94,
+  "sovn_min": 415,
+  "sovnscore": 78
+ },
+ {
+  "dato": "2026-11-04",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2026-11-05",
+  "hvilepuls": 49,
+  "hrv_natt": 86,
+  "sovn_min": 592,
+  "sovnscore": 79
+ },
+ {
+  "dato": "2026-11-06",
+  "hvilepuls": 47,
+  "hrv_natt": 88,
+  "sovn_min": 567,
+  "sovnscore": 84
+ },
+ {
+  "dato": "2026-11-07",
+  "hvilepuls": 48,
+  "hrv_natt": 90,
+  "sovn_min": 589,
+  "sovnscore": 85
+ },
+ {
+  "dato": "2026-11-08",
+  "hvilepuls": 52,
+  "hrv_natt": 65,
+  "sovn_min": 432,
+  "sovnscore": 52
+ },
+ {
+  "dato": "2026-11-09",
+  "hvilepuls": 56,
+  "hrv_natt": 72,
+  "sovn_min": 543,
+  "sovnscore": 58
+ },
+ {
+  "dato": "2026-11-10",
+  "hvilepuls": 50,
+  "hrv_natt": 86,
+  "sovn_min": 309,
+  "sovnscore": 62
  }
 ]

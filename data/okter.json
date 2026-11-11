@@ -184631,5 +184631,73 @@
     "minutter": 81
    }
   ]
+ },
+ {
+  "id": "fe53b07f-9bdb-f111-91f2-002248dcdf59",
+  "dato": "2026-11-02",
+  "rekkefolge": 0,
+  "navn": "Sti",
+  "beskrivelse": null,
+  "kommentar": "Rolig stijogg. Fint og deilig ute. Nyte min siste treningsdag.",
+  "kommentarer_andre": [],
+  "varighet_min": 62,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 62
+  },
+  "distanse_km": 9.6,
+  "loping_min": 62,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 62
+    },
+    "distanse_km": 9.6,
+    "minutter": 62
+   }
+  ]
+ },
+ {
+  "id": "d4f39ec1-9bdb-f111-91f2-002248dcdf59",
+  "dato": "2026-11-02",
+  "rekkefolge": 1,
+  "navn": "2 x Sognsvann",
+  "beskrivelse": null,
+  "kommentar": "Ettermiddagstur rundt Sognsvann. Med litt fart og fremdrift. Skremmende dårlig trent.",
+  "kommentarer_andre": [],
+  "varighet_min": 54,
+  "hoyeste_sone": "I2",
+  "hoyeste_sone_registrert": "I2",
+  "sone_min": {
+   "I2": 54
+  },
+  "distanse_km": 12.4,
+  "loping_min": 54,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 4,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 2,
+    "aktivitet": "Løping sti/vei",
+    "kategori": "bevegelse",
+    "soner": {
+     "I2": 54
+    },
+    "distanse_km": 12.4,
+    "minutter": 54
+   }
+  ]
  }
 ]
