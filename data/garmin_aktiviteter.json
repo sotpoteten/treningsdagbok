@@ -88450,5 +88450,41 @@
   "har_spor": true,
   "har_kurver": true,
   "okt_id": "d4f39ec1-9bdb-f111-91f2-002248dcdf59"
+ },
+ {
+  "garmin_id": 25089919138,
+  "navn": "Elliptisk maskin",
+  "start_lokal": "2026-11-15T17:45:34",
+  "type": "elliptical",
+  "varighet_min": 40.0,
+  "distanse_km": 0.0,
+  "snittpuls": 137,
+  "makspuls": 147,
+  "hoydemeter": null,
+  "kadens": 77,
+  "aerob_te": 2.3,
+  "anaerob_te": 0.0,
+  "belastning": 36,
+  "har_spor": false,
+  "har_kurver": true,
+  "okt_id": "5c4e627a-32e1-f111-91f2-002248dcdf59"
+ },
+ {
+  "garmin_id": 25095365021,
+  "navn": "Elliptisk maskin",
+  "start_lokal": "2026-11-16T10:51:27",
+  "type": "elliptical",
+  "varighet_min": 45.0,
+  "distanse_km": 0.0,
+  "snittpuls": 146,
+  "makspuls": 157,
+  "hoydemeter": null,
+  "kadens": 76,
+  "aerob_te": 2.9,
+  "anaerob_te": 0.0,
+  "belastning": 64,
+  "har_spor": false,
+  "har_kurver": true,
+  "okt_id": null
  }
 ]
