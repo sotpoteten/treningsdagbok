@@ -131,9 +131,15 @@ Ukenumrene følger ISO 8601 (uke 1 er uka med årets første torsdag, og 2020 ha
 de i lista `kommentarer` sortert etter når de ble skrevet. En typisk kommentar er rundt
 400 tegn, og noen er lange oppsummeringer etter mesterskap.
 
-**Kjent feil:** En kommentar skrevet 14. jan. 2025 er lagret på 2024 uke 1 på grunn av en
-feil i dagboka. Teksten begynner med «Bug i OLT». Den hører egentlig til en uke i januar 2025.
-Den ligger urørt i dataene, så spør Isak om den skal flyttes.
+**Forskjøvne uker (rettet):** OLT lagret kommentarene fra 2020 uke 53 til 2022 uke 51 én
+uke for tidlig. De er skrevet ca. 13 dager etter mandagen i uka de står på, mot 6–8 dager
+ellers, og 2022 uke 52 sto uten kommentar. `rett_uke()` i `konverter.py` flytter dem én uke
+fram (bekreftet av Isak 16. nov. 2026). Rådataene er urørt.
+
+**Enkeltkommentarer på feil uke (rettet):** `FLYTTET_KOMMENTAR` i `konverter.py` flytter to
+kommentarer etter Id (bekreftet av Isak 16. nov. 2026): «Bug i OLT …» (skrevet 14.1.2025) fra
+2024 uke 1 til 2025 uke 1, og kommentaren skrevet 5.1.2026 fra 2025 uke 1 til 2026 uke 1.
+Første setning i «Bug i OLT»-kommentaren handlet bare om feilen og fjernes (`FJERNET_START`).
 
 ## Pulssoner (`profil.json`)
 

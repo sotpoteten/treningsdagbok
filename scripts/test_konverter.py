@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from konverter import konverter
+from konverter import konverter, rett_uke
 
 MEG = "isak"
 TRENER = "trener"
@@ -185,6 +185,20 @@ class Konvertering(unittest.TestCase):
         u = self.uker[0]
         self.assertEqual((u["ar"], u["uke"], u["mandag"]), (2025, 19, "2025-05-05"))
         self.assertEqual(u["kommentarer"], [{"tekst": "God uke.", "skrevet": "2025-05-11", "egen": True}])
+
+
+class TestRettUke(unittest.TestCase):
+    """OLT lagret ukeskommentarene fra 2020 uke 53 til 2022 uke 51 én uke for tidlig."""
+
+    def test_forskjovne_uker_flyttes_en_uke_fram(self):
+        self.assertEqual(rett_uke(2020, 53), (2021, 1))
+        self.assertEqual(rett_uke(2021, 1), (2021, 2))
+        self.assertEqual(rett_uke(2021, 52), (2022, 1))
+        self.assertEqual(rett_uke(2022, 51), (2022, 52))
+
+    def test_uker_utenfor_feilen_er_urort(self):
+        for uke in [(2020, 52), (2022, 52), (2023, 1), (2024, 1), (2026, 40)]:
+            self.assertEqual(rett_uke(*uke), uke)
 
 
 if __name__ == "__main__":

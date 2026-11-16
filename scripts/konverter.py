@@ -24,7 +24,7 @@ import argparse
 import csv
 import json
 from collections import Counter
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -68,6 +68,32 @@ SONER = {i: f"I{i}" for i in range(1, 9)}
 METRIKK_DISTANSE = 9
 METRIKK_OTEK = 11
 METRIKK_STYRKE = 12
+
+# Feil i OLT: ukeskommentarene fra 2020 uke 53 til 2022 uke 51 er lagret én uke for tidlig.
+# De er skrevet ca. 13 dager etter mandagen i uka de står på, mot 6–8 dager ellers, og
+# 2022 uke 52 står uten kommentar. Bekreftet av Isak 2026-11-16. Rådataene står urørt.
+FORSKJOVET_UKE = ((2020, 53), (2022, 51))
+
+
+# Enkeltkommentarer OLT har lagret på feil uke, med uka de hører til (bekreftet av Isak
+# 2026-11-16). Nøkkelen er kommentarens Id i weekComments.json.
+FLYTTET_KOMMENTAR = {
+    "a48e62dd-3896-4080-9cd8-36430b178c01": (2025, 1),  # «Bug i OLT …», lå på 2024 uke 1
+    "b3c16d9d-3bea-f011-8196-002248dcd8ce": (2026, 1),  # skrevet 5.1.2026, lå på 2025 uke 1
+}
+
+# Tekst som fjernes fra starten av en kommentar fordi den bare handlet om OLT-feilen
+# (Isak 2026-11-16). Fjernes bare hvis teksten fortsatt begynner slik.
+FJERNET_START = {
+    "a48e62dd-3896-4080-9cd8-36430b178c01": "Bug i OLT, ukeskommentaren over fra i fjor. ",
+}
+
+
+def rett_uke(ar: int, uke: int) -> tuple[int, int]:
+    """ISO-uka kommentaren egentlig hører til (flyttet én uke fram innenfor FORSKJOVET_UKE)."""
+    if FORSKJOVET_UKE[0] <= (ar, uke) <= FORSKJOVET_UKE[1]:
+        ar, uke, _ = (date.fromisocalendar(ar, uke, 1) + timedelta(days=7)).isocalendar()
+    return ar, uke
 
 
 def les(path: Path):
@@ -208,12 +234,15 @@ def konverter(raw_dir: Path, fra: str, ut: Path = ROOT / "data"):
     if uker_raw:
         uker = {}
         for x in sorted(uker_raw, key=lambda x: x["CreatedAt"]):
-            ar, uke = x["CommentedYear"], x["CommentedWeekNumber"]
+            ar, uke = FLYTTET_KOMMENTAR.get(x.get("Id")) or rett_uke(x["CommentedYear"], x["CommentedWeekNumber"])
             mandag = date.fromisocalendar(ar, uke, 1).isoformat()
             if date.fromisocalendar(ar, uke, 7).isoformat() < fra:  # uka slutter før startdato
                 continue
             u = uker.setdefault((ar, uke), {"ar": ar, "uke": uke, "mandag": mandag, "kommentarer": []})
-            u["kommentarer"].append({"tekst": x["Text"], "skrevet": x["CreatedAt"][:10],
+            tekst, start = x["Text"], FJERNET_START.get(x.get("Id"), "")
+            if start and tekst.startswith(start):
+                tekst = tekst[len(start):]
+            u["kommentarer"].append({"tekst": tekst, "skrevet": x["CreatedAt"][:10],
                                      "egen": meg is None or x["AuthorId"] == meg})
         uker = [uker[k] for k in sorted(uker)]
         (ut / "uker.json").write_text(json.dumps(uker, ensure_ascii=False, indent=1), encoding="utf-8")
