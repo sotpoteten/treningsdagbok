@@ -23,7 +23,9 @@ const MANEDER: [string, number][] = [
  * farget etter treningstimer. Utsnittet som vises i kalenderen er rammet inn.
  */
 export const Hoydelag = memo(function Hoydelag({ uker, synlige, treff, pulssoner, onVelg }: Props) {
-  const [hover, setHover] = useState<Uke | null>(null)
+  // Uka musa er over. Etiketten legges til høyre for kartet, på høyde med ruta, så den ikke
+  // dekker de samme ukene i senere år.
+  const [hover, setHover] = useState<{ uke: Uke; x: number; y: number } | null>(null)
 
   const { ar, info } = useMemo(() => {
     const perAr = new Map<number, Uke[]>()
@@ -38,10 +40,10 @@ export const Hoydelag = memo(function Hoydelag({ uker, synlige, treff, pulssoner
     return { ar: [...perAr.entries()].sort((a, b) => a[0] - b[0]), info }
   }, [uker])
 
-  const vist = hover ? info.get(hover.nokkel)! : null
+  const vist = hover ? info.get(hover.uke.nokkel)! : null
 
   return (
-    <nav className="hoydelag" aria-label="Hopp til uke">
+    <nav className="hoydelag" aria-label="Hopp til uke" onScroll={() => setHover(null)}>
       <div className={treff ? 'hl-kart filtrert' : 'hl-kart'} style={{ gridTemplateColumns: `22px repeat(${ar.length}, 8px)` }}>
         <span className="hl-hjorne" />
         {ar.map(([a, liste]) => (
@@ -68,35 +70,41 @@ export const Hoydelag = memo(function Hoydelag({ uker, synlige, treff, pulssoner
                 className={klasser}
                 style={{ gridColumn: kol + 2, gridRow: u.uke + 1 }}
                 aria-label={`Uke ${u.uke} ${a}: ${timer(i.minutter)} timer`}
-                onMouseEnter={() => setHover(u)}
-                onMouseLeave={() => setHover((h) => (h === u ? null : h))}
+                onMouseEnter={(e) => {
+                  const rute = e.currentTarget.getBoundingClientRect()
+                  setHover({ uke: u, x: e.currentTarget.parentElement!.getBoundingClientRect().right, y: rute.top })
+                }}
+                onMouseLeave={() => setHover((h) => (h?.uke === u ? null : h))}
                 onClick={() => onVelg(u.nokkel)}
               />
             )
           }),
         )}
       </div>
-      <div className="hl-info" aria-live="polite">
-        {hover && vist ? (
-          <>
-            <b>Uke {hover.uke} · {hover.ar}</b>
-            <span>{ukespenn(hover.mandag, hover.sondag)}</span>
-            <span className="hl-sum">
-              {timer(vist.minutter)} t · {km(vist.km)} km
-            </span>
-          </>
-        ) : (
-          <span className="hl-hint">Timer per uke</span>
-        )}
+      {hover && vist && (
+        <div
+          className="graf-tips hl-tips"
+          role="tooltip"
+          style={{ left: hover.x + 10, top: Math.max(8, Math.min(hover.y - 8, window.innerHeight - 90)) }}
+        >
+          <b>Uke {hover.uke.uke} · {hover.uke.ar}</b>
+          <span className="tips-rad dempet">{ukespenn(hover.uke.mandag, hover.uke.sondag)}</span>
+          <span className="tips-tall">
+            {timer(vist.minutter)} t · {km(vist.km)} km
+          </span>
+        </div>
+      )}
+      <div className="hl-forklaring">
+        <span className="hl-hint">Timer per uke</span>
+        <ol className="hl-tegnforklaring" aria-label="Timer per uke">
+          {HOYDELAG_ETIKETT.map((e, i) => (
+            <li key={e}>
+              <i className={`lag-${i}`} />
+              {e}
+            </li>
+          ))}
+        </ol>
       </div>
-      <ol className="hl-tegnforklaring" aria-label="Timer per uke">
-        {HOYDELAG_ETIKETT.map((e, i) => (
-          <li key={e}>
-            <i className={`lag-${i}`} />
-            {e}
-          </li>
-        ))}
-      </ol>
       <div className="tegnforklaring-soner">
         <span className="hl-hint">Soner · puls</span>
         <ol aria-label="Intensitetssoner">

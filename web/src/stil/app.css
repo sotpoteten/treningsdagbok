@@ -680,22 +680,19 @@ button {
 .lag-5 { background: var(--h5); }
 .lag-6 { background: var(--h6); }
 
-.hl-info {
-  min-height: 46px;
+/* Etiketten ved uka musa er over. Fast plassering, så den ikke klippes av stripa. */
+.hl-tips {
+  position: fixed;
+  z-index: 20;
+  min-width: 0;
+  white-space: nowrap;
+}
+.hl-forklaring {
   display: flex;
   flex-direction: column;
-  font-size: 12px;
-  color: var(--blekk-2);
+  gap: 6px;
   border-top: var(--strek-rute);
   padding-top: 8px;
-}
-.hl-info b {
-  font: 600 14px var(--font-tall);
-  color: var(--blekk);
-}
-.hl-sum {
-  font: 500 13px var(--font-tall);
-  color: var(--blekk);
 }
 .hl-hint {
   font: 500 11px var(--font-tall);

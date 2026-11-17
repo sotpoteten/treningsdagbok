@@ -320,7 +320,7 @@ Topplinje med merke (600 16px), hovedmeny (Dagbok, Analyse) i 500 Barlow og verk
 - **Stempel:** 600 13px versaler, 0,14em sperring, 1,5 px stempelrød kant, rotert −4°. Dagen får skyggepapir.
 
 ### Høydelagsstripe (signatur)
-Årsnavigasjonen: ett 8 px felt per uke, farget med h0–h6 etter timer, månedsforkortelser i 9px i første kolonne. Hover gir 1 px blekkramme og viser uke og timer under; klikk ruller kalenderen dit. Utsnittet som vises markeres med 1,5 px blå ramme som følger scrollen. Uker uten treff dempes til 0,2 ved filtrering.
+Årsnavigasjonen: ett 8 px felt per uke, farget med h0–h6 etter timer, månedsforkortelser i 9px i første kolonne. Hover gir 1 px blekkramme og en etikett (som verktøytipsene i grafene) til høyre for kartet, på høyde med uka, med uke, datoer, timer og km; klikk ruller kalenderen dit. Utsnittet som vises markeres med 1,5 px blå ramme som følger scrollen. Uker uten treff dempes til 0,2 ved filtrering.
 
 ### Ikonknapp og lenkeknapp
 - **Ikonknapp:** 32 px (26 px liten), gjennomsiktig, 18 px ikon. Hover gir rutenettflate, deaktivert 0,3 opasitet.
