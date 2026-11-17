@@ -42,7 +42,7 @@ export const Hoydelag = memo(function Hoydelag({ uker, synlige, treff, pulssoner
 
   return (
     <nav className="hoydelag" aria-label="Hopp til uke">
-      <div className={treff ? 'hl-kart filtrert' : 'hl-kart'} style={{ gridTemplateColumns: `22px repeat(${ar.length}, 1fr)` }}>
+      <div className={treff ? 'hl-kart filtrert' : 'hl-kart'} style={{ gridTemplateColumns: `22px repeat(${ar.length}, 8px)` }}>
         <span className="hl-hjorne" />
         {ar.map(([a, liste]) => (
           <button key={a} type="button" className="hl-ar" onClick={() => onVelg(liste[0].nokkel)} title={`Gå til ${a}`}>

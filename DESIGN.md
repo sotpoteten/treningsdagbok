@@ -262,13 +262,13 @@ En kartpalett: varmt papir og blekk, rutenettblått som eneste aksent for samhan
 
 ## Layout
 
-Tre kolonner på desktop: høydelagsstripen (152 px) til venstre, kalenderen i midten og øktpanelet (360–440 px) til høyre når en økt er åpen. Topplinjen er minst 56 px høy. Kalenderen har 40 px venstremarg for koordinatmerket (år · uke, lest nedenfra) og 28 px høyre. Under ukene ligger et svakt rutenett med 96 px ruter.
+Tre kolonner på desktop: høydelagsstripen (minst 152 px, kvadratiske ruter på 8 px, én kolonne per år, så den vokser med dagboka) til venstre, kalenderen i midten og øktpanelet (360–440 px) til høyre når en økt er åpen. Topplinjen er minst 56 px høy. Kalenderen har 40 px venstremarg for koordinatmerket (år · uke, lest nedenfra) og 28 px høyre. Under ukene ligger et svakt rutenett med 96 px ruter.
 
 Hver uke er en ramme med hode (uke og datoer til venstre, faste celler for timer 78 px, km 78 px, økter 60 px og sonestolpe 232 px til høyre), sju like dagkolonner skilt med svake hårstreker (minst 132 px høye), og ukeskommentaren under. Høydelagsstripen har én kolonne per år og én 8 px celle per uke.
 
 Rytmen bygger på 4 og 8 px: 4, 8, 12, 20 og 28 px er de mest brukte avstandene, 20 px mellom uker.
 
-- **Under 1180 px** med panel åpent: høydelagsstripen skjules, tallcellene smalner (70/70/52/180 px).
+- **Under 1230 px** med panel åpent: høydelagsstripen skjules, tallcellene smalner (70/70/52/180 px).
 - **Under 720 px**: én kolonne. Søket tar full bredde, filterbrikkene ruller vannrett. Ukehodet stables, tallene står i tre celler med sonestolpen under. Dagene blir rader med dato til venstre (68 px), og sammenhengende tomme dager slås sammen til én linje. Panelet dekker hele skjermen. Sidemargen er 16 px.
 
 ## Elevation & Depth
