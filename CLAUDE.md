@@ -575,3 +575,6 @@ forskning. Den kjører i Vites utviklingsserver og finnes ikke i den bygde siden
   registreres i `agent.ts`. Tall skal regnes med funksjonene i `src/data/`, ikke på nytt.
 - **Samtaler:** SDK-en lagrer dem under `~/.claude/projects/` for en fast arbeidsmappe i
   temp. Siden husker siste samtale i `localStorage`.
+- **Fortsatte samtaler:** SDK-en tar med systemprompten fra da samtalen startet, med datoen
+  og tidsrommet dagboka hadde da. `oppfrisking()` i `prompt.ts` settes derfor foran hvert
+  spørsmål i en fortsatt samtale, med dagens dato og hele tidsrommet.

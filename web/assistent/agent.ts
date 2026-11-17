@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { z } from 'zod'
 import type { Dagbok } from '../src/data/last'
 import { lagRundeleser, lesDagbok } from './data'
-import { lagPrompt } from './prompt'
+import { lagPrompt, oppfrisking } from './prompt'
 import { dager, finnOkter, konkurranser, okt, perioder, ukekommentarer, Verktoyfeil } from './verktoy'
 
 /** Det tjeneren strømmer til siden. */
@@ -100,7 +100,7 @@ function lagVerktoy(dagbok: Dagbok, datamappe: string) {
       ),
       tool(
         'konkurranser',
-        'Isaks individuelle løp fra Eventor (norske løp fra des. 2019), eldste først: type (o-løp, ski-o, sykkel-o, pre-o), disiplin, natt, klasse, status, plass av antall, egen tid og vinnertid, prosent bak vinner, strekkfart, bomtid og koblede økt-id-er, og oppkjøringen de 21 dagene før (timer, km, minutter i I3–I5, kvalitetsøkter, andre løp, syke- og skadedager, snitt av akutt belastning, HRV og hvilepuls). Med eventor_id får du også strekktidene. Uten type- og disiplinfilter følger stafettene med (bare plass). Maks 60 løp.',
+        'Isaks individuelle løp fra Eventor (norske løp fra nov. 2016), eldste først: type (o-løp, ski-o, sykkel-o, pre-o), disiplin, natt, klasse, status, plass av antall, egen tid og vinnertid, prosent bak vinner, strekkfart, bomtid og koblede økt-id-er, og oppkjøringen de 21 dagene før (timer, km, minutter i I3–I5, kvalitetsøkter, andre løp, syke- og skadedager, snitt av akutt belastning, HRV og hvilepuls). Med eventor_id får du også strekktidene. Uten type- og disiplinfilter følger stafettene med (bare plass). Maks 60 løp.',
         {
           fra: dato,
           til: dato,
@@ -184,7 +184,9 @@ export async function* spor(
   let harTekst = false
 
   const svar = query({
-    prompt: sporsmal,
+    prompt: samtaleId ? `${oppfrisking(dagbok, idag)}
+
+${sporsmal}` : sporsmal,
     options: {
       cwd: ARBEIDSMAPPE,
       model: oppsett.modell,

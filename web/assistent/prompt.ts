@@ -3,6 +3,21 @@ import { pulsomrade } from '../src/data/format'
 import { SONER } from '../src/data/typer'
 import { sesongoversikt } from './verktoy'
 
+/**
+ * Settes foran spørsmålet når en samtale fortsettes. SDK-en tar med systemprompten fra da samtalen
+ * startet, så uten denne kan modellen tro at dagboka har det tidsrommet og den datoen den hadde da.
+ */
+export function oppfrisking(dagbok: Dagbok, idag: string): string {
+  const siste = dagbok.okter[dagbok.okter.length - 1]?.dato ?? idag
+  const forste = dagbok.okter[0]?.dato ?? idag
+  return (
+    `[Oppdatert ramme for denne samtalen: Dagens dato er ${idag}. Dagboka dekker nå ${forste} til ${siste}, ` +
+    'med Excel-dagboka før 1. november 2019 og OLT etter. Garmin og Eventor dekker samme tidsrom. ' +
+    'Det som står her og i systemprompten nå, går foran det som er sagt tidligere i samtalen om tidsrom og dato. ' +
+    'Hent tallene på nytt med verktøy hvis et tidligere svar bygde på det gamle tidsrommet.]'
+  )
+}
+
 /** Systemprompten: hvem Isak er, hvordan dataene skal leses, og hvordan svarene skal se ut. */
 export function lagPrompt(dagbok: Dagbok, idag: string): string {
   const p = dagbok.profil
