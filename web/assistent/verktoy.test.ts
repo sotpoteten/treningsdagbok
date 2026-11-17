@@ -120,7 +120,7 @@ describe('konkurranser', () => {
   })
 
   it('filtrerer på type og disiplin, og holder pre-o for seg', () => {
-    const alle = konkurranser(dagbok, { fra: '2019-11-01', til: '2026-10-31', type: 'o-løp' })
+    const alle = konkurranser(dagbok, { fra: '2016-11-01', til: '2026-10-31', type: 'o-løp' })
     expect(alle.antall_treff).toBe(dagbok.konkurranser.filter((k) => k.type === 'o-løp').length)
     expect(alle.viser).toBe(Math.min(alle.antall_treff, MAKS_KONKURRANSER))
     expect(alle.lop.every((k) => k.type === 'o-løp' && k.disiplin !== 'tempo')).toBe(true)
@@ -132,7 +132,7 @@ describe('konkurranser', () => {
   })
 
   it('tar med stafettene uten filter, og bare egne felt', () => {
-    const svar = konkurranser(dagbok, { fra: '2019-11-01', til: '2026-10-31' })
+    const svar = konkurranser(dagbok, { fra: '2016-11-01', til: '2026-10-31' })
     expect(svar.stafett?.length).toBe(dagbok.stafetter.length)
     expect(JSON.stringify(svar)).not.toMatch(/"(Given|Family|PersonName|BirthDate|lat|lon)"/)
   })

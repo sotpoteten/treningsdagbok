@@ -10,8 +10,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from garmin_kobling import koble
 
 
-def okt(id, dato, minutter, km=0.0):
-    return {"id": id, "dato": dato, "varighet_min": minutter, "distanse_km": km}
+def okt(id, dato, minutter, km=0.0, styrke=0):
+    return {"id": id, "dato": dato, "varighet_min": minutter, "distanse_km": km, "styrke_min": styrke}
 
 
 def akt(gid, dato, start, minutter, km=0.0, loping=True):
@@ -42,6 +42,25 @@ class Kobling(unittest.TestCase):
             [akt(1, "2025-01-01", "08:00", 49.2, 9.8), akt(2, "2025-01-01", "18:00", 41.8, 7.9)],
         )
         self.assertEqual(r, {1: "morgen", 2: "kveld"})
+
+    def test_lop_og_styrke_med_bare_lopingen_pa_klokka(self):
+        # 93 min, hvorav 45 min styrke: klokka har bare løpeturen på 48 min
+        r = koble([okt("a", "2017-01-02", 93, 6.6, styrke=45)], [akt(1, "2017-01-02", "16:00", 48.3, 6.59)])
+        self.assertEqual(r, {1: "a"})
+
+    def test_uten_styrke_tar_ikke_en_annen_okts_aktivitet(self):
+        # Joggen passer på hele økta b, så den skal ikke gå til a i andre runde
+        r = koble(
+            [okt("a", "2017-01-02", 75, 6.0, styrke=35), okt("b", "2017-01-02", 40, 6.0)],
+            [akt(1, "2017-01-02", "08:00", 40, 6.0)],
+        )
+        self.assertEqual(r, {1: "b"})
+
+    def test_uten_styrke_krever_lopedistanse(self):
+        # Løp + styrke med km skal ikke kobles til en skitur uten løpedistanse
+        r = koble([okt("a", "2023-12-20", 89, 9.9, styrke=18)],
+                  [akt(1, "2023-12-20", "18:00", 72.9, 13.6, loping=False)])
+        self.assertEqual(r, {})
 
     def test_styrke_uten_garmin(self):
         okter = [okt("styrke", "2025-01-01", 45), okt("jogg", "2025-01-01", 40, 8)]

@@ -78,7 +78,7 @@ historikken samlet, med både notater og tall.
 - GPS-sporene viser hvor Isak bor. De legges aldri i git. Siden 2026-10-26 vises de i
   demoen via utgivelsen «spor», fordi øktene uansett er åpne på Strava.
   Rådataene (e-post, fødselsdato) holdes også utenfor git.
-- Garmin-aktiviteter kobles til dagbokøkter ut fra dato, varighet og distanse (94 %
+- Garmin-aktiviteter kobles til dagbokøkter ut fra dato, varighet og distanse (93 %
   koblet). Dagboka er fasit for soner og varighet, og Garmin supplerer med puls, spor og
   helsedata.
 
@@ -89,12 +89,13 @@ sentralt**. Ingen av dem skal gjemmes bak den andre.
 
 ## Evidence on Hand
 
-- **Dagboka:** `data/okter.json` har 3 929 økter, `data/dager.json` 610 dagsrapporter,
+- **Dagboka:** `data/okter.json` har 5 107 økter, `data/dager.json` 1 004 dagsrapporter,
   `data/uker.json` 357 ukeskommentarer og `data/profil.json` pulssonene.
 - **Garmin:**
-  - `data/garmin_aktiviteter.json` har 4 886 aktiviteter, hvorav 3 528 med GPS-spor.
-  - `data/garmin_helse.json` har hvilepuls for 2 259 dager, HRV for 1 109 netter, søvn for
-    1 246 netter og belastning for 1 163 dager.
+  - `data/garmin_aktiviteter.json` har 6 168 aktiviteter fra nov. 2016, hvorav 4 580 med
+    GPS-spor.
+  - `data/garmin_helse.json` har hvilepuls for 3 301 dager, HRV for 1 145 netter og søvn for
+    1 442 netter. Belastningen regnes på siden, fra aug. 2023.
 - **Kontrolltall:** per år står i `CLAUDE.md`.
 - **Ikke tilgjengelig:** Det finnes ingen bilder eller logo, og ingen dagbokdata før
   nov. 2016. Fra Excel-dagboka (nov. 2016–okt. 2019) finnes bare tre intensiteter, ingen

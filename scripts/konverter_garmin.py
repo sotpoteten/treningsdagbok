@@ -44,7 +44,7 @@ UT = ROOT / "data"
 SPOR = UT / "garmin_spor"
 INDEKS = RAW / "fit_indeks.json"
 OSLO = ZoneInfo("Europe/Oslo")
-FRA = "2019-11-01"
+FRA = "2016-11-01"
 SEMI = 180 / 2**31  # semicircles → grader
 SPOR_INTERVALL_S = 5
 

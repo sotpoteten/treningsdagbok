@@ -295,8 +295,10 @@ python scripts/konverter.py
   - `deler`: hvor dagens kommentar deles mellom øktene, som `[økt, anker]`. Ankeret er
     starten på tekstbiten. `"dag"` gir dagsnotat, og `"alle"` legger hele teksten på
     alle øktene når den ikke lar seg dele. Teksten endres aldri, bare deles.
-- **Mangler:** ukeskommentarer finnes ikke. Garmin og Eventor for perioden er ikke
-  hentet ennå (trinn 2).
+- **Mangler:** ukeskommentarer finnes ikke.
+- **Garmin og Eventor** gjelder også denne perioden (fra 17. nov. 2026, se seksjonene
+  under). Klokka da hadde ikke HRV, søvnscore eller belastning, og søvn er bare målt i
+  noen perioder. Ski og rulleski er ofte tatt opp som sykling.
 
 ## Kommentarer på økter
 
@@ -365,7 +367,7 @@ blokkerte innloggingen. De er fjernet, men ligger i git-historikken.
 
 | Fil | Innhold | Git |
 |---|---|---|
-| `data/garmin_aktiviteter.json` | Én post per Garmin-aktivitet fra 1.11.2019: tid, type, varighet, distanse, puls, høydemeter, kadens, Training Effect, belastning, `har_spor` (GPS), `har_kurver` (sporfila har puls, også mølle og andre økter uten GPS; settes på nytt uten FIT-dekoding med `konverter_garmin.py --sporflagg`) og `okt_id` (koblet dagbokøkt). Ingen koordinater. | ja |
+| `data/garmin_aktiviteter.json` | Én post per Garmin-aktivitet fra 1.11.2016: tid, type, varighet, distanse, puls, høydemeter, kadens, Training Effect, belastning, `har_spor` (GPS), `har_kurver` (sporfila har puls, også mølle og andre økter uten GPS; settes på nytt uten FIT-dekoding med `konverter_garmin.py --sporflagg`) og `okt_id` (koblet dagbokøkt). Ingen koordinater. | ja |
 | `data/garmin_helse.json` | Én post per dag med det som er målt: `hvilepuls`, `hrv_natt`, `sovn_min` og `sovnscore`. | ja |
 | `data/garmin_spor/<garmin_id>.json` | GPS-spor, puls, fart, høyde og distanse, tynnet til hvert 5. sekund (kolonnevis), samt runder. Avslører hvor Isak bor. | **nei**, bare i utgivelsen «spor» |
 
@@ -397,13 +399,15 @@ regnes likt for hele dagboka, uansett kilde. Garmins egne versjoner (HRV-baselin
 - HRV og søvnscore er like, og søvntiden er nesten alltid lik.
 - Hvilepulsen avviker ±1–3 slag, uten skjevhet.
 
-**Resultat (eksport fra 9.10.2026):**
-- **Aktiviteter:** 4 886 Garmin-aktiviteter fra 1.11.2019, hvorav 3 528 med GPS-spor
-  (132 MB lokalt).
-- **Kobling:** 94 % av dagbokøktene har Garmin-data, og minst 92 % hvert år. Øktene som
-  mangler, er mest styrke og noen mølleøkter.
-- **Helsedata:** hvilepuls for 2 259 dager, HRV for 1 109 netter (fra 6.9.2023) og søvn
-  for 1 246 netter.
+**Resultat (eksport fra 9.10.2026, konvertert fra 1.11.2016 den 17.11.2026, med det
+intervals.icu har hentet etter eksporten):**
+- **Aktiviteter:** 6 168 Garmin-aktiviteter, hvorav 4 580 med GPS-spor. 1 252 av dem er
+  fra før 1.11.2019.
+- **Kobling:** 93 % av dagbokøktene har Garmin-data. Fra 2020 er det minst 92 % hvert år,
+  og for Excel-årene 79 % (nov.–des. 2016), 88 % (2017), 91 % (2018) og 89 % (2019).
+  Øktene som mangler, er mest styrke og noen mølleøkter.
+- **Helsedata:** hvilepuls for 3 301 dager (fra nov. 2016), HRV for 1 145 netter (fra
+  6.9.2023) og søvn for 1 442 netter (hullete før 2023).
 - `hvilepuls` er Garmins `restingHeartRate` (UDS). Helsestatusens «HR» er snittpuls om
   natta og brukes ikke.
 
@@ -412,6 +416,10 @@ regnes likt for hele dagboka, uansett kilde. Garmins egne versjoner (HRV-baselin
   hoveddel ofte er tatt opp hver for seg.
 - Varigheten må stemme innen maks(5 min, 15 %), og løpedistansen innen maks(1,5 km, 20 %).
 - Parene med minst avvik velges først.
+- **Andre runde:** Økter med styrke har ofte bare løpingen eller sykkelturen på klokka.
+  Øktene og aktivitetene som står igjen, prøves derfor en gang til med varigheten uten
+  styrke. Da må løpedistansen finnes på begge sider hvis økta har km. Første runde
+  endres aldri av dette.
 - `okter.json` endres ikke. Koblingen ligger som `okt_id` i `garmin_aktiviteter.json`.
 
 ## Konkurranser (Eventor)
@@ -454,8 +462,10 @@ en feil der stopper ikke importen. Testene ligger i `scripts/test_hent_eventor.p
   - `okt_ider`: øktene samme dag som har flest ord felles med løpsnavnet, ellers løpsord
     (NM, sprint, KO …), ellers økter med o-teknikk. Jogg, styrke, mølle o.l. kobles aldri, og
     e-tempO kobles ikke.
-- **Resultat (okt. 2026):** 169 individuelle løp (127 o-løp, 30 ski-o, 12 e-tempO), 148 med
-  strekk, 153 koblet til økter. 11 stafetter. Løp i utlandet mangler fordi de ikke ligger i
+- **Fra 1.11.2016:** `FRA` er 2016-11-01. De eldre løpene ble hentet med ett kall til
+  `results/person` og flettet inn i startfila (`PERSON_START`) og `person.xml`.
+- **Resultat (nov. 2026):** 256 individuelle løp (196 o-løp, 48 ski-o, 12 e-tempO), 231 med
+  strekk, 239 koblet til økter. 20 stafetter. 96 av løpene er fra før 1.11.2019. Løp i utlandet mangler fordi de ikke ligger i
   norsk Eventor, og noen stafetter mangler fordi Eventor ikke har Isaks person-id der.
 
 ## Nettsiden (`web/`)

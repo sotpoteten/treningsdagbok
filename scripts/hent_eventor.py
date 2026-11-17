@@ -72,11 +72,11 @@ from sammenlign_eventor import Feil, hent, les_oppsett
 ROOT = Path(__file__).resolve().parent.parent
 RA = ROOT / "data/raw/eventor"
 PERSON = RA / "person.xml"
-# Den komplette hentingen fra steg 1. Brukes som start hvis person.xml ikke finnes.
-PERSON_START = RA / "results_person_2019-11-01_2026-10-25_strekk_ingen_top.xml"
+# Den komplette hentingen fra steg 1, utvidet med 2016–2019. Brukes som start hvis person.xml ikke finnes.
+PERSON_START = RA / "results_person_2016-11-01_2026-10-25_strekk_ingen_top.xml"
 OKTER = ROOT / "data/okter.json"
 UT = ROOT / "data/konkurranser.json"
-FRA = "2019-11-01"
+FRA = "2016-11-01"
 TOPP = 10  # løpere per klasse fra results/event; nok til de 3 beste på hvert strekk
 SETTLES = 14  # dager før resultatene regnes som endelige
 OPPDATER_DAGER = 60  # så langt bak results/person hentes ved oppdatering

@@ -163,8 +163,8 @@ GPS-sporene publiseres til demoen som en zip i GitHub-utgivelsen
 Skriptet laster bare opp når sporene er endret, og mandagskjøringen kjører det selv etter
 Garmin. Pages-bygget henter zip-fila og tar sporene med.
 
-Det skriver også ut hvor stor andel av øktene som ble koblet. Ved forrige eksport var det
-94 %.
+Det skriver også ut hvor stor andel av øktene som ble koblet. Ved forrige konvertering var
+det 93 %.
 
 ### Konkurranser (Eventor)
 

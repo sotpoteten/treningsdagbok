@@ -1,5 +1,4207 @@
 [
  {
+  "dato": "2016-11-01",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2016-11-02",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2016-11-03",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2016-11-05",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2016-11-06",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2016-11-07",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2016-11-08",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2016-11-09",
+  "hvilepuls": 66
+ },
+ {
+  "dato": "2016-11-10",
+  "hvilepuls": 71
+ },
+ {
+  "dato": "2016-11-11",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2016-11-12",
+  "hvilepuls": 67
+ },
+ {
+  "dato": "2016-11-13",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2016-11-14",
+  "hvilepuls": 66
+ },
+ {
+  "dato": "2016-11-15",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2016-11-16",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2016-11-17",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2016-11-18",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2016-11-19",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2016-11-20",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2016-11-21",
+  "hvilepuls": 43
+ },
+ {
+  "dato": "2016-11-22",
+  "hvilepuls": 43
+ },
+ {
+  "dato": "2016-11-23",
+  "hvilepuls": 45
+ },
+ {
+  "dato": "2016-11-24",
+  "hvilepuls": 44
+ },
+ {
+  "dato": "2016-11-25",
+  "hvilepuls": 43
+ },
+ {
+  "dato": "2016-11-26",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2016-11-27",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2016-11-29",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2016-11-30",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2016-12-01",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2016-12-02",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2016-12-03",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2016-12-04",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2016-12-05",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2016-12-06",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2016-12-07",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2016-12-08",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2016-12-09",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2016-12-10",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2016-12-11",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2016-12-12",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2016-12-13",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2016-12-14",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2016-12-15",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2016-12-16",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2016-12-17",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2016-12-18",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2016-12-19",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2016-12-20",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2016-12-21",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2016-12-22",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2016-12-23",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2016-12-24",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2016-12-25",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2016-12-26",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2016-12-27",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2016-12-28",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2016-12-29",
+  "hvilepuls": 66
+ },
+ {
+  "dato": "2016-12-30",
+  "hvilepuls": 64
+ },
+ {
+  "dato": "2016-12-31",
+  "hvilepuls": 64
+ },
+ {
+  "dato": "2017-01-01",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-01-02",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-01-03",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-01-04",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-01-05",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-01-06",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-01-07",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-01-08",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-01-09",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-01-10",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-01-12",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2017-01-13",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2017-01-15",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2017-01-16",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2017-01-17",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2017-01-18",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2017-01-19",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2017-01-20",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2017-01-21",
+  "hvilepuls": 67
+ },
+ {
+  "dato": "2017-01-22",
+  "hvilepuls": 64
+ },
+ {
+  "dato": "2017-01-23",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2017-01-24",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-01-25",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-01-26",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-01-27",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-01-28",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-01-29",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-01-30",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-01-31",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-02-01",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-02-02",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-02-03",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-02-04",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-02-05",
+  "hvilepuls": 46
+ },
+ {
+  "dato": "2017-02-06",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2017-02-07",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2017-02-08",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-02-09",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-02-10",
+  "hvilepuls": 46
+ },
+ {
+  "dato": "2017-02-11",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-02-12",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-02-13",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-02-14",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-02-15",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-02-16",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-02-17",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-02-18",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-02-19",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-02-20",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-02-21",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-02-22",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-02-23",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-02-24",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-02-25",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-02-26",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2017-02-27",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2017-02-28",
+  "hvilepuls": 64
+ },
+ {
+  "dato": "2017-03-01",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2017-03-02",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2017-03-03",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-03-04",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-03-05",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-03-06",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-03-07",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-03-08",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-03-09",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-03-10",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-03-11",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-03-12",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-03-13",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-03-14",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-03-15",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-03-16",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-03-17",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-03-18",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-03-19",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-03-20",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-03-21",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-03-22",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-03-23",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-03-24",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-03-25",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-03-26",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-03-27",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-03-28",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-03-29",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-03-30",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-03-31",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-04-01",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-04-02",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-04-03",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-04-04",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-04-05",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-04-06",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-04-07",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-04-08",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-04-09",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-04-10",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-04-11",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-04-12",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-04-13",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-04-14",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-04-15",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-04-16",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-04-17",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-04-18",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-04-19",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-04-20",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-04-21",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-04-22",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-04-23",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-04-24",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-04-25",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-04-26",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-04-27",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-04-28",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-04-29",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-04-30",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-05-02",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-05-03",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-05-04",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-05",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-06",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-07",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-05-08",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-09",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-05-10",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-05-11",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-05-12",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-13",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-14",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-15",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-05-16",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-05-17",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-18",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-19",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-05-20",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-05-21",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-22",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-23",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-05-24",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-25",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-26",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-05-27",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-05-28",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-29",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-05-30",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-05-31",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-06-01",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-06-02",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-06-03",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-06-04",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-06-05",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-06-06",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-06-07",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-06-08",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-06-09",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-06-10",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-06-11",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-06-12",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-06-13",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-06-14",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-06-15",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-06-16",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-06-17",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-06-18",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-06-19",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-06-20",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-06-21",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-06-22",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-06-23",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-06-24",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-06-25",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-06-27",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-06-28",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-06-29",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-06-30",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-07-01",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-07-02",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-07-03",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2017-07-04",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2017-07-05",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-07-06",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-07-07",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-07-08",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-07-09",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-07-10",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-07-11",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-07-12",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-07-13",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-07-14",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-07-15",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-07-16",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-07-17",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-07-18",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-07-19",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-07-20",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-07-21",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-07-22",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-07-23",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-07-24",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-07-25",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-07-26",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-07-27",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-07-28",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-07-29",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-07-30",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-07-31",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-08-01",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-08-02",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-08-04",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-08-05",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-08-06",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-08-07",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-08-08",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-08-09",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-08-10",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-08-11",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-08-12",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-08-13",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-08-14",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-08-15",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2017-08-16",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2017-08-17",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-08-18",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-08-19",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2017-08-20",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-08-21",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-08-22",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-08-23",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-08-24",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-08-25",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-08-26",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-08-27",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-08-28",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-08-29",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-08-30",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-08-31",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-09-01",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-09-02",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-09-03",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-09-04",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-09-05",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-09-06",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-09-07",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-09-08",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-09-09",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2017-09-10",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-09-11",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-09-12",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-09-13",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-09-14",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-09-15",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-09-16",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-09-17",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-09-18",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-09-19",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-09-20",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-09-21",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-09-22",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-09-23",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-09-24",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-09-25",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-09-26",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-09-27",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-09-28",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-09-29",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-09-30",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-01",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-10-02",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-10-03",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-10-04",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-10-06",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-10-07",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-10-08",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-10-09",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-10-10",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-11",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-12",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-10-13",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-10-14",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-15",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-10-16",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-17",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-18",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-19",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-10-20",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-10-21",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-10-22",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-10-23",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-10-24",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-10-25",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-10-26",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-10-27",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-10-28",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-10-29",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-10-30",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-10-31",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-11-01",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2017-11-02",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-11-03",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-11-04",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-11-05",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-11-06",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-11-07",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-11-08",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-11-09",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-10",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2017-11-11",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-12",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-13",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-14",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-15",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-16",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-11-17",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2017-11-18",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-11-19",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2017-11-20",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-11-21",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2017-11-22",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-11-23",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-11-24",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-25",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-11-26",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-27",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-28",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-11-29",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-11-30",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-12-01",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2017-12-02",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-12-03",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-12-04",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2017-12-05",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2017-12-06",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-12-07",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-12-08",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2017-12-09",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-12-10",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2017-12-11",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-12-12",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-12-13",
+  "hvilepuls": 54,
+  "sovn_min": 683
+ },
+ {
+  "dato": "2017-12-14",
+  "hvilepuls": 53,
+  "sovn_min": 752
+ },
+ {
+  "dato": "2017-12-15",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2017-12-16",
+  "hvilepuls": 52,
+  "sovn_min": 699
+ },
+ {
+  "dato": "2017-12-17",
+  "hvilepuls": 52,
+  "sovn_min": 635
+ },
+ {
+  "dato": "2017-12-18",
+  "hvilepuls": 49,
+  "sovn_min": 733
+ },
+ {
+  "dato": "2017-12-19",
+  "hvilepuls": 48,
+  "sovn_min": 543
+ },
+ {
+  "dato": "2017-12-20",
+  "hvilepuls": 48,
+  "sovn_min": 623
+ },
+ {
+  "dato": "2017-12-21",
+  "hvilepuls": 50,
+  "sovn_min": 593
+ },
+ {
+  "dato": "2017-12-22",
+  "hvilepuls": 52,
+  "sovn_min": 661
+ },
+ {
+  "dato": "2017-12-23",
+  "hvilepuls": 51,
+  "sovn_min": 699
+ },
+ {
+  "dato": "2017-12-24",
+  "hvilepuls": 52,
+  "sovn_min": 717
+ },
+ {
+  "dato": "2017-12-25",
+  "hvilepuls": 54,
+  "sovn_min": 693
+ },
+ {
+  "dato": "2017-12-26",
+  "hvilepuls": 55,
+  "sovn_min": 724
+ },
+ {
+  "dato": "2017-12-27",
+  "hvilepuls": 53,
+  "sovn_min": 801
+ },
+ {
+  "dato": "2017-12-28",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2017-12-29",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2017-12-30",
+  "hvilepuls": 53,
+  "sovn_min": 630
+ },
+ {
+  "dato": "2017-12-31",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-01-01",
+  "hvilepuls": 51,
+  "sovn_min": 524
+ },
+ {
+  "dato": "2018-01-02",
+  "hvilepuls": 52,
+  "sovn_min": 552
+ },
+ {
+  "dato": "2018-01-03",
+  "hvilepuls": 53,
+  "sovn_min": 802
+ },
+ {
+  "dato": "2018-01-04",
+  "hvilepuls": 53,
+  "sovn_min": 606
+ },
+ {
+  "dato": "2018-01-05",
+  "hvilepuls": 53,
+  "sovn_min": 780
+ },
+ {
+  "dato": "2018-01-06",
+  "hvilepuls": 49,
+  "sovn_min": 604
+ },
+ {
+  "dato": "2018-01-07",
+  "hvilepuls": 48,
+  "sovn_min": 576
+ },
+ {
+  "dato": "2018-01-08",
+  "hvilepuls": 48,
+  "sovn_min": 562
+ },
+ {
+  "dato": "2018-01-09",
+  "hvilepuls": 47,
+  "sovn_min": 451
+ },
+ {
+  "dato": "2018-01-10",
+  "hvilepuls": 48,
+  "sovn_min": 675
+ },
+ {
+  "dato": "2018-01-11",
+  "hvilepuls": 48,
+  "sovn_min": 775
+ },
+ {
+  "dato": "2018-01-12",
+  "hvilepuls": 50,
+  "sovn_min": 785
+ },
+ {
+  "dato": "2018-01-13",
+  "hvilepuls": 52,
+  "sovn_min": 510
+ },
+ {
+  "dato": "2018-01-14",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-01-15",
+  "hvilepuls": 53,
+  "sovn_min": 558
+ },
+ {
+  "dato": "2018-01-16",
+  "hvilepuls": 53,
+  "sovn_min": 542
+ },
+ {
+  "dato": "2018-01-17",
+  "hvilepuls": 53,
+  "sovn_min": 629
+ },
+ {
+  "dato": "2018-01-18",
+  "hvilepuls": 52,
+  "sovn_min": 648
+ },
+ {
+  "dato": "2018-01-19",
+  "hvilepuls": 52,
+  "sovn_min": 623
+ },
+ {
+  "dato": "2018-01-20",
+  "hvilepuls": 52,
+  "sovn_min": 682
+ },
+ {
+  "dato": "2018-01-21",
+  "hvilepuls": 55,
+  "sovn_min": 636
+ },
+ {
+  "dato": "2018-01-22",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-01-23",
+  "hvilepuls": 53,
+  "sovn_min": 553
+ },
+ {
+  "dato": "2018-01-24",
+  "hvilepuls": 53,
+  "sovn_min": 672
+ },
+ {
+  "dato": "2018-01-25",
+  "hvilepuls": 54,
+  "sovn_min": 613
+ },
+ {
+  "dato": "2018-01-26",
+  "hvilepuls": 54,
+  "sovn_min": 766
+ },
+ {
+  "dato": "2018-01-27",
+  "hvilepuls": 50,
+  "sovn_min": 796
+ },
+ {
+  "dato": "2018-01-28",
+  "hvilepuls": 50,
+  "sovn_min": 439
+ },
+ {
+  "dato": "2018-01-29",
+  "hvilepuls": 51,
+  "sovn_min": 783
+ },
+ {
+  "dato": "2018-01-30",
+  "hvilepuls": 54,
+  "sovn_min": 507
+ },
+ {
+  "dato": "2018-01-31",
+  "hvilepuls": 54,
+  "sovn_min": 703
+ },
+ {
+  "dato": "2018-02-01",
+  "hvilepuls": 54,
+  "sovn_min": 632
+ },
+ {
+  "dato": "2018-02-02",
+  "hvilepuls": 53,
+  "sovn_min": 627
+ },
+ {
+  "dato": "2018-02-03",
+  "hvilepuls": 56,
+  "sovn_min": 461
+ },
+ {
+  "dato": "2018-02-04",
+  "hvilepuls": 54,
+  "sovn_min": 663
+ },
+ {
+  "dato": "2018-02-05",
+  "hvilepuls": 52,
+  "sovn_min": 632
+ },
+ {
+  "dato": "2018-02-06",
+  "hvilepuls": 51,
+  "sovn_min": 641
+ },
+ {
+  "dato": "2018-02-07",
+  "hvilepuls": 51,
+  "sovn_min": 623
+ },
+ {
+  "dato": "2018-02-08",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-02-09",
+  "hvilepuls": 51,
+  "sovn_min": 550
+ },
+ {
+  "dato": "2018-02-11",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-02-12",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-02-13",
+  "hvilepuls": 53,
+  "sovn_min": 559
+ },
+ {
+  "dato": "2018-02-14",
+  "hvilepuls": 54,
+  "sovn_min": 624
+ },
+ {
+  "dato": "2018-02-15",
+  "hvilepuls": 54,
+  "sovn_min": 633
+ },
+ {
+  "dato": "2018-02-16",
+  "hvilepuls": 55,
+  "sovn_min": 744
+ },
+ {
+  "dato": "2018-02-17",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-02-18",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-02-19",
+  "sovn_min": 789
+ },
+ {
+  "dato": "2018-02-25",
+  "sovn_min": 709
+ },
+ {
+  "dato": "2018-02-26",
+  "sovn_min": 637
+ },
+ {
+  "dato": "2018-02-27",
+  "sovn_min": 714
+ },
+ {
+  "dato": "2018-02-28",
+  "sovn_min": 798
+ },
+ {
+  "dato": "2018-03-01",
+  "hvilepuls": 49,
+  "sovn_min": 605
+ },
+ {
+  "dato": "2018-03-02",
+  "hvilepuls": 54,
+  "sovn_min": 691
+ },
+ {
+  "dato": "2018-03-03",
+  "hvilepuls": 46,
+  "sovn_min": 714
+ },
+ {
+  "dato": "2018-03-04",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-03-05",
+  "hvilepuls": 48,
+  "sovn_min": 533
+ },
+ {
+  "dato": "2018-03-06",
+  "hvilepuls": 49,
+  "sovn_min": 695
+ },
+ {
+  "dato": "2018-03-07",
+  "hvilepuls": 48,
+  "sovn_min": 644
+ },
+ {
+  "dato": "2018-03-08",
+  "hvilepuls": 48,
+  "sovn_min": 783
+ },
+ {
+  "dato": "2018-03-09",
+  "hvilepuls": 45,
+  "sovn_min": 650
+ },
+ {
+  "dato": "2018-03-10",
+  "hvilepuls": 46,
+  "sovn_min": 608
+ },
+ {
+  "dato": "2018-03-11",
+  "hvilepuls": 46,
+  "sovn_min": 573
+ },
+ {
+  "dato": "2018-03-12",
+  "hvilepuls": 46,
+  "sovn_min": 486
+ },
+ {
+  "dato": "2018-03-13",
+  "hvilepuls": 47,
+  "sovn_min": 606
+ },
+ {
+  "dato": "2018-03-14",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-03-15",
+  "hvilepuls": 51,
+  "sovn_min": 645
+ },
+ {
+  "dato": "2018-03-16",
+  "hvilepuls": 55,
+  "sovn_min": 697
+ },
+ {
+  "dato": "2018-03-17",
+  "hvilepuls": 59,
+  "sovn_min": 674
+ },
+ {
+  "dato": "2018-03-18",
+  "hvilepuls": 59,
+  "sovn_min": 764
+ },
+ {
+  "dato": "2018-03-19",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2018-03-20",
+  "hvilepuls": 60,
+  "sovn_min": 548
+ },
+ {
+  "dato": "2018-03-21",
+  "hvilepuls": 59,
+  "sovn_min": 616
+ },
+ {
+  "dato": "2018-03-22",
+  "hvilepuls": 58,
+  "sovn_min": 619
+ },
+ {
+  "dato": "2018-03-23",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-03-24",
+  "hvilepuls": 57,
+  "sovn_min": 806
+ },
+ {
+  "dato": "2018-03-25",
+  "hvilepuls": 55,
+  "sovn_min": 761
+ },
+ {
+  "dato": "2018-03-26",
+  "hvilepuls": 55,
+  "sovn_min": 793
+ },
+ {
+  "dato": "2018-03-27",
+  "hvilepuls": 57,
+  "sovn_min": 707
+ },
+ {
+  "dato": "2018-03-28",
+  "hvilepuls": 59,
+  "sovn_min": 716
+ },
+ {
+  "dato": "2018-03-29",
+  "hvilepuls": 60,
+  "sovn_min": 724
+ },
+ {
+  "dato": "2018-03-30",
+  "hvilepuls": 65,
+  "sovn_min": 708
+ },
+ {
+  "dato": "2018-03-31",
+  "hvilepuls": 67,
+  "sovn_min": 565
+ },
+ {
+  "dato": "2018-04-01",
+  "hvilepuls": 72,
+  "sovn_min": 647
+ },
+ {
+  "dato": "2018-04-02",
+  "hvilepuls": 77,
+  "sovn_min": 549
+ },
+ {
+  "dato": "2018-04-03",
+  "hvilepuls": 77,
+  "sovn_min": 576
+ },
+ {
+  "dato": "2018-04-04",
+  "hvilepuls": 74,
+  "sovn_min": 787
+ },
+ {
+  "dato": "2018-04-05",
+  "hvilepuls": 74
+ },
+ {
+  "dato": "2018-04-06",
+  "hvilepuls": 69
+ },
+ {
+  "dato": "2018-04-07",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2018-04-08",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2018-04-09",
+  "hvilepuls": 57,
+  "sovn_min": 802
+ },
+ {
+  "dato": "2018-04-10",
+  "hvilepuls": 56,
+  "sovn_min": 740
+ },
+ {
+  "dato": "2018-04-11",
+  "hvilepuls": 56,
+  "sovn_min": 649
+ },
+ {
+  "dato": "2018-04-12",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-04-13",
+  "hvilepuls": 57,
+  "sovn_min": 586
+ },
+ {
+  "dato": "2018-04-14",
+  "hvilepuls": 57,
+  "sovn_min": 734
+ },
+ {
+  "dato": "2018-04-15",
+  "hvilepuls": 56,
+  "sovn_min": 385
+ },
+ {
+  "dato": "2018-04-16",
+  "hvilepuls": 56,
+  "sovn_min": 547
+ },
+ {
+  "dato": "2018-04-17",
+  "hvilepuls": 54,
+  "sovn_min": 601
+ },
+ {
+  "dato": "2018-04-18",
+  "hvilepuls": 56,
+  "sovn_min": 734
+ },
+ {
+  "dato": "2018-04-19",
+  "hvilepuls": 55,
+  "sovn_min": 656
+ },
+ {
+  "dato": "2018-04-20",
+  "hvilepuls": 55,
+  "sovn_min": 713
+ },
+ {
+  "dato": "2018-04-21",
+  "hvilepuls": 58,
+  "sovn_min": 787
+ },
+ {
+  "dato": "2018-04-22",
+  "hvilepuls": 57,
+  "sovn_min": 685
+ },
+ {
+  "dato": "2018-04-23",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-04-24",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-04-25",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-04-26",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-04-27",
+  "hvilepuls": 54,
+  "sovn_min": 725
+ },
+ {
+  "dato": "2018-04-28",
+  "hvilepuls": 51,
+  "sovn_min": 546
+ },
+ {
+  "dato": "2018-04-29",
+  "hvilepuls": 52,
+  "sovn_min": 334
+ },
+ {
+  "dato": "2018-04-30",
+  "hvilepuls": 52,
+  "sovn_min": 621
+ },
+ {
+  "dato": "2018-05-01",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-05-02",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-05-03",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-05-04",
+  "hvilepuls": 50,
+  "sovn_min": 737
+ },
+ {
+  "dato": "2018-05-05",
+  "hvilepuls": 50,
+  "sovn_min": 687
+ },
+ {
+  "dato": "2018-05-06",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-05-07",
+  "hvilepuls": 51,
+  "sovn_min": 514
+ },
+ {
+  "dato": "2018-05-08",
+  "hvilepuls": 54,
+  "sovn_min": 760
+ },
+ {
+  "dato": "2018-05-09",
+  "hvilepuls": 54,
+  "sovn_min": 627
+ },
+ {
+  "dato": "2018-05-10",
+  "hvilepuls": 56,
+  "sovn_min": 758
+ },
+ {
+  "dato": "2018-05-11",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-05-12",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-05-13",
+  "hvilepuls": 58,
+  "sovn_min": 689
+ },
+ {
+  "dato": "2018-05-14",
+  "hvilepuls": 56,
+  "sovn_min": 699
+ },
+ {
+  "dato": "2018-05-15",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-05-16",
+  "hvilepuls": 55,
+  "sovn_min": 798
+ },
+ {
+  "dato": "2018-05-17",
+  "hvilepuls": 59,
+  "sovn_min": 692
+ },
+ {
+  "dato": "2018-05-18",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2018-05-19",
+  "hvilepuls": 60,
+  "sovn_min": 755
+ },
+ {
+  "dato": "2018-05-20",
+  "hvilepuls": 60,
+  "sovn_min": 764
+ },
+ {
+  "dato": "2018-05-21",
+  "hvilepuls": 62,
+  "sovn_min": 515
+ },
+ {
+  "dato": "2018-05-22",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-05-23",
+  "hvilepuls": 59,
+  "sovn_min": 755
+ },
+ {
+  "dato": "2018-05-24",
+  "hvilepuls": 53,
+  "sovn_min": 796
+ },
+ {
+  "dato": "2018-05-25",
+  "hvilepuls": 54,
+  "sovn_min": 786
+ },
+ {
+  "dato": "2018-05-26",
+  "hvilepuls": 52,
+  "sovn_min": 618
+ },
+ {
+  "dato": "2018-05-27",
+  "hvilepuls": 51,
+  "sovn_min": 524
+ },
+ {
+  "dato": "2018-05-28",
+  "hvilepuls": 49,
+  "sovn_min": 529
+ },
+ {
+  "dato": "2018-05-29",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-05-30",
+  "hvilepuls": 51,
+  "sovn_min": 754
+ },
+ {
+  "dato": "2018-05-31",
+  "hvilepuls": 50,
+  "sovn_min": 643
+ },
+ {
+  "dato": "2018-06-01",
+  "hvilepuls": 49,
+  "sovn_min": 773
+ },
+ {
+  "dato": "2018-06-02",
+  "hvilepuls": 47,
+  "sovn_min": 498
+ },
+ {
+  "dato": "2018-06-03",
+  "hvilepuls": 48,
+  "sovn_min": 809
+ },
+ {
+  "dato": "2018-06-04",
+  "hvilepuls": 48,
+  "sovn_min": 457
+ },
+ {
+  "dato": "2018-06-05",
+  "hvilepuls": 49,
+  "sovn_min": 793
+ },
+ {
+  "dato": "2018-06-06",
+  "hvilepuls": 47,
+  "sovn_min": 684
+ },
+ {
+  "dato": "2018-06-07",
+  "hvilepuls": 48,
+  "sovn_min": 800
+ },
+ {
+  "dato": "2018-06-08",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-06-09",
+  "hvilepuls": 51,
+  "sovn_min": 740
+ },
+ {
+  "dato": "2018-06-10",
+  "hvilepuls": 49,
+  "sovn_min": 505
+ },
+ {
+  "dato": "2018-06-11",
+  "hvilepuls": 49,
+  "sovn_min": 721
+ },
+ {
+  "dato": "2018-06-12",
+  "hvilepuls": 47,
+  "sovn_min": 521
+ },
+ {
+  "dato": "2018-06-13",
+  "hvilepuls": 48,
+  "sovn_min": 701
+ },
+ {
+  "dato": "2018-06-14",
+  "hvilepuls": 48,
+  "sovn_min": 766
+ },
+ {
+  "dato": "2018-06-15",
+  "hvilepuls": 47,
+  "sovn_min": 552
+ },
+ {
+  "dato": "2018-06-16",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2018-06-17",
+  "sovn_min": 555
+ },
+ {
+  "dato": "2018-06-18",
+  "sovn_min": 583
+ },
+ {
+  "dato": "2018-06-19",
+  "hvilepuls": 47,
+  "sovn_min": 783
+ },
+ {
+  "dato": "2018-06-20",
+  "hvilepuls": 48,
+  "sovn_min": 799
+ },
+ {
+  "dato": "2018-06-21",
+  "hvilepuls": 48,
+  "sovn_min": 740
+ },
+ {
+  "dato": "2018-06-22",
+  "hvilepuls": 48,
+  "sovn_min": 373
+ },
+ {
+  "dato": "2018-06-23",
+  "hvilepuls": 47,
+  "sovn_min": 631
+ },
+ {
+  "dato": "2018-06-24",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-06-25",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-06-26",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-06-27",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-06-28",
+  "hvilepuls": 58,
+  "sovn_min": 600
+ },
+ {
+  "dato": "2018-06-29",
+  "hvilepuls": 58,
+  "sovn_min": 763
+ },
+ {
+  "dato": "2018-06-30",
+  "hvilepuls": 59,
+  "sovn_min": 470
+ },
+ {
+  "dato": "2018-07-01",
+  "hvilepuls": 57,
+  "sovn_min": 503
+ },
+ {
+  "dato": "2018-07-02",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-07-03",
+  "hvilepuls": 54,
+  "sovn_min": 790
+ },
+ {
+  "dato": "2018-07-04",
+  "hvilepuls": 56,
+  "sovn_min": 705
+ },
+ {
+  "dato": "2018-07-05",
+  "hvilepuls": 60,
+  "sovn_min": 794
+ },
+ {
+  "dato": "2018-07-06",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2018-07-07",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2018-07-08",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2018-07-09",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2018-07-10",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2018-07-11",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2018-07-12",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-07-13",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-07-14",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2018-07-15",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-07-16",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-07-17",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-07-18",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-07-19",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-07-20",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-07-21",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-07-22",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-07-23",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-07-24",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-07-25",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-07-26",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-07-27",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-07-28",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-07-29",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-07-30",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-07-31",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-08-01",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-08-02",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-08-04",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-08-05",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-08-06",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-08-07",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-08-08",
+  "hvilepuls": 55,
+  "sovn_min": 577
+ },
+ {
+  "dato": "2018-08-09",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-08-10",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-08-11",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-08-12",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-08-13",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-08-14",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-08-15",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-08-16",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-08-17",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-08-18",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-08-19",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-08-20",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-08-21",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-08-22",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-08-23",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-08-24",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-08-25",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-08-26",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-08-27",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-08-28",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-08-29",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-08-30",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-08-31",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-09-01",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-09-02",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-09-03",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-09-04",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-09-05",
+  "hvilepuls": 52,
+  "sovn_min": 85
+ },
+ {
+  "dato": "2018-09-06",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-09-07",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-09-08",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-09-10",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-09-11",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-09-12",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-09-13",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-09-14",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-09-15",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2018-09-16",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2018-09-17",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-09-18",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-09-19",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-09-20",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-09-21",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-09-22",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-09-23",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-09-24",
+  "hvilepuls": 52,
+  "sovn_min": 490
+ },
+ {
+  "dato": "2018-09-25",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-09-26",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-09-27",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-09-28",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-09-29",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-09-30",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-10-01",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-10-02",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-10-03",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2018-10-04",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-10-05",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-10-06",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2018-10-07",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2018-10-08",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-10-09",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-10-10",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-10-11",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-10-12",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-10-13",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2018-10-14",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-10-15",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-10-16",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-10-17",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-10-18",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-10-19",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-10-20",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2018-10-21",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-10-22",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-10-23",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-10-24",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-10-25",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-10-26",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-10-27",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-10-28",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-10-29",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2018-10-30",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-10-31",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-11-01",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2018-11-02",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2018-11-03",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-11-04",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-11-05",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-11-06",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-11-07",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2018-11-08",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2018-11-09",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2018-11-10",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2018-11-11",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-11-12",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2018-11-13",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2018-11-14",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-11-15",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2018-11-17",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2018-11-18",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2018-11-19",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2018-11-21",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2018-11-22",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2018-11-23",
+  "hvilepuls": 74
+ },
+ {
+  "dato": "2018-11-24",
+  "hvilepuls": 76
+ },
+ {
+  "dato": "2018-11-25",
+  "hvilepuls": 76
+ },
+ {
+  "dato": "2018-11-26",
+  "hvilepuls": 80
+ },
+ {
+  "dato": "2018-11-28",
+  "hvilepuls": 82
+ },
+ {
+  "dato": "2018-11-29",
+  "hvilepuls": 80
+ },
+ {
+  "dato": "2018-11-30",
+  "hvilepuls": 79
+ },
+ {
+  "dato": "2018-12-01",
+  "hvilepuls": 80
+ },
+ {
+  "dato": "2018-12-02",
+  "hvilepuls": 86
+ },
+ {
+  "dato": "2018-12-05",
+  "hvilepuls": 89
+ },
+ {
+  "dato": "2018-12-11",
+  "hvilepuls": 100
+ },
+ {
+  "dato": "2018-12-12",
+  "hvilepuls": 100
+ },
+ {
+  "dato": "2018-12-14",
+  "hvilepuls": 80
+ },
+ {
+  "dato": "2018-12-15",
+  "hvilepuls": 78
+ },
+ {
+  "dato": "2018-12-16",
+  "hvilepuls": 74
+ },
+ {
+  "dato": "2018-12-17",
+  "hvilepuls": 69
+ },
+ {
+  "dato": "2018-12-18",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2018-12-25",
+  "hvilepuls": 74
+ },
+ {
+  "dato": "2018-12-26",
+  "hvilepuls": 74
+ },
+ {
+  "dato": "2019-01-04",
+  "hvilepuls": 66
+ },
+ {
+  "dato": "2019-01-05",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-01-07",
+  "hvilepuls": 71
+ },
+ {
+  "dato": "2019-01-08",
+  "hvilepuls": 74
+ },
+ {
+  "dato": "2019-01-10",
+  "hvilepuls": 77
+ },
+ {
+  "dato": "2019-01-11",
+  "hvilepuls": 88
+ },
+ {
+  "dato": "2019-01-12",
+  "hvilepuls": 92
+ },
+ {
+  "dato": "2019-01-14",
+  "hvilepuls": 87
+ },
+ {
+  "dato": "2019-01-15",
+  "hvilepuls": 89
+ },
+ {
+  "dato": "2019-01-16",
+  "hvilepuls": 88
+ },
+ {
+  "dato": "2019-01-17",
+  "hvilepuls": 84
+ },
+ {
+  "dato": "2019-01-18",
+  "hvilepuls": 79
+ },
+ {
+  "dato": "2019-01-21",
+  "hvilepuls": 80
+ },
+ {
+  "dato": "2019-01-22",
+  "hvilepuls": 69
+ },
+ {
+  "dato": "2019-01-23",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-01-24",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2019-01-25",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2019-01-26",
+  "hvilepuls": 75
+ },
+ {
+  "dato": "2019-01-29",
+  "hvilepuls": 82
+ },
+ {
+  "dato": "2019-01-30",
+  "hvilepuls": 87
+ },
+ {
+  "dato": "2019-01-31",
+  "hvilepuls": 89
+ },
+ {
+  "dato": "2019-02-01",
+  "hvilepuls": 77
+ },
+ {
+  "dato": "2019-02-02",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2019-02-03",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-02-04",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-02-07",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-02-09",
+  "hvilepuls": 71
+ },
+ {
+  "dato": "2019-02-11",
+  "hvilepuls": 83
+ },
+ {
+  "dato": "2019-02-12",
+  "hvilepuls": 81
+ },
+ {
+  "dato": "2019-02-13",
+  "hvilepuls": 86
+ },
+ {
+  "dato": "2019-02-14",
+  "hvilepuls": 86
+ },
+ {
+  "dato": "2019-02-17",
+  "hvilepuls": 86
+ },
+ {
+  "dato": "2019-02-18",
+  "hvilepuls": 87
+ },
+ {
+  "dato": "2019-02-19",
+  "hvilepuls": 90
+ },
+ {
+  "dato": "2019-02-20",
+  "hvilepuls": 85
+ },
+ {
+  "dato": "2019-02-21",
+  "hvilepuls": 84
+ },
+ {
+  "dato": "2019-02-22",
+  "hvilepuls": 85
+ },
+ {
+  "dato": "2019-02-23",
+  "hvilepuls": 85
+ },
+ {
+  "dato": "2019-02-25",
+  "hvilepuls": 87
+ },
+ {
+  "dato": "2019-02-26",
+  "hvilepuls": 86
+ },
+ {
+  "dato": "2019-02-27",
+  "hvilepuls": 89
+ },
+ {
+  "dato": "2019-02-28",
+  "hvilepuls": 91
+ },
+ {
+  "dato": "2019-03-01",
+  "hvilepuls": 93
+ },
+ {
+  "dato": "2019-03-02",
+  "hvilepuls": 92
+ },
+ {
+  "dato": "2019-03-03",
+  "hvilepuls": 92
+ },
+ {
+  "dato": "2019-03-05",
+  "hvilepuls": 91
+ },
+ {
+  "dato": "2019-03-06",
+  "hvilepuls": 90
+ },
+ {
+  "dato": "2019-03-07",
+  "hvilepuls": 88
+ },
+ {
+  "dato": "2019-03-08",
+  "hvilepuls": 83
+ },
+ {
+  "dato": "2019-03-11",
+  "hvilepuls": 86
+ },
+ {
+  "dato": "2019-03-17",
+  "hvilepuls": 100
+ },
+ {
+  "dato": "2019-03-21",
+  "hvilepuls": 74
+ },
+ {
+  "dato": "2019-03-22",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2019-03-23",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-03-24",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-03-25",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-03-26",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-03-27",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-03-28",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2019-03-29",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2019-03-30",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-03-31",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2019-04-01",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-04-02",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-04-03",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-04-04",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-04-05",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-04-06",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-04-07",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-04-08",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-04-09",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-04-10",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-04-11",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-04-12",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-04-13",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2019-04-14",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-04-15",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-04-16",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-04-17",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-04-18",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-04-19",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-04-20",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-04-21",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-04-22",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-04-23",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-04-24",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-04-25",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-04-26",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-04-27",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-04-28",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-04-29",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-05-02",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-05-03",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-05-06",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-05-07",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-05-08",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2019-05-09",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-05-10",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-05-11",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-05-13",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2019-05-14",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-05-16",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-05-17",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-05-18",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-05-19",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-05-23",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-05-25",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2019-05-26",
+  "hvilepuls": 72
+ },
+ {
+  "dato": "2019-05-27",
+  "hvilepuls": 66
+ },
+ {
+  "dato": "2019-05-28",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-05-29",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2019-05-30",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2019-05-31",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-06-01",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-06-02",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2019-06-03",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-06-04",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-06-05",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-06-06",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-06-07",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-06-11",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-06-12",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-06-13",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-06-14",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-06-16",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-06-17",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-06-18",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-06-19",
+  "hvilepuls": 64
+ },
+ {
+  "dato": "2019-06-20",
+  "hvilepuls": 66
+ },
+ {
+  "dato": "2019-06-21",
+  "hvilepuls": 65
+ },
+ {
+  "dato": "2019-06-23",
+  "hvilepuls": 68
+ },
+ {
+  "dato": "2019-06-24",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-06-25",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-06-26",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-06-27",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-06-28",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2019-06-29",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-06-30",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-07-01",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-07-02",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-07-03",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2019-07-04",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-07-05",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2019-07-06",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-07-07",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-07-08",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-07-09",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-07-10",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-07-11",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-07-12",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-07-13",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-07-14",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-07-15",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-07-16",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-07-17",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-07-18",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-07-19",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-07-20",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-07-21",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2019-07-22",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-07-23",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2019-07-24",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-07-25",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2019-07-26",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-07-27",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-07-28",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-07-29",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2019-07-30",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-07-31",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-08-01",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-08-02",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-08-03",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-08-04",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-08-05",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-08-06",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-08-07",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-08-08",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-08-09",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-08-11",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-08-12",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-08-13",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2019-08-14",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-08-15",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-08-16",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-08-17",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-08-18",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-08-19",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-08-20",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-08-21",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-08-22",
+  "hvilepuls": 59
+ },
+ {
+  "dato": "2019-08-23",
+  "hvilepuls": 60
+ },
+ {
+  "dato": "2019-08-24",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-08-25",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-08-26",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-08-27",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-08-28",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-08-29",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-08-30",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2019-08-31",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-09-01",
+  "hvilepuls": 63
+ },
+ {
+  "dato": "2019-09-02",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-09-03",
+  "hvilepuls": 62
+ },
+ {
+  "dato": "2019-09-04",
+  "hvilepuls": 61
+ },
+ {
+  "dato": "2019-09-05",
+  "hvilepuls": 57
+ },
+ {
+  "dato": "2019-09-06",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-09-07",
+  "hvilepuls": 58
+ },
+ {
+  "dato": "2019-09-08",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-09-09",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-09-10",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2019-09-11",
+  "hvilepuls": 55
+ },
+ {
+  "dato": "2019-09-12",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-09-13",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-09-14",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-09-15",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-09-16",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-09-17",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-09-18",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-09-19",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-09-20",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-09-21",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-09-22",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-09-23",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-09-24",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-09-25",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-09-26",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2019-09-27",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-09-28",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-09-29",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2019-09-30",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2019-10-01",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-10-02",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-10-03",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-10-04",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-10-05",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-10-06",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-10-07",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-10-08",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2019-10-09",
+  "hvilepuls": 48
+ },
+ {
+  "dato": "2019-10-10",
+  "hvilepuls": 47
+ },
+ {
+  "dato": "2019-10-11",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-10-12",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-10-13",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-10-14",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-10-16",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-10-17",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-10-18",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-10-19",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-10-20",
+  "hvilepuls": 49
+ },
+ {
+  "dato": "2019-10-21",
+  "hvilepuls": 51
+ },
+ {
+  "dato": "2019-10-22",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-10-23",
+  "hvilepuls": 52
+ },
+ {
+  "dato": "2019-10-24",
+  "hvilepuls": 50
+ },
+ {
+  "dato": "2019-10-25",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-10-26",
+  "hvilepuls": 53
+ },
+ {
+  "dato": "2019-10-27",
+  "hvilepuls": 54
+ },
+ {
+  "dato": "2019-10-28",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-10-29",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-10-30",
+  "hvilepuls": 56
+ },
+ {
+  "dato": "2019-10-31",
+  "hvilepuls": 58
+ },
+ {
   "dato": "2019-11-01",
   "hvilepuls": 58
  },

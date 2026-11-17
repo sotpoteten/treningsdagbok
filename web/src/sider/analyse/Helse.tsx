@@ -132,6 +132,7 @@ function HelseInnhold({
   const datotips = (i: number) => <b>{dato(datoer[i], 'EEEE d. MMMM yyyy')}</b>
   const harHrv = serier.hrv.some((v) => v != null)
   const harBelastning = serier.akutt.some((v) => v != null)
+  const harSovn = uker.some((u) => u.sovn != null)
 
   const tabell = () => (
     <table className="arstabell">
@@ -255,59 +256,73 @@ function HelseInnhold({
         )}
       </Grafkort>
 
-      <Grafkort id="sovn" tittel="Søvn per natt, snitt per uke" forklaring="Timer søvn. Søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den." forklaringTabell={helseTabell} tabell={tabell}>
-        <Stolper
-          punkter={uker.map((u) => ({ nokkel: u.p.uke.nokkel, verdier: { sovn: (u.sovn ?? 0) / 60 } }))}
-          serier={[{ id: 'sovn', navn: 'Søvn', klasse: 'fyll-sovn' }]}
-          hoyde={220}
-          yFormat={(v) => `${v} t`}
-          xEtikett={(_, i) => {
-            const t = uker[i].p.uke.dager[3].dato
-            const f = i > 0 ? uker[i - 1].p.uke.dager[3].dato : ''
-            return t.slice(5, 7) !== f.slice(5, 7) ? dato(t, alle ? 'MMM yy' : 'MMM').replace('.', '') : null
-          }}
-          beskrivelse="Søvn per natt i snitt per uke"
-          onKlikk={(p) => apneUke(p.nokkel)}
-          tips={(_, i) => {
-            const u = uker[i]
-            return (
-              <>
-                <b>
-                  Uke {u.p.uke.uke} · {ukespenn(u.p.uke.mandag, u.p.uke.sondag)}
-                </b>
-                <span className="tips-tall">{u.sovn != null ? `${timer(u.sovn)} t søvn per natt` : 'Ingen søvndata'}</span>
-                {u.score != null && <span className="tips-rad dempet">Søvnscore {en(u.score)}</span>}
-              </>
-            )
-          }}
-        />
-        {serier.score.some((v) => v != null) && (
+      <Grafkort
+        id="sovn"
+        tittel="Søvn per natt, snitt per uke"
+        forklaring={
+          harSovn
+            ? 'Timer søvn. Søvnscore finnes fra ca. 2023. Klikk en uke for å åpne den.'
+            : 'Klokka har ingen søvndata i denne perioden. Før 2023 er søvnen bare målt i noen perioder. Velg en annen sesong.'
+        }
+        forklaringTabell={harSovn ? helseTabell : undefined}
+        tabell={tabell}
+      >
+        {harSovn && (
           <>
-            <h3 className="grafkort-undertittel">Søvnscore</h3>
-            <Tidsserie
-              x={x}
-              serier={[
-                { id: 'p', navn: 'Søvnscore', verdier: serier.score, klasse: 'ts-hoved', form: 'punkt' },
-                { id: 's', navn: `Snitt ${SNITT_DAGER} dager`, verdier: glidendeSnittMedHull(serier.score, SNITT_DAGER), klasse: 'ts-snitt', form: 'linje' },
-              ]}
-              hoyde={150}
-              yDomene={[30, 100]}
-              xMerker={xMerker}
-              yFormat={(v) => `${v}`}
-              beskrivelse="Søvnscore per natt"
-              tips={(i) => (
+          <Stolper
+            punkter={uker.map((u) => ({ nokkel: u.p.uke.nokkel, verdier: { sovn: (u.sovn ?? 0) / 60 } }))}
+            serier={[{ id: 'sovn', navn: 'Søvn', klasse: 'fyll-sovn' }]}
+            hoyde={220}
+            yFormat={(v) => `${v} t`}
+            xEtikett={(_, i) => {
+              const t = uker[i].p.uke.dager[3].dato
+              const f = i > 0 ? uker[i - 1].p.uke.dager[3].dato : ''
+              return t.slice(5, 7) !== f.slice(5, 7) ? dato(t, alle ? 'MMM yy' : 'MMM').replace('.', '') : null
+            }}
+            beskrivelse="Søvn per natt i snitt per uke"
+            onKlikk={(p) => apneUke(p.nokkel)}
+            tips={(_, i) => {
+              const u = uker[i]
+              return (
                 <>
-                  {datotips(i)}
-                  <span className="tips-tall">Score {serier.score[i] ?? '–'}</span>
+                  <b>
+                    Uke {u.p.uke.uke} · {ukespenn(u.p.uke.mandag, u.p.uke.sondag)}
+                  </b>
+                  <span className="tips-tall">{u.sovn != null ? `${timer(u.sovn)} t søvn per natt` : 'Ingen søvndata'}</span>
+                  {u.score != null && <span className="tips-rad dempet">Søvnscore {en(u.score)}</span>}
                 </>
-              )}
-            />
-            <Tegnforklaring
-              serier={[
-                { id: 'p', navn: 'Per natt', klasse: 'prikk-hoved' },
-                { id: 's', navn: `Snitt ${SNITT_DAGER} dager`, klasse: 'linjenokkel snitt' },
-              ]}
-            />
+              )
+            }}
+          />
+          {serier.score.some((v) => v != null) && (
+            <>
+              <h3 className="grafkort-undertittel">Søvnscore</h3>
+              <Tidsserie
+                x={x}
+                serier={[
+                  { id: 'p', navn: 'Søvnscore', verdier: serier.score, klasse: 'ts-hoved', form: 'punkt' },
+                  { id: 's', navn: `Snitt ${SNITT_DAGER} dager`, verdier: glidendeSnittMedHull(serier.score, SNITT_DAGER), klasse: 'ts-snitt', form: 'linje' },
+                ]}
+                hoyde={150}
+                yDomene={[30, 100]}
+                xMerker={xMerker}
+                yFormat={(v) => `${v}`}
+                beskrivelse="Søvnscore per natt"
+                tips={(i) => (
+                  <>
+                    {datotips(i)}
+                    <span className="tips-tall">Score {serier.score[i] ?? '–'}</span>
+                  </>
+                )}
+              />
+              <Tegnforklaring
+                serier={[
+                  { id: 'p', navn: 'Per natt', klasse: 'prikk-hoved' },
+                  { id: 's', navn: `Snitt ${SNITT_DAGER} dager`, klasse: 'linjenokkel snitt' },
+                ]}
+              />
+            </>
+          )}
           </>
         )}
       </Grafkort>
