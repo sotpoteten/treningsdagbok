@@ -115,6 +115,9 @@ export function Oktpanel({ okt, dagbok, onLukk, onGaTil }: Props) {
           <p className="notat">{okt.kommentar}</p>
         </section>
       )}
+      {okt.ekstra?.kilde === 'excel' && (
+        <p className="fotnote">Fra Excel-dagboka.{okt.ekstra.navn_fra === 'forslag' ? ' Navnet er satt i ettertid.' : ''}</p>
+      )}
 
       {soneSum > 0 && (
         <section className="panel-del">

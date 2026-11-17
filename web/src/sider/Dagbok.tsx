@@ -3,7 +3,7 @@ import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRe
 import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { erAktivt, lagTreff, lesFilter, type Filter } from '../data/filter'
 import { dato } from '../data/format'
-import { harSpor, type Dagbok as DagbokData } from '../data/last'
+import { DAGBOK_FRA, harSpor, type Dagbok as DagbokData } from '../data/last'
 import type { Okt } from '../data/typer'
 import { isoDato, type Uke } from '../data/uker'
 import { Hoydelag } from '../komponenter/Hoydelag'
@@ -192,7 +192,7 @@ export function Dagbok({ dagbok }: { dagbok: DagbokData }) {
         {valgt && <Oktpanel okt={valgt} dagbok={dagbok} onLukk={lukk} onGaTil={gaTil} />}
         {id && !valgt && (
           <aside className="oktpanel">
-            <p>Fant ikke økta. Den kan være fra før 1. november 2019.</p>
+            <p>Fant ikke økta. Den kan være fra før {dato(DAGBOK_FRA, 'd. MMMM yyyy')}.</p>
             <button type="button" className="lenkeknapp" onClick={lukk}>
               Tilbake til dagboka
             </button>

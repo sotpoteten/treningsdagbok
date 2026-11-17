@@ -2,9 +2,10 @@
 
 [![Bygg og tester](https://github.com/sotpoteten/treningsdagbok/actions/workflows/pages.yml/badge.svg)](https://github.com/sotpoteten/treningsdagbok/actions/workflows/pages.yml)
 
-En nettside som gjør Isak Jonssons treningsdagbok lesbar, søkbar og analyserbar: sju år
-med orienteringstrening, rundt 3 900 økter. Dataene kommer fra dagboka til Olympiatoppen
-(dagbok.olympiatoppen.no), fra 1. november 2019, og fra en full Garmin-eksport.
+En nettside som gjør Isak Jonssons treningsdagbok lesbar, søkbar og analyserbar: ti år
+med orienteringstrening, rundt 5 100 økter. Dataene kommer fra dagboka til Olympiatoppen
+(dagbok.olympiatoppen.no) fra 1. november 2019, fra Excel-dagboka Isak førte de tre
+sesongene før, og fra en full Garmin-eksport.
 
 **Se den kjørende siden: [sotpoteten.github.io/treningsdagbok](https://sotpoteten.github.io/treningsdagbok/)**
 
@@ -137,7 +138,7 @@ Full historikk kommer fra Garmins GDPR-eksport:
 3. Sett opp Python-miljøet første gang:
    ```
    python -m venv .venv
-   .venv\Scripts\pip install fitdecode tzdata
+   .venv\Scripts\pip install fitdecode tzdata openpyxl
    ```
 4. Kjør konverteringen:
    ```

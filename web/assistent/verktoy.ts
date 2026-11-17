@@ -1,7 +1,7 @@
 import { summer, type Sum } from '../src/data/aggregat'
 import { lagTreff, type Filtertype } from '../src/data/filter'
 import { filtrer, oppkjoring } from '../src/data/konkurranser'
-import type { Dagbok } from '../src/data/last'
+import { DAGBOK_FRA, type Dagbok } from '../src/data/last'
 import { aktivitetsfordeling, erKvalitet, hardeMinutter, lagSesong, sesongStart, sesonger, snitt } from '../src/data/statistikk'
 import type { Disiplin, GarminDag, Konkurranse, Konkurransetype, Okt, Runde } from '../src/data/typer'
 import { ukeForDato } from '../src/data/uker'
@@ -160,7 +160,7 @@ export function finnOkter(
 ) {
   const fra = a.fra ?? '0000-00-00'
   const til = a.til ?? '9999-99-99'
-  if (a.fra || a.til) sjekkDatoer(a.fra ?? '2019-11-01', a.til ?? '2099-12-31')
+  if (a.fra || a.til) sjekkDatoer(a.fra ?? DAGBOK_FRA, a.til ?? '2099-12-31')
   const treff = lagTreff({ sok: a.sok ?? '', typer: new Set(a.typer ?? []) }, dagbok.dagerPerDato)
   const funnet = dagbok.okter.filter((o) => o.dato >= fra && o.dato <= til && hardeMinutter(o) >= (a.min_harde_min ?? 0) && treff(o))
 
@@ -283,7 +283,7 @@ export const MAKS_UKEKOMMENTARER = 30
 export function ukekommentarer(dagbok: Dagbok, a: { fra?: string; til?: string; sok?: string }) {
   const fra = a.fra ?? '0000-00-00'
   const til = a.til ?? '9999-99-99'
-  if (a.fra || a.til) sjekkDatoer(a.fra ?? '2019-11-01', a.til ?? '2099-12-31')
+  if (a.fra || a.til) sjekkDatoer(a.fra ?? DAGBOK_FRA, a.til ?? '2099-12-31')
   const ord = (a.sok ?? '').toLowerCase().split(/\s+/).filter(Boolean)
   const treff = dagbok.uker.filter((u) => {
     if (!u.kommentarer.length || u.sondag < fra || u.mandag > til) return false

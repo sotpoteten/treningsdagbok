@@ -187,6 +187,69 @@ class Konvertering(unittest.TestCase):
         self.assertEqual(u["kommentarer"], [{"tekst": "God uke.", "skrevet": "2025-05-11", "egen": True}])
 
 
+class ExcelKilde(unittest.TestCase):
+    """Excel-dagboka (konverter_excel.py) ligger i raw/excel/ i samme form og legges foran OLT-øktene."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mappe = tempfile.TemporaryDirectory()
+        raw, ut = Path(cls.mappe.name) / "raw", Path(cls.mappe.name) / "ut"
+        (raw / "excel").mkdir(parents=True)
+        ekstra = {"kilde": "excel", "navn_fra": "forslag", "rader": [{"type": "Lø", "puls_maks": 180}]}
+        excel = [
+            okt("excel-2019-10-31-1", "2019-10-31", 40, [blokk(0, 2, [maling(1, 40), maling(9, 8)])],
+                kommentarer=[("Siste dag i Excel.", None, "2019-10-31T00:00:00")], maks=None, metrikker=((2, 7),)),
+            okt("excel-2017-01-18-2", "2017-01-18", 30, [blokk(0, 12, [maling(12, 30)])], orden=1, metrikker=()),
+            okt("excel-2025-05-10-1", "2025-05-10", 30, [blokk(0, 2, [maling(1, 30)])]),  # i OLT-perioden
+        ]
+        for o in excel:
+            o["Ekstra"] = ekstra
+        filer = {"workoutSessions": OKTER, "userData": BRUKER, "weekComments": UKER,
+                 "excel/workoutSessions": excel,
+                 "excel/healthStatuses": [dagsrapport("2017-01-19", kommentar="Hviledag.", IsDayOff=True),
+                                          dagsrapport("2025-05-11", IsSick=True)]}
+        for navn, innhold in filer.items():
+            (raw / f"{navn}.json").write_text(json.dumps(innhold, ensure_ascii=False), encoding="utf-8")
+        cls.logg = io.StringIO()
+        with contextlib.redirect_stdout(cls.logg):
+            konverter(raw, "2019-11-01", ut)
+        cls.okter = json.loads((ut / "okter.json").read_text(encoding="utf-8"))
+        cls.dager = json.loads((ut / "dager.json").read_text(encoding="utf-8"))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mappe.cleanup()
+
+    def test_excel_legges_foran_olt_sortert_paa_dato(self):
+        self.assertEqual([o["id"] for o in self.okter],
+                         ["excel-2017-01-18-2", "excel-2019-10-31-1", "o-lop", "jogg"])
+
+    def test_gamle_olt_okter_er_fortsatt_utenfor(self):
+        self.assertNotIn("gammel", [o["id"] for o in self.okter])
+
+    def test_excel_okt_i_olt_perioden_tas_ikke_med(self):
+        self.assertIn("Excel-økt i OLT-perioden (ikke tatt med): 1", self.logg.getvalue())
+
+    def test_excel_okta_gaar_gjennom_samme_regler(self):
+        o = self.okter[1]
+        self.assertEqual((o["varighet_min"], o["sone_min"], o["distanse_km"], o["hoyeste_sone"]),
+                         (40, {"I1": 40}, 8, "I1"))
+        self.assertEqual((o["opplevd_belastning"], o["dagsform"], o["hoyeste_sone_registrert"]), (None, 7, None))
+        self.assertEqual((o["kommentar"], o["kommentarer_andre"]), ("Siste dag i Excel.", []))
+        self.assertEqual(self.okter[0]["styrke_min"], 30)
+        self.assertNotIn("varighet stemmer ikke", self.logg.getvalue())
+
+    def test_bare_excel_oktene_har_ekstra(self):
+        self.assertEqual(self.okter[1]["ekstra"]["rader"], [{"type": "Lø", "puls_maks": 180}])
+        self.assertEqual(list(self.okter[1])[-1], "ekstra")
+        self.assertNotIn("ekstra", self.okter[2])
+
+    def test_dagsrapportene_flettes(self):
+        self.assertEqual([d["dato"] for d in self.dager], ["2017-01-19", "2025-05-10", "2025-05-12"])
+        self.assertTrue(self.dager[0]["fridag"])
+        self.assertEqual(self.dager[0]["notat"], "Hviledag.")
+
+
 class TestRettUke(unittest.TestCase):
     """OLT lagret ukeskommentarene fra 2020 uke 53 til 2022 uke 51 én uke for tidlig."""
 

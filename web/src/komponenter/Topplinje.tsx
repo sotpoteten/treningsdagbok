@@ -2,6 +2,7 @@ import { Moon, Sun } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { NavLink } from 'react-router'
 import { dato } from '../data/format'
+import { DAGBOK_FRA } from '../data/last'
 import { useSisteOkt } from './DagbokPeriode'
 
 type Tema = 'light' | 'dark'
@@ -39,7 +40,7 @@ export function Topplinje({ children }: { children?: ReactNode }) {
     <header className="topplinje">
       <span className="merke">
         Treningsdagbok
-        <small>Isak Jonsson · 1. nov. 2019 – {sisteOkt ? dato(sisteOkt, 'd. MMM yyyy') : 'nå'}</small>
+        <small>Isak Jonsson · {dato(DAGBOK_FRA, 'd. MMM yyyy')} – {sisteOkt ? dato(sisteOkt, 'd. MMM yyyy') : 'nå'}</small>
       </span>
       <nav className="hovedmeny" aria-label="Hovedmeny">
         <NavLink to="/" end>

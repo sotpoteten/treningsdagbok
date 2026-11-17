@@ -45,12 +45,12 @@ describe('sesonger', () => {
     expect(lagSesong(2023).dager).toBe(366) // inneholder 29. feb. 2024
   })
 
-  it('dekker alle data, fra 2019/20 til sesongen med siste økt', () => {
+  it('dekker alle data, fra 2016/17 til sesongen med siste økt', () => {
     const s = sesonger(dagbok).map((x) => x.navn)
-    expect(s[0]).toBe('2019/20')
+    expect(s[0]).toBe('2016/17')
     // Siste sesong vokser med importene, så den sjekkes mot dataene.
     expect(s.at(-1)).toBe(sesong(dagbok.sisteDato))
-    expect(s.length).toBeGreaterThanOrEqual(7)
+    expect(s.length).toBeGreaterThanOrEqual(10)
   })
 
   it('analysen går til siste importerte økt, ikke til i dag', () => {

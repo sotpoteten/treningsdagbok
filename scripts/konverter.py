@@ -6,10 +6,13 @@ Leser fra data/raw/:
     workoutSessions.json  – treningsøktene (påkrevd)
     userData.json         – profil, pulssoner og dagsrapporter (valgfri)
     weekComments.json     – ukeskommentarer (valgfri)
+    excel/workoutSessions.json, excel/healthStatuses.json
+                          – Excel-dagboka 2016–2019 i samme form, skrevet av
+                            konverter_excel.py (valgfri)
 
 Bruk (fra prosjektmappen):
     python scripts/konverter.py
-    python scripts/konverter.py --fra 2019-11-01
+    python scripts/konverter.py --fra 2019-11-01    # første dato fra OLT
 
 Lager i data/:
     okter.json   – én post per økt, med blokker nøstet inn (for nettsiden)
@@ -101,15 +104,30 @@ def les(path: Path):
 
 
 def konverter(raw_dir: Path, fra: str, ut: Path = ROOT / "data"):
-    """Skriver filene til `ut` (standard data/). Testene gir en midlertidig mappe."""
+    """Skriver filene til `ut` (standard data/). Testene gir en midlertidig mappe.
+
+    `fra` er første dato fra OLT. Eldre økter i OLT-eksporten er importert fra et annet
+    verktøy og mangler data. Excel-dagboka dekker tiden før og tas med i sin helhet.
+    """
     okter_raw = les(raw_dir / "workoutSessions.json")
     bruker = les(raw_dir / "userData.json")
     uker_raw = les(raw_dir / "weekComments.json")
+    excel_okter = les(raw_dir / "excel" / "workoutSessions.json") or []
+    excel_dager = les(raw_dir / "excel" / "healthStatuses.json") or []
     meg = bruker["Id"] if bruker else None
     okter_raw = [s for s in okter_raw if s["Date"] >= fra]
+
+    advarsler = Counter()
+    for s in excel_okter:
+        if s["Date"] >= fra:
+            advarsler["Excel-økt i OLT-perioden (ikke tatt med)"] += 1
+            continue
+        for c in s["Comments"]:  # Excel har ingen forfatter. All teksten er Isaks egen.
+            c["AuthorId"] = meg
+        okter_raw.append(s)
     okter_raw.sort(key=lambda s: (s["Date"], s["Order"]))
 
-    okter, rader, advarsler = [], [], Counter()
+    okter, rader = [], []
 
     for s in okter_raw:
         blokker = []
@@ -188,6 +206,8 @@ def konverter(raw_dir: Path, fra: str, ut: Path = ROOT / "data"):
             "dagsform": sm.get(2),            # SessionMetricId 2, skala 1–10
             "blokker": blokker,
         })
+        if "Ekstra" in s:  # bare Excel-øktene: kilden, og det Excel har som OLT mangler
+            okter[-1]["ekstra"] = s["Ekstra"]
 
     ut.mkdir(exist_ok=True)
     (ut / "okter.json").write_text(json.dumps(okter, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -198,9 +218,9 @@ def konverter(raw_dir: Path, fra: str, ut: Path = ROOT / "data"):
 
     if bruker:
         dager = []
-        for h in sorted(bruker["HealthStatuses"], key=lambda h: h["Date"]):
-            if h["Date"] < fra:
-                continue
+        rapporter = [h for h in bruker["HealthStatuses"] if h["Date"] >= fra]
+        rapporter += [h for h in excel_dager if h["Date"] < fra]
+        for h in sorted(rapporter, key=lambda h: h["Date"]):
             flagg = {navn: h[felt] for felt, navn in DAGFLAGG.items()}
             dag = {"dato": h["Date"], **flagg, "notat": h["Comment"] or None,
                    "sykdom": None, "skade": None}
@@ -248,7 +268,8 @@ def konverter(raw_dir: Path, fra: str, ut: Path = ROOT / "data"):
         (ut / "uker.json").write_text(json.dumps(uker, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"{len(uker)} uker med kommentar")
 
-    print(f"{len(okter)} økter fra {fra} ({okter[0]['dato']} – {okter[-1]['dato']}), {len(rader)} målinger")
+    kilder = f"{len(excel_okter)} fra Excel, resten fra OLT fra {fra}" if excel_okter else f"fra {fra}"
+    print(f"{len(okter)} økter, {kilder} ({okter[0]['dato']} – {okter[-1]['dato']}), {len(rader)} målinger")
     for k, v in advarsler.items():
         print(f"ADVARSEL: {k}: {v}")
 
@@ -256,6 +277,6 @@ def konverter(raw_dir: Path, fra: str, ut: Path = ROOT / "data"):
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("raw", nargs="?", default=str(ROOT / "data/raw"), help="mappe med rå eksport")
-    p.add_argument("--fra", default="2019-11-01", help="første dato som tas med (ÅÅÅÅ-MM-DD)")
+    p.add_argument("--fra", default="2019-11-01", help="første dato fra OLT (ÅÅÅÅ-MM-DD)")
     a = p.parse_args()
     konverter(Path(a.raw), a.fra)

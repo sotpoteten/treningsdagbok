@@ -24,9 +24,9 @@ assistenten publiseres på GitHub Pages. GPS-sporene hentes fra GitHub-utgivelse
 
 ## Product Purpose
 
-Siden gjør nesten sju års treningsdagbok (fra 1. nov. 2019) lesbar, søkbar og analyserbar.
-Dataene kommer fra Olympiatoppens dagbok (dagbok.olympiatoppen.no) og fra en full
-Garmin-eksport.
+Siden gjør ti års treningsdagbok (fra 1. nov. 2016) lesbar, søkbar og analyserbar.
+Dataene kommer fra Olympiatoppens dagbok (dagbok.olympiatoppen.no) fra nov. 2019, fra
+Excel-dagboka for de tre sesongene før, og fra en full Garmin-eksport.
 - **Dagbok:** ukeskalender med søk og et øktpanel. Panelet viser blokker og notat, og
   Garmin-data med kart, puls, tempo og runder.
 - **Analyse:** Oversikt mot forrige sesong, volum, sesongsammenligning, intensitet og
@@ -97,7 +97,8 @@ sentralt**. Ingen av dem skal gjemmes bak den andre.
     1 246 netter og belastning for 1 163 dager.
 - **Kontrolltall:** per år står i `CLAUDE.md`.
 - **Ikke tilgjengelig:** Det finnes ingen bilder eller logo, og ingen dagbokdata før
-  nov. 2019. Excel-dagboka for 2017–2019 er ikke importert. Slikt skal ikke diktes opp.
+  nov. 2016. Fra Excel-dagboka (nov. 2016–okt. 2019) finnes bare tre intensiteter, ingen
+  opplevd belastning og ingen ukeskommentarer. Slikt skal ikke diktes opp.
 
 ## Product Principles
 

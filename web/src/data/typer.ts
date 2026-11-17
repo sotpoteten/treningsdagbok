@@ -16,6 +16,13 @@ export interface Blokk {
   minutter: number
 }
 
+export interface OktEkstra {
+  kilde: 'excel'
+  /** «forslag»: navnet er satt i ettertid ut fra notatet, ikke skrevet av Isak. */
+  navn_fra?: string
+  rader?: Record<string, unknown>[]
+}
+
 export interface Okt {
   id: string
   dato: string // ÅÅÅÅ-MM-DD
@@ -35,6 +42,8 @@ export interface Okt {
   opplevd_belastning: number | null
   dagsform: number | null
   blokker: Blokk[]
+  /** Bare på økter fra Excel-dagboka (2016–2019): det som ikke har et felt i OLT. */
+  ekstra?: OktEkstra
   /** Fylles inn senere når Garmin-eksporten er koblet på. */
   garmin_id?: number | null
 }

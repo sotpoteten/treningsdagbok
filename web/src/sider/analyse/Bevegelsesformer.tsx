@@ -27,6 +27,7 @@ import { Grafkort, Segment, Tegnforklaring, type Seriedef } from '../../komponen
 import { Stolper, type Stolpepunkt } from '../../komponenter/graf/Stolper'
 import { Sonestolpe } from '../../komponenter/Sonestolpe'
 import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
+import { OLT_FRA } from '../../data/last'
 import type { Analysekontekst } from '../Analyse'
 
 // Siden bruker en egen kategoripalett for bevegelsesformene (--f-*), et unntak fra regelen
@@ -418,7 +419,11 @@ function Underlaget({ k }: { k: Analysekontekst }) {
     </table>
   )
   return (
-    <Grafkort id="underlag" tittel="Underlaget i løpingen per sesong" forklaring="Løpetiden fordelt på terreng, sti/vei og mølle. Andelen er av tiden, ikke av km." tabell={tabell}>
+    <Grafkort id="underlag" tittel="Underlaget i løpingen per sesong" forklaring={`Løpetiden fordelt på terreng, sti/vei og mølle. Andelen er av tiden, ikke av km.${
+        k.sesonger[0].fra < OLT_FRA ? ' Før 2019/20 er bare o-teknikk ført som terreng, så andelen kan være for lav der.' : ''
+      }`}
+      tabell={tabell}
+    >
       <div className="andelsliste underlagliste">
         {rader.map((r) => (
           <div key={r.s.navn} className={r.s.navn === k.valgt.navn ? 'andelsrad valgt' : 'andelsrad'}>

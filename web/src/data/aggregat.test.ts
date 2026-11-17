@@ -10,7 +10,10 @@ const dagbok = byggDagbok(les('okter.json'), les('dager.json'), les('uker.json')
 // Kontrolltall fra CLAUDE.md for avsluttede år: [økter, timer, km]. Året som pågår vokser
 // ved hver import og sjekkes bare mot det som var importert 5. okt. 2026.
 const KONTROLL: Record<string, [number, number, number]> = {
-  '2019': [86, 113, 399],
+  '2016': [53, 64, 195], // nov.–des., fra Excel-dagboka
+  '2017': [366, 460, 2121],
+  '2018': [410, 505, 2449],
+  '2019': [406, 494, 1740], // Excel til 31. okt., OLT fra 1. nov.
   '2020': [456, 550, 3138],
   '2021': [578, 734, 3052],
   '2022': [581, 690, 3626],

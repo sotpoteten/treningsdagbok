@@ -18,6 +18,7 @@ import { Grafkort, Segment, Tegnforklaring, type Seriedef } from '../../komponen
 import { Stolper, type Stolpepunkt } from '../../komponenter/graf/Stolper'
 import { Sonestolpe } from '../../komponenter/Sonestolpe'
 import { useUrlTilstand } from '../../komponenter/useUrlTilstand'
+import { OLT_FRA } from '../../data/last'
 import type { Analysekontekst } from '../Analyse'
 
 const pst = (del: number, hel: number) => (hel ? `${Math.round((del / hel) * 100)} %` : '–')
@@ -79,7 +80,9 @@ function Sonefordeling({ k }: { k: Analysekontekst }) {
     <Grafkort
       id="sonefordeling"
       tittel="Intensitetsfordeling per sesong"
-      forklaring="Andel av tiden i hver sone (styrke er ikke med). I3–I5 er tiden over terskel."
+      forklaring={`Andel av tiden i hver sone (styrke er ikke med). I3–I5 er tiden over terskel.${
+        k.sesonger[0].fra < OLT_FRA ? ' Før 2019/20 er intensiteten ført i tre nivåer (I1, I2 og I4), så I3 og I5 er tomme der.' : ''
+      }`}
       tabell={tabell}
     >
       <div className="andelsliste">

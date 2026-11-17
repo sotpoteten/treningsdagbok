@@ -24,7 +24,6 @@ orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tek
 4. **Spør:** AI-assistent som svarer på spørsmål om dataene, med nettsøk etter kilder.
    Bare lokalt.
 5. **Mulig senere:**
-   - importere Excel-dagboka for 2017–2019
    - publisere siden
    - flere analyseverktøy
 
@@ -41,6 +40,7 @@ orienteringsløper. Han skriver på norsk, så svar på norsk og bruk norske tek
 | `data/dager.json` | Dagsrapporter: syk, skadet, reise, høyde, fridag, konkurranse, dagsnotat, sykdoms- og skadedetaljer. |
 | `data/uker.json` | Ukeskommentarer per ISO-uke. |
 | `data/profil.json` | Navn, idrett, klubb og pulssoner. Uten e-post og fødselsdato. |
+| `scripts/konverter_excel.py`, `scripts/excel_tekst.json` | Excel-dagboka 2016–2019 → mellomfiler i `data/raw/excel/`, se «Excel-dagboka» under. Krever `openpyxl` i `.venv`. |
 | `data/garmin_*.json`, `data/garmin_spor/` | Garmin-data, se seksjonen «Garmin-data» under. |
 | `scripts/konverter_garmin.py`, `scripts/garmin_kobling.py` | Garmin-eksport → `data/garmin_*`. Krever `.venv` (Python 3.12 med `fitdecode` og `tzdata`). |
 | `data/konkurranser.json`, `scripts/hent_eventor.py` | Resultater og strekktider fra Eventor, se «Konkurranser (Eventor)» under. |
@@ -73,11 +73,14 @@ koder, eller hvis varighetsregelen under ikke stemmer.
 
 ## Avgrensning
 
-- **Bare økter fra og med 1. november 2019 brukes.** Eldre økter i eksporten (2015–2016)
-  er importert fra et annet verktøy og mangler data. Fra 2017–2019 førte Isak dagbok
-  i et Excel-ark. Det kan importeres senere, og da må det mappes til samme format.
-- Fra 1. nov. 2019 til 5. okt. 2026 er det 3 929 økter, 8 603 blokker og 14 734 målinger.
-  Alle øktene er gjennomførte (`IsDone`), og ingen er planlagte eller hoppet over.
+- **Dagboka starter 1. november 2016.** Den har to kilder:
+  - **Fra 1. november 2019: OLT.** Eldre økter i OLT-eksporten (2015–2016) er importert
+    fra et annet verktøy, mangler data og brukes ikke. `--fra` i `konverter.py` er derfor
+    fortsatt `2019-11-01` og betyr «første dato fra OLT».
+  - **1. november 2016 til 31. oktober 2019: Excel-dagboka**, se «Excel-dagboka» under.
+    Det er 1 149 økter. De har id-er som `excel-2017-01-18-1` og feltet `ekstra`.
+- Fra 1. nov. 2019 til 5. okt. 2026 er det 3 929 økter, 8 603 blokker og 14 734 målinger
+  fra OLT. Tallene i seksjonene om rådata under gjelder OLT-delen. Alle OLT-øktene er gjennomførte (`IsDone`), og ingen er planlagte eller hoppet over.
   Plan-feltene er tomme. Alle har `SportId` 1.
 
 ## Struktur i den rå eksporten
@@ -224,14 +227,18 @@ Noen få økter mangler disse verdiene, og da er feltet `null`.
 }
 ```
 
-## Kontrolltall (fra 1. nov. 2019)
+## Kontrolltall (fra 1. nov. 2016)
 
-Tallene er fra importen 5. okt. 2026. Testene låser de avsluttede årene, mens 2026 og
+Tallene fra 2020 er fra importen 5. okt. 2026, og 2016–2019 er fra Excel-importen
+16. nov. 2026. Testene låser de avsluttede årene, mens 2026 og
 totalene bare må være minst så store, så en ny import ikke gjør testene røde.
 
 | År | Økter | Timer | Km |
 |---|---|---|---|
-| 2019 (nov–des) | 86 | 113 | 399 |
+| 2016 (nov–des, Excel) | 53 | 64 | 195 |
+| 2017 (Excel) | 366 | 460 | 2 121 |
+| 2018 (Excel) | 410 | 505 | 2 449 |
+| 2019 (Excel til 31. okt., 86 økter fra OLT) | 406 | 494 | 1 740 |
 | 2020 | 456 | 550 | 3 138 |
 | 2021 | 578 | 734 | 3 052 |
 | 2022 | 581 | 690 | 3 626 |
@@ -240,8 +247,56 @@ totalene bare må være minst så store, så en ny import ikke gjør testene rø
 | 2025 | 634 | 730 | 6 152 |
 | 2026 (t.o.m. 5. okt.) | 456 | 519 | 4 051 |
 
-Totalt er det om lag 4 630 timer og 29 588 km. Timer per sone: I1 3 565, I2 100,
+Fra 1. nov. 2019 er det om lag 4 630 timer og 29 588 km. Timer per sone: I1 3 565, I2 100,
 I3 410, I4 184 og I5 43. O-teknikk utgjør 897 timer (inkludert i sonetiden) og styrke 328 timer.
+
+Excel-sesongene: 2016/17 har 350 økter, 429 timer og 2 028 km, 2017/18 har 413, 502 og
+2 482, og 2018/19 har 386, 480 og 1 597.
+
+## Excel-dagboka (2016–2019)
+
+De tre sesongene før OLT ligger i tre arbeidsbøker, kopiert til `data/raw/excel/`
+(aldri i git). `scripts/konverter_excel.py` leser arket «Dag» og skriver
+`data/raw/excel/workoutSessions.json` og `healthStatuses.json` i samme form som
+OLT-eksporten. `konverter.py` leser dem sammen med OLT-filene, så Excel-øktene går
+gjennom samme kode. Testene ligger i `scripts/test_konverter_excel.py`.
+
+```
+.venv\Scripts\python scripts/konverter_excel.py               # skriver mellomfilene
+.venv\Scripts\python scripts/konverter_excel.py --gjennomsyn  # + liste i .impeccable/review/
+python scripts/konverter.py
+```
+
+- **Arket «Dag»:** fire rader per dag. Kolonnene finnes fra overskriftene, fordi fila for
+  2018–19 mangler Borg-kolonnene. En rad med 1 i «ant pa» starter en ny økt, og rader
+  uten hører til økta over. Typene leses fra «Inställningar» i hver fil.
+- **Kontroll:** Konverteringen sammenlignes med arbeidsbøkenes egne dagssummer og feiler
+  ved avvik.
+- **Soner (valgt av Isak):** låg → I1, mod → I2, hög → I4. I3 og I5 er derfor tomme før
+  nov. 2019. Siden sier fra om det i Intensitet.
+- **Typer:**
+  - OL → Løping terreng + O-teknikk nordisk. SOL → Løping sti/vei + O-teknikk sprint.
+  - SkO, og ski- eller rulleskirad med kontroller → skiblokk + O-teknikk sprint.
+  - Lø/LøV → Løping sti/vei. `lop` i tekstfila overstyrer per økt (`terreng`, `vei`,
+    `molle`). Bare mølleøkter er merket, så terrengandelen kan være for lav.
+  - SkS, SkK, Rs/RsS/RsK, Sy og Al → tilsvarende bevegelsesform. St → Generell styrke.
+- **Distanse** står bare på løpeblokker, som i OLT. Km på ski og sykkel ligger i `ekstra`.
+- **Dagsform** er «fo» fra øktas første rad med verdi. Opplevd belastning finnes ikke.
+- **`ekstra`** på økta i `okter.json`: `kilde` (`excel`), `navn_fra` og `rader` med det
+  Excel har som OLT mangler (puls, kontroller, spikret, flyt, strekkplasseringer, km).
+- **Dagsrapporter:** skadad → `skadet`, sjuk → `syk`, vilodag → `fridag`, «tävl» →
+  `konkurranse`. Kommentaren på en dag uten økt blir dagens `notat`. `fridag` står på
+  14 dager med en kort skulderstyrkeøkt (2018–19). Flagget er beholdt.
+- **Navn og notater (`scripts/excel_tekst.json`):** Excel har én kommentar per dag og
+  ingen øktnavn. Fila er skrevet for hånd av Claude og har per dato:
+  - `okter`: et kort navn per økt (`navn`), og eventuelt `lop`. Navnene er forslag, ikke
+    Isaks tekst. De er merket `navn_fra: "forslag"`, og øktpanelet viser «Fra
+    Excel-dagboka. Navnet er satt i ettertid.» Navnene skal ikke inneholde andres navn.
+  - `deler`: hvor dagens kommentar deles mellom øktene, som `[økt, anker]`. Ankeret er
+    starten på tekstbiten. `"dag"` gir dagsnotat, og `"alle"` legger hele teksten på
+    alle øktene når den ikke lar seg dele. Teksten endres aldri, bare deles.
+- **Mangler:** ukeskommentarer finnes ikke. Garmin og Eventor for perioden er ikke
+  hentet ennå (trinn 2).
 
 ## Kommentarer på økter
 

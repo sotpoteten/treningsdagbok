@@ -2,7 +2,9 @@ import { avledHelse } from './helse'
 import type { Dag, GarminAktivitet, GarminDag, GarminMaling, Konkurranse, Konkurranser, Okt, Profil, Stafett, UkeRad } from './typer'
 import { byggUker, ukeNokkel, type Uke } from './uker'
 
-export const DAGBOK_FRA = '2019-11-01'
+export const DAGBOK_FRA = '2016-11-01'
+/** Før denne datoen er øktene fra Excel-dagboka, og fra og med den fra OLT. */
+export const OLT_FRA = '2019-11-01'
 
 export interface Dagbok {
   okter: Okt[] // kronologisk
