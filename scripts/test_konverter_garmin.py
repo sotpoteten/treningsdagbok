@@ -88,7 +88,7 @@ class SporFraFit(unittest.TestCase):
         semi = 2**31 / 180  # grader → semicircles
         rec = [{"timestamp": self.START + timedelta(seconds=s), "position_lat": round(63.4 * semi),
                 "position_long": round(10.4 * semi), "heart_rate": 140 + s, "enhanced_speed": 3.456,
-                "distance": 3.4 * s} for s in range(0, 13)]
+                "distance": 3.4 * s, "power": 200 + s} for s in range(0, 13)]
         rec.append({"timestamp": None})
         lap = [{"start_time": self.START, "total_timer_time": 600.04, "total_distance": 2000.4,
                 "avg_heart_rate": 150, "max_heart_rate": 170, "avg_speed": 3.3333},
@@ -102,6 +102,7 @@ class SporFraFit(unittest.TestCase):
         self.assertEqual(p["puls"], [140, 145, 150])
         self.assertEqual(p["fart"], [3.46] * 3)
         self.assertEqual(p["dist"], [0, 17, 34])
+        self.assertEqual(p["watt"], [200, 205, 210])
         self.assertNotIn("hoyde", p)  # tomme kolonner fjernes
         self.assertEqual(spor["runder"], [{"start_s": 0, "tid_s": 600.0, "dist_m": 2000, "puls": 150,
                                            "makspuls": 170, "fart": 3.33}])

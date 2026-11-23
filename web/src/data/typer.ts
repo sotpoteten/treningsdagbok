@@ -159,6 +159,7 @@ export interface GarminSpor {
     fart?: (number | null)[] // m/s
     hoyde?: (number | null)[]
     dist?: (number | null)[] // meter
+    watt?: (number | null)[] // fra wattmåler eller Zwift
   }
   runder: Runde[]
 }

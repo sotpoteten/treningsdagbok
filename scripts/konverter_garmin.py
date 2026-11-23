@@ -161,7 +161,7 @@ def spor_fra_fit(data):
     start = okter[0].get("start_time")
     if not start:
         return None, None
-    kol = {k: [] for k in ("t", "lat", "lon", "puls", "fart", "hoyde", "dist")}
+    kol = {k: [] for k in ("t", "lat", "lon", "puls", "fart", "hoyde", "dist", "watt")}
     siste = None
     for r in rec:
         ts = r.get("timestamp")
@@ -181,6 +181,7 @@ def spor_fra_fit(data):
         kol["fart"].append(rund(fart, 2))
         kol["hoyde"].append(rund(hoyde, 1))
         kol["dist"].append(round(r["distance"]) if r.get("distance") is not None else None)
+        kol["watt"].append(r.get("power"))  # bare fra wattmåler eller Zwift; ellers fjernes kolonnen
     # Fjern kolonner som er helt tomme
     kol = {k: v for k, v in kol.items() if any(x is not None for x in v)}
     runder = []

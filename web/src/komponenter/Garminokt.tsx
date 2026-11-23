@@ -148,6 +148,9 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   const tempoMerker = useMemo(() => tempomerker(fartsakse).map(tilFart), [fartsakse])
   // Puls glattes over 3 punkter (ca. 15 s), heller ikke over en pause.
   const pulsserie = useMemo(() => (p?.puls ? glidendeMedian(p.puls, 3, brudd) : null), [p, brudd])
+  // Watt (wattmåler eller Zwift) glattes likt med pulsen.
+  const wattserie = useMemo(() => (p?.watt ? glidendeMedian(p.watt, 3, brudd) : null), [p, brudd])
+  const harWatt = !!wattserie?.some((v) => v != null)
   // Rundegrensene står i klokketid og regnes om til tid i bevegelse.
   const rundelinjer = useMemo(
     () => (bev && spor && spor.runder.length > 1 ? spor.runder.slice(1).map((r) => bev.tilBevegelse(r.start_s)) : undefined),
@@ -247,7 +250,7 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
         </div>
       )}
 
-      {bev && ((pulsserie && pulsserie.some((v) => v != null)) || (erLop && fartserie && fartserie.some((v) => v != null))) && (
+      {bev && ((pulsserie && pulsserie.some((v) => v != null)) || harWatt || (erLop && fartserie && fartserie.some((v) => v != null))) && (
         <p className="fotnote kurveforklaring">
           Kurvene viser tid i bevegelse.
           {bev.pauser.length > 0 &&
@@ -274,7 +277,33 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
                 <b>{klokke(bev.x[i])}</b>
                 <span className="tips-tall">{p.puls?.[i] ?? '–'} slag/min</span>
                 {tempoTekst(i) && <span className="tips-rad">{tempoTekst(i)}</span>}
+                {p.watt?.[i] != null && <span className="tips-rad">{p.watt[i]} W</span>}
                 {gps && p.dist?.[i] != null && <span className="tips-rad dempet">{km(p.dist[i]! / 1000)} km</span>}
+              </>
+            )}
+          />
+        </>
+      )}
+
+      {harWatt && wattserie && p && bev && (
+        <>
+          <h4 className="kurvetittel">Watt</h4>
+          <Tidsserie
+            x={bev.x}
+            serier={[{ id: 'watt', navn: 'Watt', verdier: wattserie, klasse: 'ts-watt', form: 'linje' }]}
+            hoyde={150}
+            brudd={brudd}
+            xLinjer={rundelinjer}
+            xMerker={tidsmerker}
+            yFormat={(v) => `${v}`}
+            aktiv={aktiv}
+            onAktiv={setAktiv}
+            beskrivelse="Watt gjennom økta, mot tid i bevegelse"
+            tips={(i) => (
+              <>
+                <b>{klokke(bev.x[i])}</b>
+                <span className="tips-tall">{p.watt?.[i] ?? '–'} W</span>
+                {p.puls?.[i] != null && <span className="tips-rad">{p.puls[i]} slag/min</span>}
               </>
             )}
           />

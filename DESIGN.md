@@ -401,6 +401,9 @@ Grafene tegnes som egne SVG-er (`web/src/komponenter/graf/`) i samme språk som 
   - Uten GPS (mølle, innendørs; `har_kurver` uten `har_spor`) vises bare pulskurven, ingen
     tempokurve og intet kart, og rundetabellen er uten km og tempo. En fotnote forklarer
     at klokkas distanse og fart ikke er presise nok uten GPS.
+  - **Watt** (wattmåler eller Zwift) får en egen kurve under pulsen, i blekk som pulsen og
+    glattet likt (3 punkter). Verktøytipset viser watt og puls. Zwift-turer har aldri kart,
+    fordi ruta er virtuell.
 - **Bånd og merker:**
   - Normalområder (HRV-normalområdet, ACWR 0,8–1,3) er et flatt bånd i blekk med 8 % opasitet.
   - Syke og skadde dager markeres med en 2 px loddrett strek i stempelrødt (skadet
