@@ -168,10 +168,11 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   const lagvalg = midt ? KARTLAG[land(...midt) ?? 'annet'] : KARTLAG.norge
   const lag: Kartlag = lagValg && lagvalg.some((v) => v.id === lagValg) ? lagValg : lagvalg[0].id
   const erLop = (a.distanse_km ?? 0) > 0 && /running|run/.test(a.type)
+  const zwift = a.kilde === 'zwift'
 
   return (
     <section className="panel-del garmin">
-      <h3>Garmin</h3>
+      <h3>{zwift ? 'Zwift' : 'Garmin'}</h3>
       {aktiviteter.length > 1 && (
         <div className="garmin-valg" role="group" aria-label="Velg aktivitet">
           {aktiviteter.map((x, i) => (
@@ -225,7 +226,11 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
         </p>
       )}
       {spor && !gps && (
-        <p className="fotnote">Uten GPS er ikke klokkas distanse og fart presise nok til å vises. Farten står ofte i dagboknotatet.</p>
+        <p className="fotnote">
+          {zwift
+            ? 'Turen er fra Zwift via intervals.icu. Ruta går i en virtuell verden, så den vises uten kart.'
+            : 'Uten GPS er ikke klokkas distanse og fart presise nok til å vises. Farten står ofte i dagboknotatet.'}
+        </p>
       )}
 
       {harKart && p && (
@@ -342,7 +347,7 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
         </table>
       )}
       <p className="fotnote">
-        Garmin: {typenavn(a.type)} kl. {a.start_lokal.slice(11, 16)}, {varighetLang(Math.round(a.varighet_min))}.
+        {zwift ? 'Zwift' : 'Garmin'}: {typenavn(a.type)} kl. {a.start_lokal.slice(11, 16)}, {varighetLang(Math.round(a.varighet_min))}.
       </p>
     </section>
   )

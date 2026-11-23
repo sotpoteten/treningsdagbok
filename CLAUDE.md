@@ -348,6 +348,13 @@ Det er to kilder:
   --planlagt`) kaller den etter OLT-importen, og committer de to Garmin-filene sammen med
   resten. Nøkkelen ligger i `data/raw/intervals.json`. intervals.icu er koblet til Garmin
   Connect, og Garmin sendte bare ett år bakover (fra 1. juni 2026).
+- **Zwift (via intervals.icu, fra 17. nov. 2026):** Zwift-turer ligger ikke i Garmin Connect,
+  men intervals.icu får dem direkte. `hent_intervals.py` tar med kildene `GARMIN_CONNECT` og
+  `ZWIFT`. En Zwift-tur får tallet i intervals-id-en som `garmin_id` (`i213416410` →
+  213416410, langt under Garmins id-er) og `"kilde": "zwift"`. Sporet har ikke GPS, fordi
+  ruta er i en virtuell verden, bare kurvene. En Zwift-tur som starter innen 10 min fra en
+  Garmin-aktivitet, hoppes over (klokka tok den også opp). `behold_nyere()` beholder alltid
+  Zwift-turene ved en ny Garmin-eksport. `--fra DATO` henter aktiviteter fra en bestemt dato.
 - **GDPR-eksporten (full historikk):** Mappa `DI_CONNECT/` fra eksporten kopieres til
   `data/raw/garmin/` (794 MB, holdt utenfor git). Ved ny eksport erstattes mappa, og så
   kjøres konverteringen under. Data som er nyere enn eksporten, beholdes

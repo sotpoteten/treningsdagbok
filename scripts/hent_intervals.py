@@ -6,8 +6,12 @@ aktivitetene med originalfila fra klokka, og det som er målt per dag: hvilepuls
 søvntid og søvnscore. Normalområdet for HRV og belastningen regnes på nettsiden
 (web/src/data/helse.ts), likt for alle data.
 
-- Aktiviteter: alle Garmin-aktiviteter som ikke finnes i garmin_aktiviteter.json.
+- Aktiviteter: alle Garmin- og Zwift-aktiviteter som ikke finnes i garmin_aktiviteter.json.
   Sammendraget og sporet lages fra FIT-fila, på samme måte som fra GDPR-eksporten.
+- Zwift: turene ligger ikke i Garmin Connect, så de har ingen Garmin-id. De får tallet i
+  intervals-id-en (i213416410 → 213416410), som er langt under Garmins id-er, og
+  «kilde»: «zwift». Koordinatene er fra Zwifts virtuelle verden, så sporet får ikke GPS,
+  bare kurvene. En Zwift-tur som klokka også har tatt opp, hoppes over.
 - Helse: dager fra og med en uke før siste dato i garmin_helse.json, til og med i går.
   I dag tas ikke med, fordi natta kan være halvferdig. Verdier som finnes fra før,
   overskrives aldri; bare tomme felt fylles.
@@ -17,6 +21,7 @@ Krever API-nøkkelen i data/raw/intervals.json: {"api_nokkel": "…"} (holdt ute
 
 Bruk (fra prosjektmappen):
     .venv\\Scripts\\python scripts/hent_intervals.py
+    .venv\\Scripts\\python scripts/hent_intervals.py --fra 2026-11-16   # hent aktiviteter fra en bestemt dato
 """
 import base64
 import gzip
@@ -24,7 +29,7 @@ import json
 import sys
 import urllib.request
 import zipfile
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from io import BytesIO
 from pathlib import Path
 
@@ -34,6 +39,8 @@ from konverter_garmin import SPOR, UT, dekod, koble_okter, les_json, rund, skriv
 ROOT = Path(__file__).resolve().parent.parent
 NOKKEL = ROOT / "data/raw/intervals.json"
 API = "https://intervals.icu/api/v1"
+KILDER = {"GARMIN_CONNECT", "ZWIFT"}
+SAMME_START_S = 10 * 60  # en Zwift-tur som starter så nær en Garmin-aktivitet, er samme tur
 HELSEFELT = ("hvilepuls", "hrv_natt", "sovn_min", "sovnscore")
 
 # FIT sport/sub_sport → Garmins aktivitetstype, slik den står i GDPR-eksporten.
@@ -148,6 +155,55 @@ def aktivitet_fra_fit(garmin_id: int, navn: str | None, start_lokal: str, data: 
     return post, spor
 
 
+def aktivitetsnokkel(a: dict) -> int | None:
+    """Id-en aktiviteten får i garmin_aktiviteter.json: Garmin-id-en, eller tallet i
+    intervals-id-en for Zwift. None for kilder som ikke tas med."""
+    kilde = a.get("source")
+    if kilde == "GARMIN_CONNECT" and a.get("external_id"):
+        return int(str(a["external_id"]).split(".")[0])
+    if kilde == "ZWIFT" and str(a.get("id", "")).lstrip("i").isdigit():
+        return int(str(a["id"]).lstrip("i"))
+    return None
+
+
+def _sekunder(start_lokal: str) -> float:
+    return datetime.fromisoformat(start_lokal[:19]).timestamp()
+
+
+def velg_aktiviteter(liste: list[dict], kjente: set[int], starttider: list[str]) -> list[tuple[int, list[dict]]]:
+    """(id, etapper) for aktivitetene som skal hentes, eldste først. En multisport-aktivitet
+    er én aktivitet per etappe hos intervals.icu, med samme Garmin-id og samme fil; hos oss
+    er den én aktivitet, som hos Garmin. Kjente id-er hoppes over, og en Zwift-tur hoppes
+    over når en Garmin-aktivitet starter innen SAMME_START_S (klokka tok den også opp)."""
+    per_id: dict[int, list[dict]] = {}
+    kilde: dict[int, str] = {}
+    for a in liste:
+        n = aktivitetsnokkel(a)
+        if n is None or n in kjente:
+            continue
+        per_id.setdefault(n, []).append(a)
+        kilde[n] = a["source"]
+    garmin_start = [_sekunder(s) for s in starttider]
+    garmin_start += [_sekunder(e["start_date_local"])
+                     for n, et in per_id.items() if kilde[n] == "GARMIN_CONNECT" for e in et]
+    ut = []
+    for n, etapper in sorted(per_id.items(), key=lambda x: min(a["start_date_local"] for a in x[1])):
+        if kilde[n] == "ZWIFT":
+            s = _sekunder(etapper[0]["start_date_local"])
+            if any(abs(s - g) < SAMME_START_S for g in garmin_start):
+                continue
+        ut.append((n, sorted(etapper, key=lambda a: a["start_date_local"])))
+    return ut
+
+
+def uten_gps(spor: dict | None) -> dict | None:
+    """Sporet uten koordinater, for Zwift, der de er fra en virtuell verden."""
+    if not spor:
+        return spor
+    punkter = {k: v for k, v in (spor.get("punkter") or {}).items() if k not in ("lat", "lon")}
+    return {**spor, "punkter": punkter}
+
+
 def helse_fra_wellness(w: dict) -> dict:
     """Det som er målt, med samme navn og enheter som garmin_helse.json."""
     ut = {
@@ -174,33 +230,31 @@ def flett_helse(gamle: list[dict], nye: dict[str, dict]) -> tuple[list[dict], in
 
 # ── Hovedprogram ────────────────────────────────────────
 
-def oppdater() -> str:
-    """Henter og skriver. Gir en kort oppsummering til logg og varsel."""
+def oppdater(fra: str | None = None) -> str:
+    """Henter og skriver. Gir en kort oppsummering til logg og varsel. Med fra hentes
+    aktivitetene fra den datoen i stedet, f.eks. for å ta igjen noe som ble hoppet over."""
     aktiviteter = les_json(UT / "garmin_aktiviteter.json")
     helse = les_json(UT / "garmin_helse.json")
     i_dag = date.today()
 
     # Aktiviteter fra dagen før den siste vi har, så ingen faller mellom to kjøringer.
-    fra = (date.fromisoformat(aktiviteter[-1]["start_lokal"][:10]) - timedelta(days=1)).isoformat()
+    fra = fra or (date.fromisoformat(aktiviteter[-1]["start_lokal"][:10]) - timedelta(days=1)).isoformat()
     kjente = {a["garmin_id"] for a in aktiviteter}
     liste = json.loads(hent("/athlete/0/activities", oldest=fra, newest=i_dag.isoformat(),
                             fields="id,name,start_date_local,source,external_id"))
-    # En multisport-aktivitet blir én aktivitet per etappe hos intervals.icu, med samme
-    # Garmin-id og samme fil. Hos oss er den én aktivitet, som hos Garmin.
-    per_gid: dict[int, list[dict]] = {}
-    for a in liste:
-        if a.get("source") == "GARMIN_CONNECT" and a.get("external_id"):
-            per_gid.setdefault(int(str(a["external_id"]).split(".")[0]), []).append(a)
+    starttider = [a["start_lokal"] for a in aktiviteter if a.get("kilde") != "zwift"]
     nye = []
-    for gid, etapper in sorted(per_gid.items(), key=lambda x: min(a["start_date_local"] for a in x[1])):
-        if gid in kjente:
-            continue
-        forste = min(etapper, key=lambda a: a["start_date_local"])
-        post, spor = aktivitet_fra_fit(gid, forste.get("name"), forste["start_date_local"], hent_fit(forste["id"]))
+    for n, etapper in velg_aktiviteter(liste, kjente, starttider):
+        forste = etapper[0]
+        post, spor = aktivitet_fra_fit(n, forste.get("name"), forste["start_date_local"], hent_fit(forste["id"]))
+        if forste["source"] == "ZWIFT":
+            spor = uten_gps(spor)
+            post["har_spor"], post["har_kurver"] = sporflagg(spor)
+            post["kilde"] = "zwift"
         if spor:
-            skriv_json(SPOR / f"{gid}.json", spor, kompakt=True)  # holdt utenfor git
+            skriv_json(SPOR / f"{n}.json", spor, kompakt=True)  # holdt utenfor git
         nye.append(post)
-        kjente.add(gid)
+        kjente.add(n)
 
     # Helse: en uke tilbake fra siste dato, til og med i går.
     siste = helse[-1]["dato"] if helse else "2019-11-01"
@@ -214,13 +268,16 @@ def oppdater() -> str:
         koble_okter(aktiviteter)
     skriv_json(UT / "garmin_aktiviteter.json", aktiviteter)
     skriv_json(UT / "garmin_helse.json", helse)
-    return (f"Garmin: {len(nye)} nye aktiviteter ({sum(a['har_spor'] for a in nye)} med spor), "
+    zwift = sum(1 for a in nye if a.get("kilde") == "zwift")
+    return (f"Garmin: {len(nye)} nye aktiviteter ({sum(a['har_spor'] for a in nye)} med spor"
+            + (f", {zwift} fra Zwift" if zwift else "") + "), "
             f"{nye_felt} nye helseverdier, helse til {helse[-1]['dato'] if helse else '–'}")
 
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
     try:
-        print(oppdater())
+        fra = sys.argv[sys.argv.index("--fra") + 1] if "--fra" in sys.argv[1:-1] else None
+        print(oppdater(fra))
     except Feil as e:
         sys.exit(f"Avbrutt: {e}. Filene i data/ er ikke endret.")

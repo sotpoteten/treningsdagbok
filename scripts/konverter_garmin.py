@@ -419,13 +419,15 @@ def sett_sporflagg(aktiviteter, mappe=None):
 
 def behold_nyere(aktiviteter, helse):
     """Data hentet fra intervals.icu etter eksporten (scripts/hent_intervals.py) skal ikke
-    forsvinne når en eldre eksport konverteres på nytt. Det som er nyere enn eksporten, beholdes."""
+    forsvinne når en eldre eksport konverteres på nytt. Det som er nyere enn eksporten, beholdes,
+    og Zwift-turene beholdes alltid, fordi de ikke finnes i Garmin-eksporten."""
     gamle_akt = les_json(UT / "garmin_aktiviteter.json") if (UT / "garmin_aktiviteter.json").exists() else []
     gamle_helse = les_json(UT / "garmin_helse.json") if (UT / "garmin_helse.json").exists() else []
     siste_akt = max((a["start_lokal"] for a in aktiviteter), default="")
     siste_dag = max((d["dato"] for d in helse), default="")
     kjente = {a["garmin_id"] for a in aktiviteter}
-    nye_akt = [a for a in gamle_akt if a["start_lokal"] > siste_akt and a["garmin_id"] not in kjente]
+    nye_akt = [a for a in gamle_akt
+               if (a["start_lokal"] > siste_akt or a.get("kilde") == "zwift") and a["garmin_id"] not in kjente]
     nye_dager = [d for d in gamle_helse if d["dato"] > siste_dag]
     if nye_akt or nye_dager:
         print(f"  Beholder {len(nye_akt)} aktiviteter og {len(nye_dager)} dager som er nyere enn eksporten")

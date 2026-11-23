@@ -118,6 +118,8 @@ export interface GarminAktivitet {
   /** Sporfila har puls, så kurvene kan vises også uten GPS (mølle, innendørs). */
   har_kurver?: boolean
   okt_id: string | null
+  /** Bare på turer fra Zwift (via intervals.icu). Da er garmin_id tallet i intervals-id-en. */
+  kilde?: 'zwift'
 }
 
 /** Det som er målt en dag, slik det står i garmin_helse.json. */
