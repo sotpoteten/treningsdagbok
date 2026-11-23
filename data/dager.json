@@ -12436,5 +12436,145 @@
     "pavirkning_prestasjon": "Stor"
    }
   ]
+ },
+ {
+  "dato": "2026-11-16",
+  "syk": false,
+  "skadet": true,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": [
+   {
+    "type": "Akutt",
+    "kroppsdel": "Høyre skulder",
+    "kommentar": "Operert i skulderen. Ortopeden fornøyd med resultatet. ",
+    "pavirkning_deltagelse": "Ingen deltagelse",
+    "pavirkning_prestasjon": "Stor"
+   }
+  ]
+ },
+ {
+  "dato": "2026-11-17",
+  "syk": false,
+  "skadet": true,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": [
+   {
+    "type": "Akutt",
+    "kroppsdel": "Høyre skulder",
+    "kommentar": "Operert i skulderen. Ortopeden fornøyd med resultatet. ",
+    "pavirkning_deltagelse": "Ingen deltagelse",
+    "pavirkning_prestasjon": "Stor"
+   }
+  ]
+ },
+ {
+  "dato": "2026-11-18",
+  "syk": false,
+  "skadet": true,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": [
+   {
+    "type": "Akutt",
+    "kroppsdel": "Høyre skulder",
+    "kommentar": "Operert i skulderen. Ortopeden fornøyd med resultatet. ",
+    "pavirkning_deltagelse": "Ingen deltagelse",
+    "pavirkning_prestasjon": "Stor"
+   }
+  ]
+ },
+ {
+  "dato": "2026-11-19",
+  "syk": false,
+  "skadet": true,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": [
+   {
+    "type": "Akutt",
+    "kroppsdel": "Høyre skulder",
+    "kommentar": "Operert i skulderen. Ortopeden fornøyd med resultatet. ",
+    "pavirkning_deltagelse": "Ingen deltagelse",
+    "pavirkning_prestasjon": "Stor"
+   }
+  ]
+ },
+ {
+  "dato": "2026-11-20",
+  "syk": false,
+  "skadet": true,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": [
+   {
+    "type": "Akutt",
+    "kroppsdel": "Høyre skulder",
+    "kommentar": "Operert i skulderen. Ortopeden fornøyd med resultatet. ",
+    "pavirkning_deltagelse": "Ingen deltagelse",
+    "pavirkning_prestasjon": "Stor"
+   }
+  ]
+ },
+ {
+  "dato": "2026-11-21",
+  "syk": false,
+  "skadet": true,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": [
+   {
+    "type": "Akutt",
+    "kroppsdel": "Høyre skulder",
+    "kommentar": "Operert i skulderen. Ortopeden fornøyd med resultatet. ",
+    "pavirkning_deltagelse": "Ingen deltagelse",
+    "pavirkning_prestasjon": "Stor"
+   }
+  ]
+ },
+ {
+  "dato": "2026-11-22",
+  "syk": false,
+  "skadet": true,
+  "reise": false,
+  "hoyde": false,
+  "fridag": false,
+  "konkurranse": false,
+  "notat": null,
+  "sykdom": null,
+  "skade": [
+   {
+    "type": "Akutt",
+    "kroppsdel": "Høyre skulder",
+    "kommentar": "Operert i skulderen. Ortopeden fornøyd med resultatet. ",
+    "pavirkning_deltagelse": "Ingen deltagelse",
+    "pavirkning_prestasjon": "Stor"
+   }
+  ]
  }
 ]

@@ -248919,5 +248919,422 @@
     "minutter": 40
    }
   ]
+ },
+ {
+  "id": "87a0e5fb-afe6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-16",
+  "rekkefolge": 0,
+  "navn": "Ellipse",
+  "beskrivelse": null,
+  "kommentar": "Rolig ellipse på Actic.",
+  "kommentarer_andre": [],
+  "varighet_min": 45,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 45
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 8,
+    "aktivitet": "Annet",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 45
+    },
+    "distanse_km": null,
+    "minutter": 45
+   }
+  ]
+ },
+ {
+  "id": "7971452d-b0e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-17",
+  "rekkefolge": 0,
+  "navn": "Ellipse",
+  "beskrivelse": null,
+  "kommentar": "Rolig ellipse på Actic. Fint og bra, men dårlig trent. Gåing til og fra.",
+  "kommentarer_andre": [],
+  "varighet_min": 47,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 47
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 8,
+    "aktivitet": "Annet",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 47
+    },
+    "distanse_km": null,
+    "minutter": 47
+   }
+  ]
+ },
+ {
+  "id": "f0ceea5f-b0e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-17",
+  "rekkefolge": 1,
+  "navn": "Spinn",
+  "beskrivelse": null,
+  "kommentar": "Oppstart med spinn på Zwiften i kjellern hos Vilma. Fint og bra. Fryktelig utrent, høy puls med watten låst på 165.",
+  "kommentarer_andre": [],
+  "varighet_min": 45,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 45
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 7,
+    "aktivitet": "Sykling",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 45
+    },
+    "distanse_km": null,
+    "minutter": 45
+   }
+  ]
+ },
+ {
+  "id": "f5e21885-b0e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-18",
+  "rekkefolge": 0,
+  "navn": "Ellipse",
+  "beskrivelse": null,
+  "kommentar": "Samme opplegg som siste par dagene. Ellipse på Actic med gåing til og fra.",
+  "kommentarer_andre": [],
+  "varighet_min": 60,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 60
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 8,
+    "aktivitet": "Annet",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 60
+    },
+    "distanse_km": null,
+    "minutter": 60
+   }
+  ]
+ },
+ {
+  "id": "3bcd64b0-b0e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-18",
+  "rekkefolge": 1,
+  "navn": "Spinn",
+  "beskrivelse": null,
+  "kommentar": "Rolig på zwift. Watten låst på 165. Fortsatt weak.",
+  "kommentarer_andre": [],
+  "varighet_min": 47,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 47
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 7,
+    "aktivitet": "Sykling",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 47
+    },
+    "distanse_km": null,
+    "minutter": 47
+   }
+  ]
+ },
+ {
+  "id": "84f902ee-b0e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-19",
+  "rekkefolge": 0,
+  "navn": "Ellipse + styrke",
+  "beskrivelse": null,
+  "kommentar": "Ellipse og styrke på Actic. Bra å komme i gang med litt forsiktig styrke-stimuli på beina. Leg-press, leg-extention, tåhev og nordic hamstring.",
+  "kommentarer_andre": [],
+  "varighet_min": 65,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 45
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 20,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 8,
+    "aktivitet": "Annet",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 45
+    },
+    "distanse_km": null,
+    "minutter": 45
+   },
+   {
+    "posisjon": 1,
+    "aktivitet_id": 12,
+    "aktivitet": "Generell styrke",
+    "kategori": "styrke",
+    "soner": {},
+    "distanse_km": null,
+    "minutter": 20
+   }
+  ]
+ },
+ {
+  "id": "f3684e07-b1e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-19",
+  "rekkefolge": 1,
+  "navn": "Spinn",
+  "beskrivelse": null,
+  "kommentar": "Rolig spinn på Zwift. Slitne bein etter styrke.",
+  "kommentarer_andre": [],
+  "varighet_min": 63,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 63
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 7,
+    "aktivitet": "Sykling",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 63
+    },
+    "distanse_km": null,
+    "minutter": 63
+   }
+  ]
+ },
+ {
+  "id": "8c10ff1f-b1e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-20",
+  "rekkefolge": 0,
+  "navn": "Ellipse",
+  "beskrivelse": null,
+  "kommentar": "Ellipse på Acitc. Gåing til og fra.",
+  "kommentarer_andre": [],
+  "varighet_min": 60,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 60
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 8,
+    "aktivitet": "Annet",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 60
+    },
+    "distanse_km": null,
+    "minutter": 60
+   }
+  ]
+ },
+ {
+  "id": "8433b637-b1e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-20",
+  "rekkefolge": 1,
+  "navn": "Spinn",
+  "beskrivelse": null,
+  "kommentar": "Rolig spinn på Zwift. Fortsatt 165 watt og ganske høy puls.",
+  "kommentarer_andre": [],
+  "varighet_min": 63,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 63
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 7,
+    "aktivitet": "Sykling",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 63
+    },
+    "distanse_km": null,
+    "minutter": 63
+   }
+  ]
+ },
+ {
+  "id": "40817c52-b1e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-21",
+  "rekkefolge": 0,
+  "navn": "Spinn",
+  "beskrivelse": null,
+  "kommentar": "Rolig liten langtur spinn på Zwift. Med skirenn å se på. Moro. ",
+  "kommentarer_andre": [],
+  "varighet_min": 120,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 120
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 4,
+  "dagsform": 5,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 7,
+    "aktivitet": "Sykling",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 120
+    },
+    "distanse_km": null,
+    "minutter": 120
+   }
+  ]
+ },
+ {
+  "id": "0104ab67-b1e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-22",
+  "rekkefolge": 0,
+  "navn": "Ellipse",
+  "beskrivelse": null,
+  "kommentar": "Rolig ellipse på Actic. Gåing til og fra.",
+  "kommentarer_andre": [],
+  "varighet_min": 60,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 60
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 8,
+    "aktivitet": "Annet",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 60
+    },
+    "distanse_km": null,
+    "minutter": 60
+   }
+  ]
+ },
+ {
+  "id": "fec40799-b1e6-f111-91f2-002248dcdf59",
+  "dato": "2026-11-22",
+  "rekkefolge": 1,
+  "navn": "Spinn",
+  "beskrivelse": null,
+  "kommentar": "Rolig ettermiddagsspinn på Zwift. Fortsatt 165 watt, snittpulsen ned under til 139 i dag. 148 på første spinning-økta på tirsdag så foregår en slags adaptasjon i alle fall.",
+  "kommentarer_andre": [],
+  "varighet_min": 64,
+  "hoyeste_sone": "I1",
+  "hoyeste_sone_registrert": "I1",
+  "sone_min": {
+   "I1": 64
+  },
+  "distanse_km": 0.0,
+  "loping_min": 0,
+  "otek_min": 0,
+  "styrke_min": 0,
+  "opplevd_belastning": 3,
+  "dagsform": 6,
+  "blokker": [
+   {
+    "posisjon": 0,
+    "aktivitet_id": 7,
+    "aktivitet": "Sykling",
+    "kategori": "bevegelse",
+    "soner": {
+     "I1": 64
+    },
+    "distanse_km": null,
+    "minutter": 64
+   }
+  ]
  }
 ]
