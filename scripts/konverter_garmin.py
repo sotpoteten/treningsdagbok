@@ -96,6 +96,7 @@ def les_aktiviteter():
                 "distanse_km": rund((a.get("distance") or 0) / 100000, 2),
                 "snittpuls": a.get("avgHr") and round(a["avgHr"]),
                 "makspuls": a.get("maxHr") and round(a["maxHr"]),
+                "snittwatt": a.get("avgPower") and round(a["avgPower"]),
                 "hoydemeter": a.get("elevationGain") and round(a["elevationGain"] / 100),
                 "kadens": a.get("avgDoubleCadence") and round(a["avgDoubleCadence"]),
                 "aerob_te": rund(a.get("aerobicTrainingEffect")),

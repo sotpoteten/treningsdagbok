@@ -143,6 +143,7 @@ def aktivitet_fra_fit(garmin_id: int, navn: str | None, start_lokal: str, data: 
         "distanse_km": rund((sum_felt("total_distance") or 0) / 1000, 2),
         "snittpuls": okt.get("avg_heart_rate") if len(okter) == 1 else None,
         "makspuls": max((o["max_heart_rate"] for o in okter if o.get("max_heart_rate")), default=None),
+        "snittwatt": okt.get("avg_power") if len(okter) == 1 else None,
         "hoydemeter": sum_felt("total_ascent"),
         "kadens": kadens,
         "aerob_te": rund(okt.get("total_training_effect")),

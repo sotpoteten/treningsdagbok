@@ -91,6 +91,9 @@ interface Props {
   sporFinnes: Set<number> | null
 }
 
+/** Watt vises bare for sykling. Klokkas løpewatt er noe annet og kan ikke sammenlignes. */
+const erSykkel = (type: string) => /cycling|ride|biking/.test(type)
+
 export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   // Ny økt gir første aktivitet; valgt kart og aktivt punkt gjelder bare én aktivitet.
   const [valgt, setValgt] = useTilstandPer(aktiviteter, 0)
@@ -150,7 +153,7 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   const pulsserie = useMemo(() => (p?.puls ? glidendeMedian(p.puls, 3, brudd) : null), [p, brudd])
   // Watt (wattmåler eller Zwift) glattes likt med pulsen.
   const wattserie = useMemo(() => (p?.watt ? glidendeMedian(p.watt, 3, brudd) : null), [p, brudd])
-  const harWatt = !!wattserie?.some((v) => v != null)
+  const harWatt = erSykkel(a.type) && !!wattserie?.some((v) => v != null)
   // Rundegrensene står i klokketid og regnes om til tid i bevegelse.
   const rundelinjer = useMemo(
     () => (bev && spor && spor.runder.length > 1 ? spor.runder.slice(1).map((r) => bev.tilBevegelse(r.start_s)) : undefined),
@@ -172,6 +175,9 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
   const lag: Kartlag = lagValg && lagvalg.some((v) => v.id === lagValg) ? lagValg : lagvalg[0].id
   const erLop = (a.distanse_km ?? 0) > 0 && /running|run/.test(a.type)
   const zwift = a.kilde === 'zwift'
+  const snittwatt = erSykkel(a.type) ? a.snittwatt : null
+  // Zwift har ikke treningseffekt (0 / 0). Da tar snittwatt den plassen, så tallene står i to hele rader.
+  const harTe = !!a.aerob_te
 
   return (
     <section className="panel-del garmin">
@@ -203,10 +209,18 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
           <dt>Høydemeter</dt>
           <dd>{a.hoydemeter ?? '–'}</dd>
         </div>
-        <div>
-          <dt>Treningseffekt aerob/anaerob</dt>
-          <dd>{a.aerob_te != null ? `${String(a.aerob_te).replace('.', ',')} / ${String(a.anaerob_te ?? 0).replace('.', ',')}` : '–'}</dd>
-        </div>
+        {snittwatt != null && (
+          <div>
+            <dt>Snittwatt</dt>
+            <dd>{snittwatt} W</dd>
+          </div>
+        )}
+        {(snittwatt == null || harTe) && (
+          <div>
+            <dt>Treningseffekt aerob/anaerob</dt>
+            <dd>{a.aerob_te != null ? `${String(a.aerob_te).replace('.', ',')} / ${String(a.anaerob_te ?? 0).replace('.', ',')}` : '–'}</dd>
+          </div>
+        )}
         <div>
           <dt>Belastning</dt>
           <dd>{a.belastning ?? '–'}</dd>
@@ -277,7 +291,7 @@ export function Garminokt({ aktiviteter, sporFinnes }: Props) {
                 <b>{klokke(bev.x[i])}</b>
                 <span className="tips-tall">{p.puls?.[i] ?? '–'} slag/min</span>
                 {tempoTekst(i) && <span className="tips-rad">{tempoTekst(i)}</span>}
-                {p.watt?.[i] != null && <span className="tips-rad">{p.watt[i]} W</span>}
+                {harWatt && p.watt?.[i] != null && <span className="tips-rad">{p.watt[i]} W</span>}
                 {gps && p.dist?.[i] != null && <span className="tips-rad dempet">{km(p.dist[i]! / 1000)} km</span>}
               </>
             )}

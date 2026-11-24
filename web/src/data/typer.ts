@@ -108,6 +108,8 @@ export interface GarminAktivitet {
   distanse_km: number
   snittpuls: number | null
   makspuls: number | null
+  /** Fra wattmåler, Zwift eller klokkas løpewatt. Siden viser den bare for sykling. */
+  snittwatt?: number | null
   hoydemeter: number | null
   kadens: number | null
   aerob_te: number | null
